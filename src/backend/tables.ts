@@ -6,7 +6,7 @@ import {
   refUser,
   text,
   timestamp,
-} from "@termix/plugin-sdk/db";
+} from "@termix-ssh/plugin-sdk/db";
 
 /**
  * A user's tags on a tmux session, per host. Sessions are shared on the host

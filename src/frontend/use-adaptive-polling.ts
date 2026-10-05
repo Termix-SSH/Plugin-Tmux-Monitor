@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { runAdaptivePolling } from "@termix/plugin-sdk/ui";
+import { runAdaptivePolling } from "@termix-ssh/plugin-sdk/ui";
 
 type AdaptivePollResult = boolean | void;
 

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useTranslation } from "@termix/plugin-sdk/frontend";
+import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { X } from "lucide-react";
 import type { TmuxSearchMatch, TmuxSearchResult } from "./api";
 

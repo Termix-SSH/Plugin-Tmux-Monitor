@@ -1,4 +1,4 @@
-import type { TranslateFn } from "@termix/plugin-sdk/frontend";
+import type { TranslateFn } from "@termix-ssh/plugin-sdk/frontend";
 
 export function formatRelativeTime(
   unixSeconds: number,

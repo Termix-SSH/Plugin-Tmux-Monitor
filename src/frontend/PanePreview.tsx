@@ -5,7 +5,7 @@
 // a normal terminal tab.
 
 import { useRef, useState } from "react";
-import { useTranslation } from "@termix/plugin-sdk/frontend";
+import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import {
   Activity,
   Cpu,
@@ -16,8 +16,8 @@ import {
   Trash2,
   X,
 } from "lucide-react";
-import { PluginComponent } from "@termix/plugin-sdk/ui";
-import type { PluginHostRecord, TabHandle } from "@termix/plugin-sdk/frontend";
+import { PluginComponent } from "@termix-ssh/plugin-sdk/ui";
+import type { PluginHostRecord, TabHandle } from "@termix-ssh/plugin-sdk/frontend";
 import type { TmuxPaneMetrics } from "./api";
 import { formatMem } from "./format";
 import type { SelectedPane } from "./types";

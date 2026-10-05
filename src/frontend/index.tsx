@@ -3,7 +3,7 @@ import type {
   StandaloneViewProps,
   TabProps,
   TermixApp,
-} from "@termix/plugin-sdk/frontend";
+} from "@termix-ssh/plugin-sdk/frontend";
 import { setTmuxMonitorApi } from "./api";
 import { tmuxMonitorEnabled } from "./host-tmux-monitor";
 import { HostTmuxMonitorSection } from "./HostTmuxMonitorSection";

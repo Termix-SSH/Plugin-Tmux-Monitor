@@ -6,7 +6,7 @@
 // keyboard focus.
 
 import { useState } from "react";
-import { useTranslation } from "@termix/plugin-sdk/frontend";
+import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import {
   AppWindow,
   BarChart2,
@@ -32,7 +32,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@termix/plugin-sdk/ui";
+} from "@termix-ssh/plugin-sdk/ui";
 import type { TmuxPaneMetrics, TmuxSessionOverview } from "./api";
 import { formatMem, formatRelativeTime } from "./format";
 import type { SelectedPane } from "./types";

@@ -1,7 +1,7 @@
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { SessionTree } from "../../src/frontend/SessionTree";
-vi.mock("@termix/plugin-sdk/frontend", async (original) => ({
+vi.mock("@termix-ssh/plugin-sdk/frontend", async (original) => ({
   ...(await original<object>()),
   useTranslation: () => ({ t: (key: string) => key }),
 }));

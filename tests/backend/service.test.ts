@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { EventEmitter } from "node:events";
-import { createFakeContext } from "@termix/plugin-sdk/testing";
+import { createFakeContext } from "@termix-ssh/plugin-sdk/testing";
 import { createTmuxSessionsService } from "../../src/backend/service.js";
 
 function fakeSshClient(outputs: Record<string, string>, exitCode = 0) {

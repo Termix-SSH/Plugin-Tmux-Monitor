@@ -1,4 +1,4 @@
-import type { StandaloneViewProps } from "@termix/plugin-sdk/frontend";
+import type { StandaloneViewProps } from "@termix-ssh/plugin-sdk/frontend";
 import { TmuxMonitor } from "./TmuxMonitor";
 
 /** `?view=tmux_monitor` full-screen links. */

@@ -5,8 +5,8 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { useTranslation } from "@termix/plugin-sdk/frontend";
-import { Button, Skeleton } from "@termix/plugin-sdk/ui";
+import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
+import { Button, Skeleton } from "@termix-ssh/plugin-sdk/ui";
 import {
   getTmuxOverview,
   getTmuxMetrics,

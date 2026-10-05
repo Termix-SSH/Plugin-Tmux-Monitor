@@ -3,7 +3,7 @@ import {
   createMockCtx,
   createTestDb,
   type TestDb,
-} from "@termix/plugin-sdk/testing";
+} from "@termix-ssh/plugin-sdk/testing";
 import { sessionTags } from "../../src/backend/tables.js";
 import { createSessionTagRepository } from "../../src/backend/repository.js";
 import { manifest, pluginDir } from "./helpers";

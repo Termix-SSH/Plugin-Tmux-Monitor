@@ -3,7 +3,7 @@ import type { Client } from "ssh2";
 import type {
   PluginContext,
   PluginHostSummary,
-} from "@termix/plugin-sdk/backend";
+} from "@termix-ssh/plugin-sdk/backend";
 import { execCommand, tmuxCommand } from "./tmux-commands.js";
 import {
   SEP,

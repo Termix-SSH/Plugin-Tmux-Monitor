@@ -2,8 +2,8 @@ import { Layers } from "lucide-react";
 import {
   useTranslation,
   type HostEditorSectionProps,
-} from "@termix/plugin-sdk/frontend";
-import { FakeSwitch, SectionCard, SettingRow } from "@termix/plugin-sdk/ui";
+} from "@termix-ssh/plugin-sdk/frontend";
+import { FakeSwitch, SectionCard, SettingRow } from "@termix-ssh/plugin-sdk/ui";
 
 type PluginSettingsForm = Record<string, Record<string, unknown>>;
 

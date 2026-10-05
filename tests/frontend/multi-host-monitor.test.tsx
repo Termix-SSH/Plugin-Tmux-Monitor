@@ -12,7 +12,7 @@ import {
   within,
 } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
-import { SurfaceScope } from "@termix/plugin-sdk/ui";
+import { SurfaceScope } from "@termix-ssh/plugin-sdk/ui";
 import { TmuxMonitor } from "../../src/frontend/TmuxMonitor";
 import * as api from "../../src/frontend/api";
 
@@ -27,7 +27,7 @@ const state = vi.hoisted(() => ({
   toast: { success: vi.fn(), error: vi.fn() },
   t: (key: string) => key,
 }));
-vi.mock("@termix/plugin-sdk/frontend", async (original) => ({
+vi.mock("@termix-ssh/plugin-sdk/frontend", async (original) => ({
   ...(await original<object>()),
   useHosts: () => ({ hosts: state.hosts, loaded: true }),
   useToast: () => state.toast,

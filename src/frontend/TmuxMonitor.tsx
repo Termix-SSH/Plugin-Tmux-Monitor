@@ -3,8 +3,8 @@ import {
   useHosts,
   useToast,
   useTranslation,
-} from "@termix/plugin-sdk/frontend";
-import type { PluginHostRecord, TabHandle } from "@termix/plugin-sdk/frontend";
+} from "@termix-ssh/plugin-sdk/frontend";
+import type { PluginHostRecord, TabHandle } from "@termix-ssh/plugin-sdk/frontend";
 import {
   Button,
   Input,
@@ -16,7 +16,7 @@ import {
   isElectron,
   useConfirm,
   InlineView,
-} from "@termix/plugin-sdk/ui";
+} from "@termix-ssh/plugin-sdk/ui";
 import {
   ChevronDown,
   ChevronRight,

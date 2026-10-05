@@ -1,5 +1,5 @@
 import type { Router } from "express";
-import type { PluginContext } from "@termix/plugin-sdk/backend";
+import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import { sessionTags } from "./tables.js";
 import { createSessionTagRepository } from "./repository.js";
 import { createTmuxMonitorRoutes } from "./routes.js";
