@@ -112,6 +112,7 @@
     "selectHost": "Select host",
     "toggleHost": "Expand or collapse {{host}}",
     "noMatchingHosts": "No matching hosts",
-    "toggleSession": "Expand or collapse {{session}}"
+    "toggleSession": "Expand or collapse {{session}}",
+    "tagsPlaceholder": "lab, training"
   }
 }

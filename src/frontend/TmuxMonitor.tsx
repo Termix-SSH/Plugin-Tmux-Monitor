@@ -7,11 +7,6 @@ import {
 import type { PluginHostRecord, TabHandle } from "@termix/plugin-sdk/frontend";
 import {
   Button,
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
   Input,
   Popover,
   PopoverContent,
@@ -19,6 +14,8 @@ import {
   ScrollArea,
   Skeleton,
   isElectron,
+  useConfirm,
+  InlineView,
 } from "@termix/plugin-sdk/ui";
 import {
   ChevronDown,
@@ -659,6 +656,7 @@ export function TmuxMonitor({
   }
 
   // -- rename / kill ------------------------------------------------------------
+  const confirm = useConfirm();
   const [renameTarget, setRenameTarget] = useState<string | null>(null);
   const [renameDraft, setRenameDraft] = useState("");
   const [renaming, setRenaming] = useState(false);
@@ -725,6 +723,7 @@ export function TmuxMonitor({
       toast.error(
         axiosErr.response?.data?.error || t("tmuxMonitor.sessionKillFailed"),
       );
+      setKillTarget(null);
     } finally {
       setKilling(false);
     }
@@ -784,6 +783,7 @@ export function TmuxMonitor({
       toast.error(
         axiosErr.response?.data?.error || t("tmuxMonitor.windowKillFailed"),
       );
+      setKillWindowTarget(null);
     } finally {
       setKillingWindow(false);
     }
@@ -815,10 +815,69 @@ export function TmuxMonitor({
       toast.error(
         axiosErr.response?.data?.error || t("tmuxMonitor.paneKillFailed"),
       );
+      setKillPaneTarget(null);
     } finally {
       setKillingPane(false);
     }
   }
+
+  // Each kill target opens one confirm; cancelling clears it.
+  const killRefs = useRef({ confirmKill, confirmKillWindow, confirmKillPane });
+  killRefs.current = { confirmKill, confirmKillWindow, confirmKillPane };
+  useEffect(() => {
+    if (killTarget === null) return;
+    let live = true;
+    void confirm({
+      title: t("tmuxMonitor.killSessionTitle", { name: killTarget }),
+      description: t("tmuxMonitor.killSessionBody"),
+      confirmLabel: t("tmuxMonitor.kill"),
+    }).then((ok) => {
+      if (!live) return;
+      if (ok) void killRefs.current.confirmKill();
+      else setKillTarget(null);
+    });
+    return () => {
+      live = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [killTarget]);
+  useEffect(() => {
+    if (killWindowTarget === null) return;
+    let live = true;
+    void confirm({
+      title: t("tmuxMonitor.killWindowTitle", {
+        index: killWindowTarget.windowIndex,
+        session: killWindowTarget.sessionName,
+      }),
+      description: t("tmuxMonitor.killWindowBody"),
+      confirmLabel: t("tmuxMonitor.kill"),
+    }).then((ok) => {
+      if (!live) return;
+      if (ok) void killRefs.current.confirmKillWindow();
+      else setKillWindowTarget(null);
+    });
+    return () => {
+      live = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [killWindowTarget]);
+  useEffect(() => {
+    if (killPaneTarget === null) return;
+    let live = true;
+    void confirm({
+      title: t("tmuxMonitor.killPaneTitle", { id: killPaneTarget }),
+      description: t("tmuxMonitor.killPaneBody"),
+      confirmLabel: t("tmuxMonitor.kill"),
+    }).then((ok) => {
+      if (!live) return;
+      if (ok) void killRefs.current.confirmKillPane();
+      else setKillPaneTarget(null);
+    });
+    return () => {
+      live = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [killPaneTarget]);
 
   // -- tags -----------------------------------------------------------------
   const [tagsTarget, setTagsTarget] = useState<string | null>(null);
@@ -1511,31 +1570,15 @@ export function TmuxMonitor({
       </div>
 
       {/* Rename session dialog */}
-      <Dialog
+
+      <InlineView
         open={renameTarget !== null}
         onOpenChange={(open) => {
           if (!open) setRenameTarget(null);
         }}
-      >
-        <DialogContent className="sm:max-w-sm">
-          <DialogHeader>
-            <DialogTitle>
-              {t("tmuxMonitor.renameSessionTitle", { name: renameTarget })}
-            </DialogTitle>
-          </DialogHeader>
-          <Input
-            value={renameDraft}
-            placeholder={t("tmuxMonitor.newSessionPlaceholder")}
-            autoFocus
-            onChange={(e) => setRenameDraft(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") confirmRename();
-            }}
-          />
-          <p className="text-xs text-muted-foreground">
-            {t("tmuxMonitor.newSessionHint")}
-          </p>
-          <DialogFooter>
+        title={t("tmuxMonitor.renameSessionTitle", { name: renameTarget })}
+        footer={
+          <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
             <Button variant="outline" onClick={() => setRenameTarget(null)}>
               {t("common.cancel")}
             </Button>
@@ -1545,141 +1588,55 @@ export function TmuxMonitor({
             >
               {t("tmuxMonitor.rename")}
             </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+          </div>
+        }
+      >
+        <Input
+          value={renameDraft}
+          placeholder={t("tmuxMonitor.newSessionPlaceholder")}
+          autoFocus
+          onChange={(e) => setRenameDraft(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") confirmRename();
+          }}
+        />
+        <p className="text-xs text-muted-foreground">
+          {t("tmuxMonitor.newSessionHint")}
+        </p>
+      </InlineView>
 
       {/* Edit tags dialog */}
-      <Dialog
+
+      <InlineView
         open={tagsTarget !== null}
         onOpenChange={(open) => {
           if (!open) setTagsTarget(null);
         }}
-      >
-        <DialogContent className="sm:max-w-sm">
-          <DialogHeader>
-            <DialogTitle>
-              {t("tmuxMonitor.editTagsTitle", { name: tagsTarget })}
-            </DialogTitle>
-          </DialogHeader>
-          <Input
-            value={tagsDraft}
-            placeholder="YOLO, lab, training"
-            autoFocus
-            onChange={(e) => setTagsDraft(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") confirmTags();
-            }}
-          />
-          <p className="text-xs text-muted-foreground">
-            {t("tmuxMonitor.tagsHint")}
-          </p>
-          <DialogFooter>
+        title={t("tmuxMonitor.editTagsTitle", { name: tagsTarget })}
+        footer={
+          <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
             <Button variant="outline" onClick={() => setTagsTarget(null)}>
               {t("common.cancel")}
             </Button>
             <Button disabled={savingTags} onClick={confirmTags}>
               {t("common.save")}
             </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Kill window confirmation */}
-      <Dialog
-        open={killWindowTarget !== null}
-        onOpenChange={(open) => {
-          if (!open) setKillWindowTarget(null);
-        }}
+          </div>
+        }
       >
-        <DialogContent className="sm:max-w-sm">
-          <DialogHeader>
-            <DialogTitle>
-              {t("tmuxMonitor.killWindowTitle", {
-                index: killWindowTarget?.windowIndex,
-                session: killWindowTarget?.sessionName,
-              })}
-            </DialogTitle>
-          </DialogHeader>
-          <p className="text-xs text-muted-foreground">
-            {t("tmuxMonitor.killWindowBody")}
-          </p>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setKillWindowTarget(null)}>
-              {t("common.cancel")}
-            </Button>
-            <Button
-              variant="destructive"
-              disabled={killingWindow}
-              onClick={confirmKillWindow}
-            >
-              {t("tmuxMonitor.kill")}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Kill pane confirmation */}
-      <Dialog
-        open={killPaneTarget !== null}
-        onOpenChange={(open) => {
-          if (!open) setKillPaneTarget(null);
-        }}
-      >
-        <DialogContent className="sm:max-w-sm">
-          <DialogHeader>
-            <DialogTitle>
-              {t("tmuxMonitor.killPaneTitle", { id: killPaneTarget })}
-            </DialogTitle>
-          </DialogHeader>
-          <p className="text-xs text-muted-foreground">
-            {t("tmuxMonitor.killPaneBody")}
-          </p>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setKillPaneTarget(null)}>
-              {t("common.cancel")}
-            </Button>
-            <Button
-              variant="destructive"
-              disabled={killingPane}
-              onClick={confirmKillPane}
-            >
-              {t("tmuxMonitor.kill")}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Kill session confirmation */}
-      <Dialog
-        open={killTarget !== null}
-        onOpenChange={(open) => {
-          if (!open) setKillTarget(null);
-        }}
-      >
-        <DialogContent className="sm:max-w-sm">
-          <DialogHeader>
-            <DialogTitle>
-              {t("tmuxMonitor.killSessionTitle", { name: killTarget })}
-            </DialogTitle>
-          </DialogHeader>
-          <p className="text-xs text-muted-foreground">
-            {t("tmuxMonitor.killSessionBody")}
-          </p>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setKillTarget(null)}>
-              {t("common.cancel")}
-            </Button>
-            <Button
-              variant="destructive"
-              disabled={killing}
-              onClick={confirmKill}
-            >
-              {t("tmuxMonitor.kill")}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+        <Input
+          value={tagsDraft}
+          placeholder={t("tmuxMonitor.tagsPlaceholder")}
+          autoFocus
+          onChange={(e) => setTagsDraft(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") confirmTags();
+          }}
+        />
+        <p className="text-xs text-muted-foreground">
+          {t("tmuxMonitor.tagsHint")}
+        </p>
+      </InlineView>
     </div>
   );
 }

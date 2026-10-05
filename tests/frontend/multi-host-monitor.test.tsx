@@ -12,6 +12,7 @@ import {
   within,
 } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
+import { SurfaceScope } from "@termix/plugin-sdk/ui";
 import { TmuxMonitor } from "../../src/frontend/TmuxMonitor";
 import * as api from "../../src/frontend/api";
 
@@ -267,14 +268,20 @@ describe("multi-host tmux monitor", () => {
   });
 
   it("confirms a destructive action on the host selected from the background tree", async () => {
-    render(<TmuxMonitor initialHostId={1} />);
+    render(
+      <SurfaceScope kind="tab">
+        <TmuxMonitor initialHostId={1} />
+      </SurfaceScope>,
+    );
     await waitFor(() =>
       expect(host(2).getByText("kill session")).toBeInTheDocument(),
     );
     fireEvent.click(host(2).getByText("kill session"));
-    await waitFor(() => expect(screen.getByRole("dialog")).toBeInTheDocument());
+    await waitFor(() =>
+      expect(screen.getByRole("alertdialog")).toBeInTheDocument(),
+    );
     fireEvent.click(
-      within(screen.getByRole("dialog")).getByRole("button", {
+      within(screen.getByRole("alertdialog")).getByRole("button", {
         name: "tmuxMonitor.kill",
       }),
     );
