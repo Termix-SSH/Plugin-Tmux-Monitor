@@ -17,7 +17,10 @@ import {
   X,
 } from "lucide-react";
 import { PluginComponent } from "@termix-ssh/plugin-sdk/ui";
-import type { PluginHostRecord, TabHandle } from "@termix-ssh/plugin-sdk/frontend";
+import type {
+  PluginHostRecord,
+  TabHandle,
+} from "@termix-ssh/plugin-sdk/frontend";
 import type { TmuxPaneMetrics } from "./api";
 import { formatMem } from "./format";
 import type { SelectedPane } from "./types";

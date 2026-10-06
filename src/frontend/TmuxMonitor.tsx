@@ -19,6 +19,10 @@ import {
   isElectron,
   useConfirm,
   InlineView,
+  PanelSearch,
+  FormFooter,
+  Segmented,
+  Select2,
 } from "@termix-ssh/plugin-sdk/ui";
 import {
   ChevronDown,
@@ -1141,16 +1145,16 @@ export function TmuxMonitor({
       {/* Left rail: hosts + session tree. Resizable via the right-edge
           handle; double-click resets to the default width. */}
       <div
-        className="relative flex shrink-0 flex-col border-r border-border bg-card"
+        className="relative flex shrink-0 flex-col border-r border-border bg-background"
         style={{ width: treeWidth }}
       >
         {/* VSCode tmux-manager style header: title + new-session / refresh */}
-        <div className="flex items-center gap-2 border-b border-border px-3 py-2">
-          <Layers className="size-4" />
-          <span className="text-sm font-semibold">
+        <div className="flex h-12.5 shrink-0 items-center gap-2 border-b border-border px-3">
+          <Layers className="size-4 shrink-0 text-accent-brand" />
+          <span className="truncate text-base font-bold tracking-tight">
             {t("tmuxMonitor.title")}
           </span>
-          <span className="ml-auto flex items-center gap-2">
+          <span className="ml-auto flex items-center gap-0.5">
             <Popover
               open={newSessionOpen}
               onOpenChange={(open) => {
@@ -1159,14 +1163,16 @@ export function TmuxMonitor({
               }}
             >
               <PopoverTrigger asChild>
-                <button
-                  className="text-muted-foreground hover:text-foreground disabled:opacity-40"
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  className="text-accent-brand hover:text-accent-brand"
                   disabled={selectedHostId === null || !overview?.available}
                   title={t("tmuxMonitor.newSession")}
                   aria-label={t("tmuxMonitor.newSession")}
                 >
                   <Plus className="size-4" />
-                </button>
+                </Button>
               </PopoverTrigger>
               <PopoverContent
                 className="w-64 rounded-none border-0 p-2 ring-1 ring-border"
@@ -1187,8 +1193,9 @@ export function TmuxMonitor({
                     }}
                   />
                   <Button
+                    variant="outline"
                     size="sm"
-                    className="h-7 px-2 text-xs"
+                    className="h-7 px-2 text-xs border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand dark:border-accent-brand/40 dark:bg-transparent dark:hover:bg-accent-brand/10"
                     disabled={!newSessionNameValid || creatingSession}
                     onClick={createSession}
                   >
@@ -1197,8 +1204,9 @@ export function TmuxMonitor({
                 </div>
               </PopoverContent>
             </Popover>
-            <button
-              className="text-muted-foreground hover:text-foreground disabled:opacity-40"
+            <Button
+              variant="ghost"
+              size="icon-sm"
               disabled={!overview?.available}
               title={
                 anyExpanded
@@ -1217,58 +1225,46 @@ export function TmuxMonitor({
               ) : (
                 <ChevronsUpDown className="size-3.5" />
               )}
-            </button>
-            <button
-              className="text-muted-foreground hover:text-foreground disabled:opacity-40"
-              disabled={selectedHostId === null || overviewLoading}
-              title={t("tmuxMonitor.refresh")}
-              aria-label={t("tmuxMonitor.refresh")}
-              onClick={manualRefresh}
-            >
-              <RefreshCw
-                className={`size-3.5 ${overviewLoading || refreshing ? "animate-spin" : ""}`}
-              />
-            </button>
-            <a
-              href="https://docs.termix.site/features/terminal/tmux"
-              target="_blank"
-              rel="noreferrer"
-              className="text-muted-foreground hover:text-foreground"
-              title={t("hosts.docsLink")}
-              aria-label={t("hosts.docsLink")}
-            >
-              <ExternalLink className="size-3.5" />
-            </a>
+            </Button>
+            <Button variant="ghost" size="icon-sm" asChild>
+              <a
+                href="https://docs.termix.site/features/terminal/tmux"
+                target="_blank"
+                rel="noreferrer"
+                title={t("hosts.docsLink")}
+                aria-label={t("hosts.docsLink")}
+              >
+                <ExternalLink className="size-3.5" />
+              </a>
+            </Button>
           </span>
         </div>
-        <div className="space-y-2 border-b border-border p-2">
-          <select
-            className="h-8 w-full border border-border bg-background px-2 text-sm"
-            aria-label={t("tmuxMonitor.hostScope")}
+        <div className="space-y-2 border-b border-border px-3 py-2">
+          <Segmented<"all" | "single">
             value={scope}
-            onChange={(e) => {
-              const value = e.target.value === "single" ? "single" : "all";
+            onChange={(value) => {
               setScope(value);
               saveMonitorValue("scope", value);
             }}
-          >
-            <option value="all">{t("tmuxMonitor.allHosts")}</option>
-            <option value="single">{t("tmuxMonitor.singleHost")}</option>
-          </select>
+            className="w-full [&>button]:flex-1"
+            options={[
+              { value: "all", label: t("tmuxMonitor.allHosts") },
+              { value: "single", label: t("tmuxMonitor.singleHost") },
+            ]}
+          />
           {scope === "all" ? (
-            <Input
-              aria-label={t("tmuxMonitor.filterHosts")}
+            <PanelSearch
               placeholder={t("tmuxMonitor.filterHosts")}
               value={hostFilter}
-              onChange={(e) => {
-                setHostFilter(e.target.value);
-                saveMonitorValue("filter", e.target.value);
+              onChange={(value) => {
+                setHostFilter(value);
+                saveMonitorValue("filter", value);
               }}
-              className="h-8"
+              fill
             />
           ) : (
-            <select
-              className="h-8 w-full border border-border bg-background px-2 text-sm"
+            <Select2
+              className="h-8 text-xs"
               aria-label={t("tmuxMonitor.selectHost")}
               value={selectedHostId ?? ""}
               onChange={(e) => {
@@ -1284,7 +1280,7 @@ export function TmuxMonitor({
                   {host.name || host.ip}
                 </option>
               ))}
-            </select>
+            </Select2>
           )}
         </div>
         {/* Radix wraps the viewport content in a display:table div sized to
@@ -1313,7 +1309,7 @@ export function TmuxMonitor({
                   aria-label={host.name || String(host.ip)}
                 >
                   <div
-                    className={`flex items-center gap-1 px-1 py-2 ${active ? "bg-accent-brand/10" : ""}`}
+                    className={`flex items-center gap-1 border-l-2 px-1 py-1.5 ${active ? "border-accent-brand bg-accent-brand/10 text-accent-brand" : "border-transparent"}`}
                   >
                     {scope === "all" && (
                       <button
@@ -1337,7 +1333,7 @@ export function TmuxMonitor({
                       </button>
                     )}
                     <button
-                      className="min-w-0 flex-1 truncate text-left text-sm font-medium"
+                      className="min-w-0 flex-1 truncate text-left text-xs font-semibold"
                       aria-pressed={active}
                       onClick={() => {
                         setPendingAction(null);
@@ -1463,35 +1459,29 @@ export function TmuxMonitor({
       {/* Main area */}
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Toolbar */}
-        <div className="flex items-center gap-2 border-b border-border px-3 py-2">
+        <div className="flex h-12.5 shrink-0 items-center gap-2 border-b border-border px-3">
           <Server className="size-4 shrink-0 text-muted-foreground" />
-          <span className="truncate text-sm">
+          <span className="truncate text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
             {selectedHost ? hostLabel : t("tmuxMonitor.noHostSelected")}
           </span>
           <div className="ml-auto flex items-center gap-2">
-            <div className="relative">
-              <Search className="absolute left-2 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                ref={searchInputRef}
-                className="h-8 w-64 pl-7 text-sm"
-                placeholder={t("tmuxMonitor.searchPlaceholder")}
-                value={searchQuery}
-                disabled={!overview?.available}
-                title={
-                  overview && !overview.available
-                    ? t("tmuxMonitor.tmuxUnavailable")
-                    : undefined
-                }
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") runSearch();
-                }}
-              />
-            </div>
+            <PanelSearch
+              inputRef={searchInputRef}
+              value={searchQuery}
+              onChange={setSearchQuery}
+              placeholder={t("tmuxMonitor.searchPlaceholder")}
+              disabled={!overview?.available}
+              title={
+                overview && !overview.available
+                  ? t("tmuxMonitor.tmuxUnavailable")
+                  : undefined
+              }
+              onEnter={runSearch}
+              className="w-64"
+            />
             <Button
               variant="outline"
-              size="sm"
-              className="h-8"
+              size="icon"
               disabled={selectedHostId === null || overviewLoading}
               title={t("tmuxMonitor.refresh")}
               aria-label={t("tmuxMonitor.refresh")}
@@ -1502,8 +1492,8 @@ export function TmuxMonitor({
               />
             </Button>
             <Button
-              size="sm"
-              className="h-8"
+              variant="outline"
+              className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand dark:border-accent-brand/40"
               disabled={selectedHostId === null}
               title={
                 selectedHost
@@ -1517,7 +1507,7 @@ export function TmuxMonitor({
               }
               onClick={() => openTerminal()}
             >
-              <SquareTerminal className="mr-1 size-3.5" />
+              <SquareTerminal className="size-3.5" />
               {t("tmuxMonitor.attach")}
             </Button>
           </div>
@@ -1581,17 +1571,12 @@ export function TmuxMonitor({
         }}
         title={t("tmuxMonitor.renameSessionTitle", { name: renameTarget })}
         footer={
-          <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
-            <Button variant="outline" onClick={() => setRenameTarget(null)}>
-              {t("common.cancel")}
-            </Button>
-            <Button
-              disabled={!renameDraftValid || renaming}
-              onClick={confirmRename}
-            >
-              {t("tmuxMonitor.rename")}
-            </Button>
-          </div>
+          <FormFooter
+            onCancel={() => setRenameTarget(null)}
+            onSave={() => void confirmRename()}
+            saveLabel={t("tmuxMonitor.rename")}
+            disabled={!renameDraftValid || renaming}
+          />
         }
       >
         <Input
@@ -1617,14 +1602,11 @@ export function TmuxMonitor({
         }}
         title={t("tmuxMonitor.editTagsTitle", { name: tagsTarget })}
         footer={
-          <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
-            <Button variant="outline" onClick={() => setTagsTarget(null)}>
-              {t("common.cancel")}
-            </Button>
-            <Button disabled={savingTags} onClick={confirmTags}>
-              {t("common.save")}
-            </Button>
-          </div>
+          <FormFooter
+            onCancel={() => setTagsTarget(null)}
+            onSave={() => void confirmTags()}
+            disabled={savingTags}
+          />
         }
       >
         <Input

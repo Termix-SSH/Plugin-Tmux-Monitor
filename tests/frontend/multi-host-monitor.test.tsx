@@ -346,7 +346,7 @@ describe("multi-host tmux monitor", () => {
     render(<TmuxMonitor initialHostId={1} />);
     await waitFor(() => expect(host(1).getByText("pane")).toBeInTheDocument());
     expect(api.getTmuxOverview).not.toHaveBeenCalledWith(2);
-    fireEvent.change(screen.getByLabelText("tmuxMonitor.selectHost"), {
+    fireEvent.change(screen.getAllByLabelText("tmuxMonitor.selectHost")[0], {
       target: { value: "2" },
     });
     await waitFor(() => expect(host(2).getByText("pane")).toBeInTheDocument());
