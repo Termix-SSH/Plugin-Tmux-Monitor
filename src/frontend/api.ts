@@ -12,7 +12,7 @@ function api(): PluginApiClient {
   return client;
 }
 
-export interface TmuxPane {
+interface TmuxPane {
   id: string;
   index: number;
   pid: number;
@@ -24,7 +24,7 @@ export interface TmuxPane {
   title: string;
 }
 
-export interface TmuxWindow {
+interface TmuxWindow {
   index: number;
   name: string;
   active: boolean;

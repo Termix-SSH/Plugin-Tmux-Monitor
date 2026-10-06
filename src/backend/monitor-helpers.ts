@@ -7,7 +7,7 @@
 // printable ASCII token is the only separator that survives everywhere.
 export const SEP = "<<TMX>>";
 
-export interface TmuxPane {
+interface TmuxPane {
   id: string;
   index: number;
   pid: number;

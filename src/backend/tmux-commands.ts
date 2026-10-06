@@ -52,7 +52,7 @@ export function execCommand(conn: Client, command: string): Promise<string> {
   });
 }
 
-export interface TmuxSessionInfo {
+interface TmuxSessionInfo {
   name: string;
   created: number;
   lastActivity: number;
@@ -159,6 +159,6 @@ export function attachOrCreateTmuxSession(
   stream.write(`${tmuxCommand(commands.join(" \\; "))} && exit\r`);
 }
 
-export function shellEscape(s: string): string {
+function shellEscape(s: string): string {
   return "'" + s.replace(/'/g, "'\\''") + "'";
 }

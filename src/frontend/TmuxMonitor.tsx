@@ -4,7 +4,10 @@ import {
   useToast,
   useTranslation,
 } from "@termix-ssh/plugin-sdk/frontend";
-import type { PluginHostRecord, TabHandle } from "@termix-ssh/plugin-sdk/frontend";
+import type {
+  PluginHostRecord,
+  TabHandle,
+} from "@termix-ssh/plugin-sdk/frontend";
 import {
   Button,
   Input,
@@ -1640,5 +1643,3 @@ export function TmuxMonitor({
     </div>
   );
 }
-
-export default TmuxMonitor;
