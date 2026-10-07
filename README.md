@@ -16,12 +16,6 @@ Tmux Monitor shows the tmux sessions, windows and panes on your hosts and lets y
 
 <br />
 
-## Install
-
-Tmux Monitor ships with [Termix](https://github.com/Termix-SSH/Termix). Admins can turn it on or off, update it or install it again from the Plugins tab. Want to see it first? Try the [demo](https://demo.termix.site/), any username and password works.
-
-<br />
-
 ## Features
 
 - Every host's tmux sessions in one place
