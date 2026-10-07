@@ -27,14 +27,6 @@ Tmux Monitor shows the tmux sessions, windows and panes on your hosts and lets y
 
 <br />
 
-## Services
-
-Provides to other plugins:
-
-- `tmux.sessions`: find, attach to and create tmux sessions
-
-<br />
-
 ## Sponsors
 
 Interested in a paid placement to support development? Email [mail@termix.site](mailto:mail@termix.site).

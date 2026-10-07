@@ -20,3 +20,9 @@ npm run format     # format the code with Prettier
 ## Permissions
 
 - `tmux-monitor.use`: browse and control tmux sessions on hosts with the monitor on. Admins and users have it by default.
+
+## Services
+
+Provides to other plugins:
+
+- `tmux.sessions`: find, attach to and create tmux sessions
