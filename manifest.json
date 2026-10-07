@@ -10,6 +10,14 @@
   "repository": "https://github.com/Termix-SSH/Plugin-Tmux-Monitor",
   "category": "Terminal",
   "icon": "Layers",
+  "features": [
+    "Every host's tmux sessions in one place",
+    "Live pane previews",
+    "Resource use for each session",
+    "Search across every pane",
+    "Create, rename, split and kill sessions, windows and panes",
+    "Attach a terminal in one click"
+  ],
   "engine": {
     "termix": ">=26.10.0",
     "api": "1"
