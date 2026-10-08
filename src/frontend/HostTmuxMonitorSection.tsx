@@ -4,6 +4,7 @@ import {
   type HostEditorSectionProps,
 } from "@termix-ssh/plugin-sdk/frontend";
 import { FakeSwitch, SectionCard, SettingRow } from "@termix-ssh/plugin-sdk/ui";
+import { docsUrl } from "./docs";
 
 type PluginSettingsForm = Record<string, Record<string, unknown>>;
 
@@ -48,7 +49,7 @@ export function HostTmuxMonitorSection({
             <>
               {t("hosts.enableTmuxMonitorDesc")}{" "}
               <a
-                href="https://docs.termix.site/features/terminal/tmux"
+                href={docsUrl()}
                 target="_blank"
                 rel="noreferrer"
                 className="text-accent-brand hover:underline"

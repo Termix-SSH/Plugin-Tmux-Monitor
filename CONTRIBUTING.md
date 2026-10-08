@@ -10,19 +10,6 @@ npm run validate   # check manifest.json
 npm run format     # format the code with Prettier
 ```
 
-## Settings
+## Docs
 
-### Host
-
-- **Enable Tmux Monitor:** show this host in the monitor and add its tmux actions to the sidebar
-- **Enable tmux mouse support:** turn on mouse support when attaching or creating a session
-
-## Permissions
-
-- `tmux-monitor.use`: browse and control tmux sessions on hosts with the monitor on. Admins and users have it by default.
-
-## Services
-
-Provides to other plugins:
-
-- `tmux.sessions`: find, attach to and create tmux sessions
+The docs for this plugin are in [docs/](docs/) and are published at https://docs.termix.site/plugins/tmux-monitor. Settings, permissions, services, environment variables and the API reference are made from `manifest.json` and the `@openapi` comments in the code, so keep those up to date instead of writing them by hand. See [writing docs](https://docs.termix.site/develop/docs).

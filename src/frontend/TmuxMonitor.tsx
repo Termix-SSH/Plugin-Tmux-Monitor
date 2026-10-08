@@ -70,6 +70,7 @@ import {
   readExpanded,
   readSelectedPane,
 } from "./monitor-storage";
+import { docsUrl } from "./docs";
 
 type TreeAction =
   | { type: "pane"; pane: SelectedPane }
@@ -1228,7 +1229,7 @@ export function TmuxMonitor({
             </Button>
             <Button variant="ghost" size="icon-sm" asChild>
               <a
-                href="https://docs.termix.site/features/terminal/tmux"
+                href={docsUrl()}
                 target="_blank"
                 rel="noreferrer"
                 title={t("hosts.docsLink")}

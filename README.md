@@ -14,6 +14,8 @@
 
 Tmux Monitor shows the tmux sessions, windows and panes on your hosts and lets you manage them without attaching first.
 
+Read the [docs](https://docs.termix.site/plugins/tmux-monitor) to set it up and use it.
+
 <br />
 
 ## Features
