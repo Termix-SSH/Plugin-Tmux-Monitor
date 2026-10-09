@@ -4,8 +4,8 @@
 
 ### Added
 
-- Every host's tmux sessions in one place
-- Live pane previews
+- First release
+- Every host's tmux sessions in one place, with live pane previews
 - Resource use for each session
 - Search across every pane
 - Create, rename, split and kill sessions, windows and panes

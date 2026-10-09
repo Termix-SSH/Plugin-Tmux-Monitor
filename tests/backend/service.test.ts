@@ -43,7 +43,8 @@ describe("createTmuxSessionsService", () => {
     const service = createTmuxSessionsService(ctx);
     const client = fakeSshClient({
       "-V": "tmux 3.7b\n",
-      "list-sessions": "main|1|2|3|1\nlogs|4|5|1|0\n",
+      "list-sessions":
+        "main<<TMX>>1<<TMX>>2<<TMX>>3<<TMX>>1\nlogs|x<<TMX>>4<<TMX>>5<<TMX>>1<<TMX>>0\n",
     });
 
     await expect(service.detect(client)).resolves.toEqual({
@@ -57,7 +58,7 @@ describe("createTmuxSessionsService", () => {
           attachedClients: 1,
         },
         {
-          name: "logs",
+          name: "logs|x",
           created: 4,
           lastActivity: 5,
           windows: 1,
@@ -99,6 +100,21 @@ describe("createTmuxSessionsService", () => {
     );
     expect(writes[0]).toContain("mouse off");
     expect(writes[1]).toContain("mouse on");
+  });
+
+  it("waitForSession() checks for the exact session name", async () => {
+    const { ctx } = createFakeContext({ pluginId: "tmux-monitor" });
+    const service = createTmuxSessionsService(ctx);
+    const client = fakeSshClient({});
+    const exec = client.exec;
+    const commands: string[] = [];
+    client.exec = (command, cb) => {
+      commands.push(command);
+      exec(command, cb);
+    };
+
+    await expect(service.waitForSession(client, "new")).resolves.toBe("new");
+    expect(commands[0]).toContain(`has-session -t '\\''=new'\\''`);
   });
 
   it("waitForSession() falls back to the requested name on timeout", async () => {

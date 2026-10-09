@@ -33,7 +33,7 @@ interface PanePreviewProps {
    * a refit/redraw after layout-changing tmux actions. */
   terminalRef?: React.RefObject<TabHandle | null>;
   /** Split the window containing this pane ("h" = new pane to the right,
-   * "v" = below — tmux -h/-v semantics). */
+   * "v" = below, tmux -h/-v semantics). */
   onSplit: (direction: "h" | "v") => void;
   /** Ask for confirmation and kill this pane. */
   onKillPane: () => void;
@@ -60,7 +60,7 @@ export function PanePreview({
   // host or session changes. Pane switches within a session go through the
   // focus endpoint instead, so the connection is reused.
   const instanceIdRef = useRef<string>(newInstanceId());
-  // Bumping this remounts the embedded terminal with a fresh PTY — the rescue
+  // Bumping this remounts the embedded terminal with a fresh PTY, the rescue
   // hatch when the attached client's rendering gets out of sync.
   const [attachNonce, setAttachNonce] = useState(0);
 

@@ -19,9 +19,12 @@ import { useAdaptivePolling } from "./use-adaptive-polling";
 /** Each background host owns its response, error and adaptive polling cycle. */
 export function HostOverview({
   hostId,
+  isVisible = true,
   children,
 }: {
   hostId: number;
+  /** Polling stops while the monitor tab is hidden. */
+  isVisible?: boolean;
   children: (overview: TmuxOverview, metrics: TmuxPaneMetrics[]) => ReactNode;
 }) {
   const { t } = useTranslation();
@@ -73,7 +76,7 @@ export function HostOverview({
   useAdaptivePolling(
     load,
     { minIntervalMs: 10_000, maxIntervalMs: 60_000, stablePollsPerStep: 3 },
-    true,
+    isVisible,
     { runImmediately: true },
   );
   if (error)

@@ -8,10 +8,6 @@
   "nav": {
     "tmuxMonitor": "Tmux Monitor"
   },
-  "dashboard": {
-    "tmuxMonitor": "Tmux Monitor",
-    "tmuxMonitorDesc": "Monitor tmux sessions across your hosts"
-  },
   "permissions": {
     "use": {
       "title": "Use Tmux Monitor",
@@ -32,7 +28,6 @@
   },
   "tmuxMonitor": {
     "title": "Tmux Monitor",
-    "failedToLoadHosts": "Failed to load hosts",
     "failedToLoad": "Failed to load tmux sessions",
     "tmuxUnavailable": "tmux is not installed on this host",
     "noSessions": "No tmux sessions on this host",
@@ -107,7 +102,6 @@
     "timeDays": "{{count}}d ago",
     "allHosts": "All hosts",
     "singleHost": "Single host",
-    "hostScope": "Monitor scope",
     "filterHosts": "Filter hosts by name or address",
     "selectHost": "Select host",
     "toggleHost": "Expand or collapse {{host}}",

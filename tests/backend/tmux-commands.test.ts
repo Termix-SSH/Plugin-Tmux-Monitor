@@ -76,7 +76,7 @@ describe("tmux command path handling", () => {
     });
     expect(commands).toEqual([
       `/bin/sh -c 'PATH=/opt/homebrew/bin:/usr/local/bin:/opt/bin:/usr/pkg/bin:"$PATH"; export PATH; tmux -u -V'`,
-      `/bin/sh -c 'PATH=/opt/homebrew/bin:/usr/local/bin:/opt/bin:/usr/pkg/bin:"$PATH"; export PATH; tmux -u list-sessions -F "#{session_name}|#{session_created}|#{session_activity}|#{session_windows}|#{session_attached}" 2>/dev/null'`,
+      `/bin/sh -c 'PATH=/opt/homebrew/bin:/usr/local/bin:/opt/bin:/usr/pkg/bin:"$PATH"; export PATH; tmux -u list-sessions -F "#{session_name}<<TMX>>#{session_created}<<TMX>>#{session_activity}<<TMX>>#{session_windows}<<TMX>>#{session_attached}" 2>/dev/null'`,
     ]);
   });
 });

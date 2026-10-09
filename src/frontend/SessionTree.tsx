@@ -279,11 +279,11 @@ export function SessionTree({
                           </dd>
                           <dt className="text-muted-foreground">CPU</dt>
                           <dd className="text-right">
-                            {agg ? `${agg.cpu.toFixed(1)}%` : "—"}
+                            {agg ? `${agg.cpu.toFixed(1)}%` : "-"}
                           </dd>
                           <dt className="text-muted-foreground">RAM</dt>
                           <dd className="text-right">
-                            {agg ? formatMem(agg.memKb) : "—"}
+                            {agg ? formatMem(agg.memKb) : "-"}
                           </dd>
                           {agg && agg.gpuMb > 0 && (
                             <>

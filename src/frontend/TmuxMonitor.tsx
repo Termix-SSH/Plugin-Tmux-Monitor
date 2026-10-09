@@ -1431,7 +1431,10 @@ export function TmuxMonitor({
                     ) : (
                       isVisible &&
                       selectedHostId !== null && (
-                        <HostOverview hostId={Number(host.id)}>
+                        <HostOverview
+                          hostId={Number(host.id)}
+                          isVisible={isVisible}
+                        >
                           {(data, values) =>
                             backgroundTree(host.id, data, values)
                           }

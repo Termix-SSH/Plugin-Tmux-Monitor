@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import type { Client, ClientChannel } from "ssh2";
+import { SEP, shellEscape } from "./monitor-helpers.js";
 
 const TMUX_PATH_DIRS = [
   "/opt/homebrew/bin",
@@ -80,7 +81,7 @@ export async function detectTmux(conn: Client): Promise<TmuxDetectionResult> {
     const output = await execCommand(
       conn,
       tmuxCommand(
-        `list-sessions -F "#{session_name}|#{session_created}|#{session_activity}|#{session_windows}|#{session_attached}" 2>/dev/null`,
+        `list-sessions -F "#{session_name}${SEP}#{session_created}${SEP}#{session_activity}${SEP}#{session_windows}${SEP}#{session_attached}" 2>/dev/null`,
       ),
     );
     if (output) {
@@ -88,7 +89,7 @@ export async function detectTmux(conn: Client): Promise<TmuxDetectionResult> {
         .split("\n")
         .filter((line) => line.length > 0)
         .map((line) => {
-          const [name, created, activity, windows, attached] = line.split("|");
+          const [name, created, activity, windows, attached] = line.split(SEP);
           return {
             name,
             created: parseInt(created, 10) || 0,
@@ -120,7 +121,9 @@ export async function waitForTmuxSession(
     try {
       await execCommand(
         conn,
-        tmuxCommand(`has-session -t ${shellEscape(sessionName)} 2>/dev/null`),
+        tmuxCommand(
+          `has-session -t ${shellEscape(`=${sessionName}`)} 2>/dev/null`,
+        ),
       );
       return sessionName;
     } catch {
@@ -157,8 +160,4 @@ export function attachOrCreateTmuxSession(
     `attach-session -t ${target}`,
   );
   stream.write(`${tmuxCommand(commands.join(" \\; "))} && exit\r`);
-}
-
-function shellEscape(s: string): string {
-  return "'" + s.replace(/'/g, "'\\''") + "'";
 }
