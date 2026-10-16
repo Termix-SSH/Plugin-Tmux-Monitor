@@ -76,7 +76,8 @@
       "key": "enableTmuxMonitor",
       "labelKey": "hosts.tabTmuxMonitor",
       "editorTab": "tmux-monitor"
-    }
+    },
+    "uses": ["terminal.view", "terminal.open"]
   },
   "locales": "locales",
   "platforms": ["linux", "win32", "darwin"]

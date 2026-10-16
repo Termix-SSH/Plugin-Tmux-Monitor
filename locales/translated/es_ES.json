@@ -109,6 +109,9 @@
     "toggleHost": "Expandir o contraer {{host}}",
     "noMatchingHosts": "No hay hosts coincidentes",
     "toggleSession": "Expandir o contraer {{session}}",
-    "tagsPlaceholder": "laboratorio, formación"
+    "tagsPlaceholder": "laboratorio, formación",
+    "attachFailed": "No se pudo abrir la terminal. Comprueba que SSH Terminal esté activado.",
+    "attachNewTab": "Nueva pestaña de Termix",
+    "attachBrowserTab": "Nueva pestaña del navegador"
   }
 }

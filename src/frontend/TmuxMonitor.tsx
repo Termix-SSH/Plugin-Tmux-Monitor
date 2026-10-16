@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   useHosts,
+  invokeAction,
+  useTabs,
   useToast,
   useTranslation,
 } from "@termix-ssh/plugin-sdk/frontend";
@@ -10,6 +12,10 @@ import type {
 } from "@termix-ssh/plugin-sdk/frontend";
 import {
   Button,
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
   Input,
   Popover,
   PopoverContent,
@@ -110,6 +116,7 @@ export function TmuxMonitor({
   const { t } = useTranslation();
   const toast = useToast();
   const { hosts: allHosts, loaded: hostsLoaded } = useHosts();
+  const tabs = useTabs();
   const hosts = useMemo(
     () =>
       allHosts.filter(
@@ -947,18 +954,33 @@ export function TmuxMonitor({
   function openTerminal(sessionName?: string) {
     if (selectedHostId === null) return;
     const session = sessionName ?? selectedPane?.sessionName;
-    // window.open is denied by Electron's window-open handler (internal
-    // file:// URLs never reach the browser), so the desktop app attaches in
-    // the monitor's own terminal instead.
-    if (isElectron()) {
-      if (session) attachInline(session);
+    // Prefer a fresh tab in the current Termix shell on both web and desktop.
+    if (tabs.getLayout()) {
+      const host = hosts.find(
+        (entry) => String(entry.id) === String(selectedHostId),
+      );
+      if (!host) return;
+      void invokeAction("terminal.open", host, {
+        tmuxSession: session,
+        label: session,
+      }).catch(() => toast.error(t("tmuxMonitor.attachFailed")));
       return;
     }
+    // Desktop can only open a terminal in the current Termix tab layout.
+    if (isElectron()) {
+      toast.error(t("tmuxMonitor.attachFailed"));
+      return;
+    }
+    openBrowserTerminal(session);
+  }
+
+  function openBrowserTerminal(sessionName?: string) {
+    if (selectedHostId === null || isElectron()) return;
     const params = new URLSearchParams({
       view: "terminal",
       hostId: String(selectedHostId),
     });
-    if (session) params.set("tmuxSession", session);
+    if (sessionName) params.set("tmuxSession", sessionName);
     window.open(`${window.location.pathname}?${params.toString()}`, "_blank");
   }
 
@@ -1495,25 +1517,50 @@ export function TmuxMonitor({
                 className={`size-3.5 ${overviewLoading || refreshing ? "animate-spin" : ""}`}
               />
             </Button>
-            <Button
-              variant="outline"
-              className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand dark:border-accent-brand/40"
-              disabled={selectedHostId === null}
-              title={
-                selectedHost
-                  ? selectedPane
-                    ? t("tmuxMonitor.attachTooltipPane", {
-                        host: hostLabel,
-                        session: selectedPane.sessionName,
-                      })
-                    : t("tmuxMonitor.attachTooltip", { host: hostLabel })
-                  : undefined
-              }
-              onClick={() => openTerminal()}
-            >
-              <SquareTerminal className="size-3.5" />
-              {t("tmuxMonitor.attach")}
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand dark:border-accent-brand/40"
+                  disabled={
+                    selectedHostId === null ||
+                    (isElectron() && !tabs.getLayout())
+                  }
+                  title={
+                    selectedHost
+                      ? selectedPane
+                        ? t("tmuxMonitor.attachTooltipPane", {
+                            host: hostLabel,
+                            session: selectedPane.sessionName,
+                          })
+                        : t("tmuxMonitor.attachTooltip", { host: hostLabel })
+                      : undefined
+                  }
+                >
+                  <SquareTerminal className="size-3.5" />
+                  {t("tmuxMonitor.attach")}
+                  <ChevronDown className="size-3.5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {tabs.getLayout() && (
+                  <DropdownMenuItem onSelect={() => openTerminal()}>
+                    <SquareTerminal className="size-3.5" />
+                    {t("tmuxMonitor.attachNewTab")}
+                  </DropdownMenuItem>
+                )}
+                {!isElectron() && (
+                  <DropdownMenuItem
+                    onSelect={() =>
+                      openBrowserTerminal(selectedPane?.sessionName)
+                    }
+                  >
+                    <SquareTerminal className="size-3.5" />
+                    {t("tmuxMonitor.attachBrowserTab")}
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 

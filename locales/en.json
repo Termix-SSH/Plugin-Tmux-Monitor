@@ -108,6 +108,9 @@
     "toggleHost": "Expand or collapse {{host}}",
     "noMatchingHosts": "No matching hosts",
     "toggleSession": "Expand or collapse {{session}}",
-    "tagsPlaceholder": "lab, training"
+    "tagsPlaceholder": "lab, training",
+    "attachFailed": "Could not open the terminal. Make sure SSH Terminal is enabled.",
+    "attachNewTab": "New Termix tab",
+    "attachBrowserTab": "New browser tab"
   }
 }
