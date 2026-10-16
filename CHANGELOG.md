@@ -2,6 +2,10 @@
 
 ## 1.0.3
 
+### Changed
+
+- Attach opens the session in a new Termix tab, and on the web you can pick a new browser tab instead. Needs SSH Terminal 1.0.3
+
 ## 1.0.2
 
 ### Fixed
