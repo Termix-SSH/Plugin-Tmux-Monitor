@@ -1,7 +1,7 @@
 {
   "name": "@termix-plugin/tmux-monitor",
   "private": true,
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "module",
   "scripts": {
     "build": "termix-plugin build",

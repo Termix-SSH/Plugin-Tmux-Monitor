@@ -1,7 +1,7 @@
 {
   "id": "tmux-monitor",
   "name": "Tmux Monitor",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Browse and control tmux sessions, windows and panes across your hosts.",
   "author": {
     "name": "Termix"
