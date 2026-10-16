@@ -108,5 +108,9 @@
     "noMatchingHosts": "沒有符合的主機",
     "toggleSession": "展開或收合 {{session}}",
     "tagsPlaceholder": "實驗室、訓練"
+  },
+  "plugin": {
+    "name": "Tmux 監控",
+    "description": "跨主機瀏覽和控制 tmux 工作階段、視窗與窗格。"
   }
 }

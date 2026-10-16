@@ -108,5 +108,9 @@
     "noMatchingHosts": "没有匹配的主机",
     "toggleSession": "展开或折叠 {{session}}",
     "tagsPlaceholder": "实验室, 培训"
+  },
+  "plugin": {
+    "name": "Tmux 监控",
+    "description": "跨主机浏览和控制 tmux 会话、窗口与窗格。"
   }
 }
