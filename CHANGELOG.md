@@ -5,6 +5,7 @@
 ### Changed
 
 - Attach opens the session in a new Termix tab, and on the web you can pick a new browser tab instead. Needs SSH Terminal 1.0.3
+- The plugin name and description show in your language
 
 ## 1.0.2
 
