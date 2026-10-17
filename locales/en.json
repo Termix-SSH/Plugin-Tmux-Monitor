@@ -112,5 +112,9 @@
     "attachFailed": "Could not open the terminal. Make sure SSH Terminal is enabled.",
     "attachNewTab": "New Termix tab",
     "attachBrowserTab": "New browser tab"
+  },
+  "plugin": {
+    "name": "Tmux Monitor",
+    "description": "Browse and control tmux sessions, windows and panes across your hosts."
   }
 }
