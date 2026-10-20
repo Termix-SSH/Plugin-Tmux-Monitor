@@ -1,4 +1,5 @@
 import express, { type Router } from "express";
+import { randomUUID } from "node:crypto";
 import type { Client } from "ssh2";
 import type {
   PluginContext,
@@ -38,6 +39,14 @@ const MAX_MATCHES_PER_PANE = 50;
 const SEARCH_HISTORY_LINES = 2000;
 const SEARCH_CONCURRENCY = 4;
 const POOL = "tmux-monitor";
+// Grouped sessions that give a split viewer its own current window. They are
+// identified by the @termix_view session option we set (never by name, so a
+// user's own session is never touched), hidden from every listing, and
+// unattached leftovers are swept after a grace period.
+const VIEW_PREFIX = "termix-view-";
+const VIEW_GRACE_SECONDS = 120;
+const VIEW_NAME_RE = /^termix-view-[0-9a-f]{8}$/;
+const VIEW_MARK = "@termix_view";
 
 interface TmuxSessionOverview extends TmuxSessionSummary {
   windows: TmuxWindow[];
@@ -141,15 +150,23 @@ async function tmuxAvailable(conn: Client): Promise<boolean> {
 async function runTmuxList(conn: Client, args: string[]): Promise<string> {
   try {
     return await execTmux(conn, args);
-  } catch {
-    return ""; // tmux server not running -- no sessions
+  } catch (err) {
+    // Only "no tmux server" means no sessions; an SSH or other failure must
+    // surface, or the UI would show every session as gone.
+    if (
+      /no server running|error connecting|lost server|no sessions/i.test(
+        toErrorMessage(err),
+      )
+    )
+      return "";
+    throw err;
   }
 }
 
 const LIST_SESSIONS = [
   "list-sessions",
   "-F",
-  `#{session_name}${SEP}#{session_created}${SEP}#{session_activity}${SEP}#{session_attached}`,
+  `#{session_name}${SEP}#{session_created}${SEP}#{session_activity}${SEP}#{session_attached}${SEP}#{${VIEW_MARK}}`,
 ];
 
 const LIST_WINDOWS = [
@@ -163,11 +180,47 @@ const LIST_PANES = [
   "list-panes",
   "-a",
   "-F",
-  `#{session_name}${SEP}#{window_index}${SEP}#{pane_id}${SEP}#{pane_index}${SEP}#{pane_pid}${SEP}#{pane_active}${SEP}#{pane_width}${SEP}#{pane_height}${SEP}#{pane_current_command}${SEP}#{pane_current_path}${SEP}#{pane_title}`,
+  `#{session_name}${SEP}#{window_index}${SEP}#{pane_id}${SEP}#{pane_index}${SEP}#{pane_pid}${SEP}#{pane_active}${SEP}#{pane_width}${SEP}#{pane_height}${SEP}#{pane_current_command}${SEP}#{pane_current_path}${SEP}#{pane_title}${SEP}#{${VIEW_MARK}}`,
 ];
 
+/** Kills a marked, unattached view session. tmux re-checks both conditions
+ * itself, so a client attaching in between is never cut off. */
+function reapViewSession(conn: Client, name: string): Promise<string> {
+  if (!VIEW_NAME_RE.test(name)) return Promise.resolve("");
+  return execTmux(conn, [
+    "if-shell",
+    "-F",
+    "-t",
+    `=${name}:`,
+    `#{&&:#{${VIEW_MARK}},#{==:#{session_attached},0}}`,
+    `kill-session -t =${name}`,
+  ]);
+}
+
 async function listPanesRaw(conn: Client): Promise<RawPane[]> {
-  return parsePanes(await runTmuxList(conn, LIST_PANES));
+  return parsePanes(await runTmuxList(conn, LIST_PANES)).filter(
+    (pane) => !pane.isView,
+  );
+}
+
+// Killing a session leaves its split-view helpers (grouped sessions) holding
+// the windows alive, so kill the marked ones in the session's actual group
+// first (the group is not necessarily named after the session).
+async function killSessionAndViews(conn: Client, name: string) {
+  const out = await execTmux(conn, [
+    "list-sessions",
+    "-F",
+    `#{session_name}${SEP}#{session_group}${SEP}#{${VIEW_MARK}}`,
+  ]).catch(() => "");
+  const rows = out.split("\n").map((line) => line.split(SEP));
+  const group = rows.find(([session]) => session === name)?.[1];
+  for (const [view, viewGroup, mark] of rows) {
+    if (group && mark && viewGroup === group && VIEW_NAME_RE.test(view))
+      await execTmux(conn, ["kill-session", "-t", `=${view}`]).catch(
+        () => undefined,
+      );
+  }
+  return execTmux(conn, ["kill-session", "-t", `=${name}`]);
 }
 
 async function collectPaneMetrics(
@@ -273,9 +326,22 @@ export function createTmuxMonitorRoutes(
           runTmuxList(conn, LIST_WINDOWS),
           runTmuxList(conn, LIST_PANES),
         ]);
-        const sessions = parseSessions(sessionsOut);
+        const all = parseSessions(sessionsOut);
+        const sessions = all.filter((s) => !s.isView);
+        const now = Date.now() / 1000;
+        for (const stale of all) {
+          if (
+            stale.isView &&
+            stale.attachedClients === 0 &&
+            now - stale.created > VIEW_GRACE_SECONDS
+          )
+            void reapViewSession(conn, stale.name).catch(() => undefined);
+        }
         const windows = parseWindows(windowsOut);
-        attachPanesToWindows(windows, parsePanes(panesOut));
+        attachPanesToWindows(
+          windows,
+          parsePanes(panesOut).filter((pane) => !pane.isView),
+        );
 
         const sessionTags = await tags.listByUserAndHost(userId, host.id);
         const full: TmuxSessionOverview[] = sessions.map((s) => ({
@@ -357,7 +423,7 @@ export function createTmuxMonitorRoutes(
     if (!host) return;
 
     const name = String((req.body as { name?: string })?.name || "").trim();
-    if (!SESSION_NAME_RE.test(name)) {
+    if (!SESSION_NAME_RE.test(name) || name.startsWith(VIEW_PREFIX)) {
       return res.status(400).json({ error: "Invalid session name" });
     }
 
@@ -455,7 +521,7 @@ export function createTmuxMonitorRoutes(
     if (!sessionName || /[:.\n]/.test(sessionName)) {
       return res.status(400).json({ error: "Invalid session name" });
     }
-    if (!SESSION_NAME_RE.test(newName)) {
+    if (!SESSION_NAME_RE.test(newName) || newName.startsWith(VIEW_PREFIX)) {
       return res.status(400).json({ error: "Invalid new session name" });
     }
 
@@ -521,7 +587,7 @@ export function createTmuxMonitorRoutes(
 
     try {
       await withHostConnection(ctx, host, (conn) =>
-        execTmux(conn, ["kill-session", "-t", `=${sessionName}`]),
+        killSessionAndViews(conn, sessionName),
       );
       await tags.deleteSessionForHost(host.id, sessionName);
       ctx.log.info(`tmux session killed on host ${host.id}: ${sessionName}`);
@@ -877,6 +943,139 @@ export function createTmuxMonitorRoutes(
         err as Error,
       );
       res.status(500).json({ error: toErrorMessage(err) });
+    }
+  });
+
+  /**
+   * @openapi
+   * /plugin-api/tmux-monitor/{hostId}/view-session:
+   *   post:
+   *     summary: Create a grouped session pinned to one window
+   *     description: Shares the session's windows but has its own current window, so a split viewer can show one window or pane without moving other clients. Unattached view sessions are swept by the overview.
+   *     tags:
+   *       - Tmux Monitor
+   *     parameters:
+   *       - in: path
+   *         name: hostId
+   *         required: true
+   *         schema:
+   *           type: integer
+   *     responses:
+   *       200:
+   *         description: The view session name.
+   *       404:
+   *         description: Session or window not found.
+   */
+  router.post("/:hostId/view-session", async (req, res) => {
+    const host = await requireHost(ctx, req, res);
+    if (!host) return;
+
+    const body = req.body as {
+      sessionName?: string;
+      windowIndex?: number;
+      paneId?: string;
+    };
+    const sessionName = String(body?.sessionName || "").trim();
+    const windowIndex = body?.windowIndex;
+    const paneId = body?.paneId === undefined ? "" : String(body.paneId);
+    if (!sessionName || /[:.\n]/.test(sessionName)) {
+      return res.status(400).json({ error: "Invalid session name" });
+    }
+    if (!Number.isInteger(windowIndex) || (windowIndex as number) < 0) {
+      return res.status(400).json({ error: "Invalid window index" });
+    }
+    if (paneId && !PANE_ID_RE.test(paneId)) {
+      return res.status(400).json({ error: "Invalid pane ID" });
+    }
+
+    if (sessionName.startsWith(VIEW_PREFIX)) {
+      return res.status(400).json({ error: "Invalid session name" });
+    }
+
+    const name = `${VIEW_PREFIX}${randomUUID().slice(0, 8)}`;
+    try {
+      const created = await withHostConnection(ctx, host, async (conn) => {
+        // The pane must belong to the requested window, or select-pane
+        // would change an unrelated pane's active state.
+        const panes = (
+          await execTmux(conn, [
+            "list-panes",
+            "-t",
+            `=${sessionName}:${windowIndex}`,
+            "-F",
+            "#{pane_id}",
+          ])
+        )
+          .split("\n")
+          .map((line) => line.trim());
+        if (paneId && !panes.includes(paneId)) return false;
+        try {
+          // One tmux call, so the marker exists before anything can sweep it.
+          await execTmux(
+            conn,
+            ["new-session", "-d", "-t", `=${sessionName}`, "-s", name],
+            ["set-option", "-t", `=${name}:`, VIEW_MARK, "1"],
+            ...(paneId ? [["select-pane", "-t", paneId]] : []),
+            ["select-window", "-t", `=${name}:${windowIndex}`],
+          );
+        } catch (err) {
+          // Whatever got created before the failure must not linger. The
+          // name is a fresh random one, so killing it is always ours.
+          await execTmux(conn, ["kill-session", "-t", `=${name}`]).catch(
+            () => undefined,
+          );
+          throw err;
+        }
+        return true;
+      });
+      if (!created) {
+        return res.status(404).json({ error: "Session or window not found" });
+      }
+      res.json({ ok: true, name });
+    } catch (err) {
+      if (
+        /can't find (session|window|pane)|no such (session|window|pane)/i.test(
+          toErrorMessage(err),
+        )
+      ) {
+        return res.status(404).json({ error: "Session or window not found" });
+      }
+      sendTmuxError(ctx, res, err, "create view session", host.id);
+    }
+  });
+
+  /**
+   * @openapi
+   * /plugin-api/tmux-monitor/{hostId}/view-session/release:
+   *   post:
+   *     summary: Remove a view session that was never attached
+   *     description: Only a session this plugin marked as a view session and that has no attached client is removed; anything else is left alone.
+   *     tags:
+   *       - Tmux Monitor
+   *     parameters:
+   *       - in: path
+   *         name: hostId
+   *         required: true
+   *         schema:
+   *           type: integer
+   *     responses:
+   *       200:
+   *         description: Released, or nothing to release.
+   */
+  router.post("/:hostId/view-session/release", async (req, res) => {
+    const host = await requireHost(ctx, req, res);
+    if (!host) return;
+    const name = String((req.body as { name?: string })?.name || "");
+    if (!VIEW_NAME_RE.test(name)) {
+      return res.status(400).json({ error: "Invalid view session name" });
+    }
+    try {
+      await withHostConnection(ctx, host, (conn) =>
+        reapViewSession(conn, name).catch(() => undefined),
+      );
+      res.json({ ok: true });
+    } catch (err) {
+      sendTmuxError(ctx, res, err, "release view session", host.id);
     }
   });
 

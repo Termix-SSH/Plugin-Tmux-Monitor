@@ -10,3 +10,13 @@ export function tmuxMonitorEnabled(
   )?.["tmux-monitor"];
   return settings?.enableTmuxMonitor === true;
 }
+
+/** Whether tmux keeps mouse selections here (it does whenever mouse is on). */
+export function tmuxPersistentSelection(
+  host: PluginHostRecord | null | undefined,
+): boolean {
+  const settings = (
+    host?.pluginSettings as Record<string, Record<string, unknown>> | undefined
+  )?.["tmux-monitor"];
+  return settings?.mouseEnabled !== false;
+}

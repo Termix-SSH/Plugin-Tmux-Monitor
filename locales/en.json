@@ -22,7 +22,7 @@
       },
       "mouseEnabled": {
         "label": "Enable tmux mouse support",
-        "description": "Apply mouse support to the tmux session when attaching or creating a session. Other sessions and global tmux settings are unchanged."
+        "description": "On (default): tmux handles the mouse (pane clicking, tmux copy mode), a mouse selection stays highlighted and copied until you click, and on Linux and macOS hosts the selection keys are rebound for the whole tmux server until it restarts. Off: select and copy text normally and the wheel scrolls tmux history. Applies the next time you attach."
       }
     }
   },
@@ -54,6 +54,12 @@
     "splitRight": "Split right",
     "splitDown": "Split down",
     "splitFailed": "Failed to split pane",
+    "splitViewRight": "Open in split right",
+    "splitViewDown": "Open in split down",
+    "splitViewFull": "Split view is full (4 terminals max)",
+    "splitViewDuplicate": "That session is already open",
+    "splitViewFailed": "Could not open that window",
+    "splitViewClose": "Close",
     "newWindow": "New window",
     "windowCreateFailed": "Failed to create window",
     "attachSessionTooltip": "Attach to {{session}}",

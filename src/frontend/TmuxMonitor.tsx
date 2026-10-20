@@ -62,11 +62,29 @@ import {
   type TmuxSearchMatch,
   type TmuxSearchResult,
 } from "./api";
-import { tmuxMonitorEnabled } from "./host-tmux-monitor";
+import {
+  tmuxMonitorEnabled,
+  tmuxPersistentSelection,
+} from "./host-tmux-monitor";
 import { useAdaptivePolling } from "./use-adaptive-polling";
 import { SessionTree, type SessionMetricsAgg } from "./SessionTree";
 import { SearchResults } from "./SearchResults";
 import { PanePreview } from "./PanePreview";
+import { SplitViewer } from "./SplitViewer";
+import { SplitTile } from "./SplitTile";
+import {
+  MAIN,
+  PRIMARY,
+  addSplit,
+  newViewId,
+  parseLayout,
+  parseSessionDrop,
+  pruneLayout,
+  removeSplit,
+  type SessionRef,
+  type SplitDirection,
+  type SplitLayout,
+} from "./split-layout";
 import type { SelectedPane } from "./types";
 
 import { HostOverview } from "./HostOverview";
@@ -80,6 +98,7 @@ import { docsUrl } from "./docs";
 
 type TreeAction =
   | { type: "pane"; pane: SelectedPane }
+  | { type: "window"; session: string; index: number }
   | {
       type: "attach" | "tags" | "rename" | "killSession" | "newWindow";
       session: string;
@@ -162,6 +181,12 @@ export function TmuxMonitor({
     new Set(),
   );
   const [selectedPane, setSelectedPane] = useState<SelectedPane | null>(null);
+  // Extra terminal viewers beside the main preview, each bound to its own host.
+  const [splitLayout, setSplitLayout] = useState<SplitLayout>(() =>
+    parseLayout(readMonitorValue<unknown>("split-layout", null)),
+  );
+  const [sessionDragging, setSessionDragging] = useState(false);
+  const previewAreaRef = useRef<HTMLDivElement>(null);
   const [metrics, setMetrics] = useState<TmuxPaneMetrics[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchedQuery, setSearchedQuery] = useState("");
@@ -324,7 +349,9 @@ export function TmuxMonitor({
         overviewSignatureRef.current = signature;
         setOverviewError(null);
         setOverviewHostId(hostId);
-        setOverview(data);
+        // Skip identical polls so the tree and the embedded terminal are not
+        // re-rendered every interval.
+        if (changed) setOverview(data);
         setSelectedPane((pane) => {
           const candidate = pane ?? readSelectedPane(hostId);
           const exists =
@@ -355,6 +382,7 @@ export function TmuxMonitor({
         setPendingAction((pending) =>
           pending?.hostId === hostId ? null : pending,
         );
+        overviewSignatureRef.current = "";
         if (!silent) {
           const axiosErr = err as {
             code?: string;
@@ -472,7 +500,7 @@ export function TmuxMonitor({
       const signature = JSON.stringify(next);
       const changed = signature !== metricsSignatureRef.current;
       metricsSignatureRef.current = signature;
-      setMetrics(next);
+      if (changed) setMetrics(next);
       return changed;
     },
     {
@@ -500,6 +528,8 @@ export function TmuxMonitor({
         e.preventDefault();
         searchInputRef.current?.focus();
       } else if (e.key === "Escape") {
+        // Escape inside a terminal belongs to the program running in it.
+        if (previewAreaRef.current?.contains(e.target as Node)) return;
         if (searchResults !== null) setSearchResults(null);
         else if (selectedPane) setSelectedPane(null);
       }
@@ -790,6 +820,7 @@ export function TmuxMonitor({
       setKillWindowTarget(null);
       const data = await getTmuxOverview(Number(selectedHostId));
       if (activeHostRef.current !== selectedHostId) return;
+      overviewSignatureRef.current = JSON.stringify(data);
       setOverview(data);
       if (wasViewing) selectSurvivor(data, killWindowTarget.sessionName);
       nudgePreviewRedraw();
@@ -822,6 +853,7 @@ export function TmuxMonitor({
       setKillPaneTarget(null);
       const data = await getTmuxOverview(Number(selectedHostId));
       if (activeHostRef.current !== selectedHostId) return;
+      overviewSignatureRef.current = JSON.stringify(data);
       setOverview(data);
       if (viewedSession) selectSurvivor(data, viewedSession);
       nudgePreviewRedraw();
@@ -1012,8 +1044,95 @@ export function TmuxMonitor({
   const selectedPaneMetrics = selectedPane
     ? metricsByPane.get(selectedPane.paneId)
     : undefined;
+  const primaryRef: SessionRef | null =
+    selectedPane && selectedHost && overviewHostId === selectedHostId
+      ? { hostId: selectedHost.id, sessionName: selectedPane.sessionName }
+      : null;
+
+  // -- split viewers ----------------------------------------------------------
+  useEffect(() => {
+    if (!hostsLoaded) return;
+    setSplitLayout((layout) =>
+      pruneLayout(layout, (id) =>
+        hosts.some((h) => String(h.id) === String(id)),
+      ),
+    );
+  }, [hostsLoaded, hosts]);
+  useEffect(() => {
+    saveMonitorValue("split-layout", splitLayout);
+  }, [splitLayout]);
+
+  // Menu, right-click and drop all end up here. With nothing open yet the
+  // session simply becomes the main preview.
+  function splitSession(
+    ref: SessionRef,
+    direction: SplitDirection,
+    target: string = PRIMARY,
+  ) {
+    if (!hosts.some((h) => String(h.id) === String(ref.hostId))) return;
+    if (!primaryRef) {
+      dispatchTreeAction(
+        ref.hostId,
+        ref.paneId && ref.windowIndex !== undefined
+          ? {
+              type: "pane",
+              pane: {
+                paneId: ref.paneId,
+                sessionName: ref.sessionName,
+                windowIndex: ref.windowIndex,
+              },
+            }
+          : ref.windowIndex !== undefined
+            ? {
+                type: "window",
+                session: ref.sessionName,
+                index: ref.windowIndex,
+              }
+            : { type: "attach", session: ref.sessionName },
+      );
+      return;
+    }
+    const result = addSplit(
+      splitLayout,
+      target,
+      direction,
+      ref,
+      newViewId(),
+      primaryRef,
+    );
+    if ("error" in result) {
+      toast.error(
+        t(
+          result.error === "full"
+            ? "tmuxMonitor.splitViewFull"
+            : "tmuxMonitor.splitViewDuplicate",
+        ),
+      );
+      return;
+    }
+    setSplitLayout(result.layout);
+  }
+  function dropOnTile(target: string, raw: string, direction: SplitDirection) {
+    setSessionDragging(false);
+    const ref = parseSessionDrop(raw);
+    if (ref) splitSession(ref, direction, target);
+  }
 
   function executeTreeAction(action: TreeAction) {
+    if (action.type === "window") {
+      // A window-only target pins to that window's active (else first) pane.
+      const win = overview?.sessions
+        .find((s) => s.name === action.session)
+        ?.windows.find((w) => w.index === action.index);
+      const pane = win?.panes.find((p) => p.active) ?? win?.panes[0];
+      if (pane)
+        selectPane({
+          paneId: pane.id,
+          sessionName: action.session,
+          windowIndex: action.index,
+        });
+      return;
+    }
     if (
       action.type === "pane" &&
       !overview?.sessions.some(
@@ -1159,6 +1278,11 @@ export function TmuxMonitor({
         }
         compact={treeWidth < 280}
         now={now}
+        hostId={hostId}
+        onSplitSession={(session, direction, target) =>
+          splitSession({ hostId, sessionName: session, ...target }, direction)
+        }
+        onSessionDrag={setSessionDragging}
       />
     );
   }
@@ -1447,6 +1571,18 @@ export function TmuxMonitor({
                               }
                               compact={treeWidth < 280}
                               now={now}
+                              hostId={host.id}
+                              onSplitSession={(session, direction, target) =>
+                                splitSession(
+                                  {
+                                    hostId: host.id,
+                                    sessionName: session,
+                                    ...target,
+                                  },
+                                  direction,
+                                )
+                              }
+                              onSessionDrag={setSessionDragging}
                             />
                           )}
                       </>
@@ -1577,21 +1713,72 @@ export function TmuxMonitor({
         )}
 
         {/* Pane preview */}
-        <div className="flex min-h-0 flex-1 flex-col">
-          {selectedPane && selectedHost && overviewHostId === selectedHostId ? (
-            <PanePreview
-              key={`${selectedHost.id}:${selectedPane.sessionName}`}
-              host={selectedHost}
-              pane={selectedPane}
-              metrics={selectedPaneMetrics}
-              terminalRef={previewTermRef}
-              onSplit={(direction) => splitPane(selectedPane.paneId, direction)}
-              onKillPane={() => setKillPaneTarget(selectedPane.paneId)}
-              onClose={() => {
-                setSelectedPane(null);
-                saveMonitorValue(`pane-${selectedHostId}`, null);
-              }}
-            />
+        <div ref={previewAreaRef} className="flex min-h-0 flex-1 flex-row">
+          {primaryRef || splitLayout.views.length > 0 ? (
+            splitLayout.columns.map((column) => (
+              <div
+                key={column}
+                className="flex min-h-0 min-w-0 flex-1 flex-col border-l border-border first:border-l-0"
+              >
+                {column === MAIN &&
+                  primaryRef &&
+                  selectedPane &&
+                  selectedHost && (
+                    <SplitTile
+                      dragging={sessionDragging}
+                      onDropSession={(raw, dir) =>
+                        dropOnTile(PRIMARY, raw, dir)
+                      }
+                    >
+                      <PanePreview
+                        key={`${selectedHost.id}:${selectedPane.sessionName}`}
+                        host={selectedHost}
+                        pane={selectedPane}
+                        keepsSelection={tmuxPersistentSelection(selectedHost)}
+                        metrics={selectedPaneMetrics}
+                        terminalRef={previewTermRef}
+                        isVisible={isVisible}
+                        onSplit={(direction) =>
+                          splitPane(selectedPane.paneId, direction)
+                        }
+                        onKillPane={() =>
+                          setKillPaneTarget(selectedPane.paneId)
+                        }
+                        onClose={() => {
+                          setSelectedPane(null);
+                          saveMonitorValue(`pane-${selectedHostId}`, null);
+                        }}
+                      />
+                    </SplitTile>
+                  )}
+                {splitLayout.views
+                  .filter((view) => view.column === column)
+                  .map((view) => {
+                    const viewHost = hosts.find(
+                      (h) => String(h.id) === String(view.hostId),
+                    );
+                    if (!viewHost) return null;
+                    return (
+                      <SplitTile
+                        key={view.id}
+                        dragging={sessionDragging}
+                        onDropSession={(raw, dir) =>
+                          dropOnTile(view.id, raw, dir)
+                        }
+                      >
+                        <SplitViewer
+                          host={viewHost}
+                          view={view}
+                          isVisible={isVisible}
+                          onClose={() =>
+                            setSplitLayout((l) => removeSplit(l, view.id))
+                          }
+                        />
+                      </SplitTile>
+                    );
+                  })}
+              </div>
+            ))
           ) : hostsLoaded && hosts.length === 0 ? (
             <div className="flex flex-1 items-center justify-center">
               <div className="max-w-sm text-center text-muted-foreground">

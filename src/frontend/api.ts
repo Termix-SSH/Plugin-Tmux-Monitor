@@ -87,6 +87,29 @@ export async function createTmuxSession(
   await api().post(`/${hostId}/sessions`, { name });
 }
 
+/** Creates a grouped session showing one window (and pane) of a session, so
+ * a split viewer can look at it without moving other clients. */
+export async function createTmuxView(
+  hostId: number,
+  sessionName: string,
+  windowIndex: number,
+  paneId?: string,
+): Promise<string> {
+  const response = await api().post<{ name: string }>(
+    `/${hostId}/view-session`,
+    { sessionName, windowIndex, paneId },
+  );
+  return response.data.name;
+}
+
+/** Removes a view session that never got a client; a no-op for anything else. */
+export async function releaseTmuxView(
+  hostId: number,
+  name: string,
+): Promise<void> {
+  await api().post(`/${hostId}/view-session/release`, { name });
+}
+
 /** Create a new window in an existing session. */
 export async function createTmuxWindow(
   hostId: number,

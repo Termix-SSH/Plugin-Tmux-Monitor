@@ -35,6 +35,11 @@ import {
 } from "@termix-ssh/plugin-sdk/ui";
 import type { TmuxPaneMetrics, TmuxSessionOverview } from "./api";
 import { formatMem, formatRelativeTime } from "./format";
+import {
+  SESSION_DRAG_TYPE,
+  type SplitDirection,
+  type SessionRef,
+} from "./split-layout";
 import type { SelectedPane } from "./types";
 
 export interface SessionMetricsAgg {
@@ -44,6 +49,47 @@ export interface SessionMetricsAgg {
 }
 
 const MAX_INLINE_TAGS = 2;
+
+/** Right-click split menu for window and pane rows. The trigger is an
+ * invisible anchor; the row opens the menu from its contextmenu event. */
+function SplitMenu({
+  open,
+  onOpenChange,
+  onSplit,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSplit: (direction: SplitDirection) => void;
+}) {
+  const { t } = useTranslation();
+  return (
+    <DropdownMenu open={open} onOpenChange={onOpenChange}>
+      <DropdownMenuTrigger asChild>
+        <span className="pointer-events-none absolute right-2 top-1/2 size-0" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        align="end"
+        className="min-w-36"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <DropdownMenuItem
+          className="whitespace-nowrap"
+          onSelect={() => onSplit("right")}
+        >
+          <SquareSplitHorizontal className="size-3.5" />
+          {t("tmuxMonitor.splitViewRight")}
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          className="whitespace-nowrap"
+          onSelect={() => onSplit("down")}
+        >
+          <SquareSplitVertical className="size-3.5" />
+          {t("tmuxMonitor.splitViewDown")}
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
 
 interface SessionTreeProps {
   sessions: TmuxSessionOverview[];
@@ -76,6 +122,17 @@ interface SessionTreeProps {
   /** Timestamp used to render relative times; bumped periodically by the
    * parent so "Xm ago" labels do not go stale. */
   now: number;
+  /** Host this tree belongs to; travels with a dragged session. */
+  hostId?: string | number;
+  /** Open the session in a new viewer beside the current one (… menu, right
+   * click). Omitted when splitting is unavailable. */
+  onSplitSession?: (
+    sessionName: string,
+    direction: SplitDirection,
+    target?: Pick<SessionRef, "windowIndex" | "paneId">,
+  ) => void;
+  /** A session row drag started (true) or ended (false). */
+  onSessionDrag?: (dragging: boolean) => void;
 }
 
 export function SessionTree({
@@ -97,8 +154,55 @@ export function SessionTree({
   onKillWindow,
   compact,
   now,
+  hostId,
+  onSplitSession,
+  onSessionDrag,
 }: SessionTreeProps) {
   const { t } = useTranslation();
+  // Session whose ⋯ menu is open; right-click opens it, as the SDK has no
+  // context-menu component.
+  const [menuSession, setMenuSession] = useState<string | null>(null);
+  // Same for window and pane rows, keyed "w session index" / "p paneId".
+  const [menuRow, setMenuRow] = useState<string | null>(null);
+
+  const rowSplit = (
+    key: string,
+    session: string,
+    target: Pick<SessionRef, "windowIndex" | "paneId">,
+  ) =>
+    onSplitSession
+      ? {
+          // Only single panes drag: a whole session or window would show
+          // just its first pane.
+          draggable: hostId !== undefined && !!target.paneId,
+          onDragStart: (e: React.DragEvent) => {
+            e.stopPropagation();
+            e.dataTransfer.setData(
+              SESSION_DRAG_TYPE,
+              JSON.stringify({ hostId, sessionName: session, ...target }),
+            );
+            e.dataTransfer.effectAllowed = "copy";
+            onSessionDrag?.(true);
+          },
+          onDragEnd: () => onSessionDrag?.(false),
+          onContextMenu: (e: React.MouseEvent) => {
+            e.preventDefault();
+            setMenuRow(key);
+          },
+        }
+      : {};
+  const rowMenu = (
+    key: string,
+    session: string,
+    target: Pick<SessionRef, "windowIndex" | "paneId">,
+  ) =>
+    onSplitSession && (
+      <SplitMenu
+        open={menuRow === key}
+        onOpenChange={(open) => setMenuRow(open ? key : null)}
+        onSplit={(direction) => onSplitSession(session, direction, target)}
+      />
+    );
   // Collapsed windows, keyed "session windowIndex". Windows default to
   // expanded (panes visible) like the VSCode tmux manager.
   const [collapsedWindows, setCollapsedWindows] = useState<Set<string>>(
@@ -145,6 +249,11 @@ export function SessionTree({
           <div key={session.name} className="mb-0.5">
             <div
               className="group flex cursor-pointer items-center gap-1.5 px-2 py-1 hover:bg-muted/40"
+              onContextMenu={(e) => {
+                if (!onSplitSession) return;
+                e.preventDefault();
+                setMenuSession(session.name);
+              }}
               onClick={() =>
                 onSelectSession
                   ? onSelectSession(session.name)
@@ -305,7 +414,12 @@ export function SessionTree({
                       </div>
                     </PopoverContent>
                   </Popover>
-                  <DropdownMenu>
+                  <DropdownMenu
+                    open={menuSession === session.name}
+                    onOpenChange={(open) =>
+                      setMenuSession(open ? session.name : null)
+                    }
+                  >
                     <DropdownMenuTrigger asChild>
                       <button
                         className="-m-1 p-1 text-muted-foreground hover:text-foreground data-[state=open]:text-foreground"
@@ -321,6 +435,28 @@ export function SessionTree({
                       className="min-w-36"
                       onClick={(e) => e.stopPropagation()}
                     >
+                      {onSplitSession && (
+                        <>
+                          <DropdownMenuItem
+                            className="whitespace-nowrap"
+                            onSelect={() =>
+                              onSplitSession(session.name, "right")
+                            }
+                          >
+                            <SquareSplitHorizontal className="size-3.5" />
+                            {t("tmuxMonitor.splitViewRight")}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="whitespace-nowrap"
+                            onSelect={() =>
+                              onSplitSession(session.name, "down")
+                            }
+                          >
+                            <SquareSplitVertical className="size-3.5" />
+                            {t("tmuxMonitor.splitViewDown")}
+                          </DropdownMenuItem>
+                        </>
+                      )}
                       <DropdownMenuItem
                         className="whitespace-nowrap"
                         onSelect={() =>
@@ -363,9 +499,19 @@ export function SessionTree({
                 return (
                   <div key={win.index} className="ml-4">
                     <div
-                      className="group flex cursor-pointer items-center gap-1 px-2 py-0.5 text-xs text-muted-foreground hover:bg-muted/40"
+                      className="group relative flex cursor-pointer items-center gap-1 px-2 py-0.5 text-xs text-muted-foreground hover:bg-muted/40"
+                      {...rowSplit(
+                        `w ${session.name} ${win.index}`,
+                        session.name,
+                        {
+                          windowIndex: win.index,
+                        },
+                      )}
                       onClick={() => toggleWindow(session.name, win.index)}
                     >
+                      {rowMenu(`w ${session.name} ${win.index}`, session.name, {
+                        windowIndex: win.index,
+                      })}
                       {winCollapsed ? (
                         <ChevronRight className="size-3 shrink-0" />
                       ) : (
@@ -394,7 +540,11 @@ export function SessionTree({
                         return (
                           <div
                             key={pane.id}
-                            className={`group ml-5 flex cursor-pointer items-center gap-1.5 px-2 py-1 text-xs hover:bg-muted/40 ${isSelected ? "bg-accent-brand/10" : ""}`}
+                            className={`group relative ml-5 flex cursor-pointer items-center gap-1.5 px-2 py-1 text-xs hover:bg-muted/40 ${isSelected ? "bg-accent-brand/10" : ""}`}
+                            {...rowSplit(`p ${pane.id}`, session.name, {
+                              windowIndex: win.index,
+                              paneId: pane.id,
+                            })}
                             onClick={() =>
                               onSelectPane({
                                 paneId: pane.id,
@@ -403,6 +553,10 @@ export function SessionTree({
                               })
                             }
                           >
+                            {rowMenu(`p ${pane.id}`, session.name, {
+                              windowIndex: win.index,
+                              paneId: pane.id,
+                            })}
                             <SquareTerminal className="size-3 shrink-0" />
                             <span className="truncate">
                               {pane.index}: {pane.command}
