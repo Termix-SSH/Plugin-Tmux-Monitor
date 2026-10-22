@@ -94,9 +94,12 @@ export async function detectTmuxShell(conn: Client): Promise<TmuxShell | null> {
   if (known) return known;
   for (const shell of ["posix", "windows"] as const) {
     try {
-      await execCommand(conn, buildTmuxCommand(shell, ["-V"]));
-      shells.set(conn, shell);
-      return shell;
+      const version = await execCommand(conn, buildTmuxCommand(shell, ["-V"]));
+      // Git for Windows can provide sh while tmux is native psmux. Its cmd
+      // launcher cannot preserve POSIX quoting in format strings.
+      const detected = /^psmux\s/im.test(version) ? "windows" : shell;
+      shells.set(conn, detected);
+      return detected;
     } catch {
       // try the next shell
     }

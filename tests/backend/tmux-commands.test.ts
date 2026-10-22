@@ -83,6 +83,38 @@ describe("tmux command path handling", () => {
   });
 });
 
+describe("native psmux with Git sh", () => {
+  it("uses Windows quoting even when the POSIX version probe succeeds", async () => {
+    const commands: string[] = [];
+    const conn = {
+      exec(command: string, callback: (error: null, stream: never) => void) {
+        commands.push(command);
+        const stream = new EventEmitter() as EventEmitter & {
+          stderr: EventEmitter;
+        };
+        stream.stderr = new EventEmitter();
+        callback(null, stream as never);
+        queueMicrotask(() => {
+          stream.emit(
+            "data",
+            Buffer.from(
+              commands.length === 1
+                ? "tmux 3.3.8\npsmux 3.3.8 (Windows)\n"
+                : "claude-work<<TMX>>1<<TMX>>2<<TMX>>1<<TMX>>1\n",
+            ),
+          );
+          stream.emit("close", 0);
+        });
+      },
+    } as unknown as Client;
+    const result = await detectTmux(conn);
+    expect(result.sessions[0].name).toBe("claude-work");
+    expect(commands[1]).toBe(
+      'tmux -u list-sessions -F "#{session_name}<<TMX>>#{session_created}<<TMX>>#{session_activity}<<TMX>>#{session_windows}<<TMX>>#{session_attached}"',
+    );
+  });
+});
+
 describe("session-scoped tmux mouse", () => {
   it.skipIf(process.platform === "win32")(
     "passes an exact session target and literal separator through both shells",
@@ -106,7 +138,9 @@ describe("session-scoped tmux mouse", () => {
           false,
         );
         expect(command.endsWith("\r")).toBe(true);
-        const args = execFileSync("/bin/sh", ["-c", command.trim()], {
+        // Keep the test double ahead of Homebrew's real tmux as well.
+        const testCommand = command.trim().replace("PATH=", `PATH=${dir}:`);
+        const args = execFileSync("/bin/sh", ["-c", testCommand], {
           encoding: "utf8",
           env: { ...process.env, PATH: `${dir}:/usr/bin:/bin` },
         })
@@ -266,13 +300,14 @@ describe("session options on a real tmux server", () => {
       try {
         tmux("new-session", "-d", "-s", "work");
         tmux("new-session", "-d", "-s", "work2");
+        const globalMouse = tmux("show-options", "-g", "-v", "mouse");
         for (const args of sessionOptionCommands("work", true)) tmux(...args);
         expect(tmux("show-options", "-t", "=work:", "-v", "mouse")).toBe("on");
         expect(
           tmux("show-options", "-t", "=work:", "-v", "history-limit"),
         ).toBe("50000");
         expect(tmux("show-options", "-t", "=work2:", "mouse")).toBe("");
-        expect(tmux("show-options", "-g", "-v", "mouse")).toBe("off");
+        expect(tmux("show-options", "-g", "-v", "mouse")).toBe(globalMouse);
       } finally {
         try {
           tmux("kill-server");
