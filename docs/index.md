@@ -17,6 +17,10 @@ Enable tmux mouse support turns on mouse mode for sessions you attach to or crea
 
 It refreshes every few seconds while it is open.
 
+## Panel beside the terminal
+
+On a host with Tmux Monitor on, open the Tmux panel from the edge of its SSH terminal or the tab menu. It lists the host's sessions. Attach switches that terminal to the session (or attaches it when the terminal is not in tmux yet), clicking a session shows its windows, and clicking a window makes it the active one. Turn the panel off for a host with Panel beside the terminal in its Tmux Monitor settings.
+
 ## Auto tmux
 
 To have every terminal on a host start inside tmux, turn on Auto tmux in the host's Terminal settings. That is part of the [SSH Terminal](/plugins/ssh-terminal) plugin. Tmux Monitor is how you watch those sessions from outside.

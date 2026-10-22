@@ -5,7 +5,8 @@ import type {
   TermixApp,
 } from "@termix-ssh/plugin-sdk/frontend";
 import { setTmuxMonitorApi } from "./api";
-import { tmuxMonitorEnabled } from "./host-tmux-monitor";
+import { tmuxMonitorEnabled, tmuxPanelEnabled } from "./host-tmux-monitor";
+import { TmuxCompanion, useTmuxCompanionDefaults } from "./TmuxCompanion";
 import { HostTmuxMonitorSection } from "./HostTmuxMonitorSection";
 import { TmuxMonitor } from "./TmuxMonitor";
 import TmuxMonitorApp from "./TmuxMonitorApp";
@@ -66,4 +67,38 @@ export function activate(app: TermixApp): void {
     defaults: true,
     component: HostTmuxMonitorSection,
   });
+
+  // Cores before 26.10.3 have no panels beside tabs.
+  if (typeof app.registerCompanion === "function") {
+    app.registerCompanion("tmux", TmuxCompanion, {
+      icon: Layers,
+      titleKey: "nav.tmuxMonitor",
+      order: 70,
+      tabTypes: ["terminal"],
+      when: (_tab, host) => !!host?.enableSsh && tmuxPanelEnabled(host),
+      useDefaults: useTmuxCompanionDefaults,
+    });
+    app.registerAction("tmux-monitor.togglePanel", ((
+      _handle: unknown,
+      tab: unknown,
+    ) => app.toggleCompanion(tab as never, "tmux")) as never);
+    app.registerSlotContribution("tab.menu", {
+      actionId: "tmux-monitor.togglePanel",
+      titleKey: "companion.toggle",
+      icon: Layers,
+      kind: "button",
+      order: 10,
+      when: (context) => {
+        const tab = context.tab as {
+          type?: string;
+          host?: unknown;
+          hostConfig?: unknown;
+        } | null;
+        return (
+          tab?.type === "terminal" &&
+          tmuxPanelEnabled((tab.host ?? tab.hostConfig) as never)
+        );
+      },
+    });
+  }
 }

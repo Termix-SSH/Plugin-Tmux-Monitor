@@ -10,3 +10,13 @@ export function tmuxMonitorEnabled(
   )?.["tmux-monitor"];
   return settings?.enableTmuxMonitor === true;
 }
+
+/** Whether the panel beside this host's terminal is on. */
+export function tmuxPanelEnabled(
+  host: PluginHostRecord | null | undefined,
+): boolean {
+  const settings = (
+    host?.pluginSettings as Record<string, Record<string, unknown>> | undefined
+  )?.["tmux-monitor"];
+  return settings?.enableTmuxMonitor === true && settings.showPanel !== false;
+}

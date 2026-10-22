@@ -1,7 +1,7 @@
 {
   "id": "tmux-monitor",
   "name": "Tmux Monitor",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Browse and control tmux sessions, windows and panes across your hosts.",
   "author": {
     "name": "Termix"
@@ -18,7 +18,8 @@
     "Resource use for each session",
     "Search across every pane",
     "Create, rename, split and kill sessions, windows and panes",
-    "Attach a terminal in one click"
+    "Attach a terminal in one click",
+    "A tmux panel beside any SSH terminal to attach and switch sessions"
   ],
   "engine": {
     "termix": ">=26.10.0",
@@ -68,9 +69,63 @@
             "labelKey": "settings.host.mouseEnabled.label",
             "descriptionKey": "settings.host.mouseEnabled.description",
             "default": true
+          },
+          {
+            "key": "showPanel",
+            "type": "boolean",
+            "labelKey": "settings.host.showPanel.label",
+            "descriptionKey": "settings.host.showPanel.description",
+            "default": true,
+            "requires": "enableTmuxMonitor"
           }
         ]
-      }
+      },
+      "user": [
+        {
+          "key": "companionAutoOpen",
+          "type": "boolean",
+          "labelKey": "settings.user.companionAutoOpen.label",
+          "descriptionKey": "settings.user.companionAutoOpen.description",
+          "default": false
+        },
+        {
+          "key": "companionSide",
+          "type": "select",
+          "labelKey": "settings.user.companionSide.label",
+          "descriptionKey": "settings.user.companionSide.description",
+          "default": "right",
+          "options": [
+            {
+              "value": "right",
+              "labelKey": "settings.user.companionSide.right"
+            },
+            {
+              "value": "left",
+              "labelKey": "settings.user.companionSide.left"
+            },
+            {
+              "value": "bottom",
+              "labelKey": "settings.user.companionSide.bottom"
+            }
+          ]
+        },
+        {
+          "key": "companionSize",
+          "type": "number",
+          "labelKey": "settings.user.companionSize.label",
+          "descriptionKey": "settings.user.companionSize.description",
+          "min": 240,
+          "max": 900,
+          "default": 300
+        },
+        {
+          "key": "companionEdgeButton",
+          "type": "boolean",
+          "labelKey": "settings.user.companionEdgeButton.label",
+          "descriptionKey": "settings.user.companionEdgeButton.description",
+          "default": true
+        }
+      ]
     },
     "hostCapability": {
       "key": "enableTmuxMonitor",
