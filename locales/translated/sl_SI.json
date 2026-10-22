@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "Omogoči podporo za miško v tmuxu",
-        "description": "Uporabi podporo za miško v tmux seji ob povezovanju ali ustvarjanju seje. Druge seje in globalne nastavitve tmuxa ostanejo nespremenjene."
+        "description": "Vklopljeno (privzeto): miško upravlja tmux (klikanje na okna, način kopiranja v tmux), izbrano besedilo ostane poudarjeno in kopirano, dokler ne kliknete drugam, na strežnikih Linux in macOS pa se tipke za izbor ponovno dodelijo za celoten strežnik tmux do ponovnega zagona. Izklopljeno: besedilo izberite in kopirajte na običajen način, kolesce pa pomika zgodovino tmux. Uveljavi se ob naslednjem priklopu."
+      },
+      "showPanel": {
+        "label": "Plošča ob terminalu",
+        "description": "Ponudi ploščo tmux ob SSH terminalu tega gostitelja."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Odpri ploščo tmux s terminalom",
+        "description": "Prikaži ploščo tmux, ko se na gostitelju, ki jo podpira, odpre terminal."
+      },
+      "companionSide": {
+        "label": "Stran plošče tmux",
+        "description": "Kje se plošča nahaja ob terminalu.",
+        "right": "Desno",
+        "left": "Levo",
+        "bottom": "Spodaj"
+      },
+      "companionSize": {
+        "label": "Velikost plošče tmux",
+        "description": "Širina ali višina (če je spodaj) v slikovnih točkah."
+      },
+      "companionEdgeButton": {
+        "label": "Gumb na robu plošče tmux",
+        "description": "Prikaži majhen gumb na robu terminala za odpiranje plošče."
       }
     }
   },
@@ -56,6 +81,12 @@
     "splitRight": "Razdeli desno",
     "splitDown": "Razdeli navzdol",
     "splitFailed": "Razdeljevanje polja ni uspelo",
+    "splitViewRight": "Odpri v razdeljenem pogledu desno",
+    "splitViewDown": "Odpri v razdeljenem pogledu spodaj",
+    "splitViewFull": "Razdeljeni pogled je poln (največ 4 terminali)",
+    "splitViewDuplicate": "Ta seja je že odprta",
+    "splitViewFailed": "Tega okna ni bilo mogoče odpreti",
+    "splitViewClose": "Zapri",
     "newWindow": "Novo okno",
     "windowCreateFailed": "Ustvarjanje okna ni uspelo",
     "attachSessionTooltip": "Poveži se na {{session}}",
@@ -118,5 +149,14 @@
   "plugin": {
     "name": "Nadzornik Tmux",
     "description": "Brskanje in upravljanje sej, oken in razdelkov tmux na vaših gostiteljih."
+  },
+  "companion": {
+    "toggle": "Plošča tmux",
+    "openTab": "Odpri nadzornik tmux",
+    "loading": "Nalaganje...",
+    "sessions_one": "{{count}} seja",
+    "sessions_two": "{{count}} seji",
+    "sessions_few": "{{count}} seje",
+    "sessions_other": "{{count}} sej"
   }
 }

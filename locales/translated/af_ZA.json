@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "Aktiveer tmux muis-ondersteuning",
-        "description": "Pas muis-ondersteuning toe op die tmux-sessie wanneer jy heg of 'n sessie skep. Ander sessies en globale tmux-instellings bly ongewysig."
+        "description": "Aan (verstek): tmux hanteer die muis (paneelklik, tmux-kopieermodus), 'n muisseleksie bly gemerk en gekopieer tot jy klik, en op Linux- en macOS-gasheer word die seleksiesleutels vir die hele tmux-bedienaar herbindings tot dit herbegin. Af: selekteer en kopieer teks normaalweg en die wiel rol tmux-geskiedenis. Word toegepas die volgende keer dat jy heg."
+      },
+      "showPanel": {
+        "label": "Paneel langs die terminaal",
+        "description": "Bied 'n tmux-paneel langs hierdie gasheer se SSH-terminaal."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Open die tmux-paneel met 'n terminaal",
+        "description": "Wys die tmux-paneel wanneer 'n terminaal oopmaak op 'n gasheer wat dit het."
+      },
+      "companionSide": {
+        "label": "Tmux-paneelkant",
+        "description": "Waar die paneel langs die terminaal sit.",
+        "right": "Reg",
+        "left": "Links",
+        "bottom": "Onder"
+      },
+      "companionSize": {
+        "label": "Tmux-paneelgrootte",
+        "description": "Wydte, of hoogte aan die onderkant, in pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Tmux-paneel randknoppie",
+        "description": "Wys 'n klein knoppie op die terminaalrand om die paneel oop te maak."
       }
     }
   },
@@ -54,6 +79,12 @@
     "splitRight": "Splits regs",
     "splitDown": "Splits af",
     "splitFailed": "Kon nie paneel splits nie",
+    "splitViewRight": "Maak oop in gesplete regs",
+    "splitViewDown": "Maak oop in gesplete af",
+    "splitViewFull": "Gesplete aansig is vol (maks. 4 terminale)",
+    "splitViewDuplicate": "Daardie sessie is reeds oop",
+    "splitViewFailed": "Kon nie daardie venster oopmaak nie",
+    "splitViewClose": "Maak toe",
     "newWindow": "Nuwe venster",
     "windowCreateFailed": "Kon nie venster skep nie",
     "attachSessionTooltip": "Heg aan {{session}}",
@@ -116,5 +147,12 @@
   "plugin": {
     "name": "Tmux Monitor",
     "description": "Bladsy en beheer tmux-sessies, vensters en panele oor jou gasheë."
+  },
+  "companion": {
+    "toggle": "Tmux-paneel",
+    "openTab": "Tmux-monitor oopmaak",
+    "loading": "Laai tans...",
+    "sessions_one": "{{count}} sessie",
+    "sessions_other": "{{count}} sessies"
   }
 }

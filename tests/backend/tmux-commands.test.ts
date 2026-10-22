@@ -10,7 +10,9 @@ import {
   buildTmuxCommand,
   sessionOptionCommands,
   detectTmux,
+  execCommand,
   tmuxCommand,
+  windowsQuote,
   withTmuxPath,
 } from "../../src/backend/tmux-commands.js";
 
@@ -78,12 +80,74 @@ describe("tmux command path handling", () => {
     });
     expect(commands).toEqual([
       `/bin/sh -c 'PATH=/opt/homebrew/bin:/usr/local/bin:/opt/bin:/usr/pkg/bin:"$PATH"; export PATH; tmux -u -V'`,
-      `/bin/sh -c 'PATH=/opt/homebrew/bin:/usr/local/bin:/opt/bin:/usr/pkg/bin:"$PATH"; export PATH; tmux -u list-sessions -F '\\''#{session_name}<<TMX>>#{session_created}<<TMX>>#{session_activity}<<TMX>>#{session_windows}<<TMX>>#{session_attached}'\\'''`,
+      `/bin/sh -c 'PATH=/opt/homebrew/bin:/usr/local/bin:/opt/bin:/usr/pkg/bin:"$PATH"; export PATH; tmux -u list-sessions -F '\\''#{session_name}<<TMX>>#{session_created}<<TMX>>#{session_activity}<<TMX>>#{session_windows}<<TMX>>#{session_attached}<<TMX>>#{@termix_view}'\\'''`,
     ]);
   });
 });
 
+describe("native psmux with Git sh", () => {
+  it("uses Windows quoting even when the POSIX version probe succeeds", async () => {
+    const commands: string[] = [];
+    const conn = {
+      exec(command: string, callback: (error: null, stream: never) => void) {
+        commands.push(command);
+        const stream = new EventEmitter() as EventEmitter & {
+          stderr: EventEmitter;
+        };
+        stream.stderr = new EventEmitter();
+        callback(null, stream as never);
+        queueMicrotask(() => {
+          stream.emit(
+            "data",
+            Buffer.from(
+              commands.length === 1
+                ? "tmux 3.3.8\npsmux 3.3.8 (Windows)\n"
+                : "claude-work<<TMX>>1<<TMX>>2<<TMX>>1<<TMX>>1\n",
+            ),
+          );
+          stream.emit("close", 0);
+        });
+      },
+    } as unknown as Client;
+    const result = await detectTmux(conn);
+    expect(result.sessions[0].name).toBe("claude-work");
+    expect(commands[1]).toBe(
+      'tmux -u list-sessions -F "#{session_name}<<TMX>>#{session_created}<<TMX>>#{session_activity}<<TMX>>#{session_windows}<<TMX>>#{session_attached}<<TMX>>#{@termix_view}"',
+    );
+  });
+});
+
 describe("session-scoped tmux mouse", () => {
+  it("refuses Windows arguments PowerShell would evaluate", () => {
+    expect(() =>
+      buildTmuxCommand("windows", ["rename-session", "$(calc)"]),
+    ).toThrow();
+    expect(() => buildTmuxCommand("windows", ["x", "a`b"])).toThrow();
+    expect(buildTmuxCommand("windows", ["new-session", "-s", "my work"])).toBe(
+      'tmux -u new-session -s "my work"',
+    );
+  });
+
+  it("keeps a multibyte character split across chunks intact", async () => {
+    const conn = {
+      exec(_c: string, callback: (error: null, stream: never) => void) {
+        const stream = new EventEmitter() as EventEmitter & {
+          stderr: EventEmitter;
+        };
+        stream.stderr = new EventEmitter();
+        callback(null, stream as never);
+        queueMicrotask(() => {
+          const bytes = Buffer.from("é✓");
+          stream.emit("data", bytes.subarray(0, 1));
+          stream.emit("data", bytes.subarray(1, 4));
+          stream.emit("data", bytes.subarray(4));
+          stream.emit("close", 0);
+        });
+      },
+    } as unknown as Client;
+    await expect(execCommand(conn, "x")).resolves.toBe("é✓");
+  });
+
   it.skipIf(process.platform === "win32")(
     "passes an exact session target and literal separator through both shells",
     () => {
@@ -106,7 +170,9 @@ describe("session-scoped tmux mouse", () => {
           false,
         );
         expect(command.endsWith("\r")).toBe(true);
-        const args = execFileSync("/bin/sh", ["-c", command.trim()], {
+        // Keep the test double ahead of Homebrew's real tmux as well.
+        const testCommand = command.trim().replace("PATH=", `PATH=${dir}:`);
+        const args = execFileSync("/bin/sh", ["-c", testCommand], {
           encoding: "utf8",
           env: { ...process.env, PATH: `${dir}:/usr/bin:/bin` },
         })
@@ -157,7 +223,7 @@ describe("session-scoped tmux mouse", () => {
     );
     expect(command).toContain("mouse on");
     expect(command).toContain("history-limit 50000");
-    expect(command).not.toMatch(/set -g|set-hook|bind-key|set-clipboard/);
+    expect(command).not.toMatch(/set -g|set-hook|set-clipboard/);
   });
 });
 
@@ -210,7 +276,7 @@ describe("tmux on a host without /bin/sh", () => {
     });
     expect(commands.slice(1)).toEqual([
       "tmux -u -V",
-      'tmux -u list-sessions -F "#{session_name}<<TMX>>#{session_created}<<TMX>>#{session_activity}<<TMX>>#{session_windows}<<TMX>>#{session_attached}"',
+      'tmux -u list-sessions -F "#{session_name}<<TMX>>#{session_created}<<TMX>>#{session_activity}<<TMX>>#{session_windows}<<TMX>>#{session_attached}<<TMX>>#{@termix_view}"',
     ]);
   });
 
@@ -219,10 +285,10 @@ describe("tmux on a host without /bin/sh", () => {
       buildTmuxCommand(
         "windows",
         ["select-window", "-t", "%3"],
-        ["rename-session", "-t", "=a b", 'say "hi"'],
+        ["rename-session", "-t", "=a b", "say hi"],
       ),
     ).toBe(
-      'tmux -u select-window -t "%3" ";" rename-session -t "=a b" "say \\"hi\\""',
+      'tmux -u select-window -t "%3" ";" rename-session -t "=a b" "say hi"',
     );
   });
 
@@ -266,13 +332,14 @@ describe("session options on a real tmux server", () => {
       try {
         tmux("new-session", "-d", "-s", "work");
         tmux("new-session", "-d", "-s", "work2");
+        const globalMouse = tmux("show-options", "-g", "-v", "mouse");
         for (const args of sessionOptionCommands("work", true)) tmux(...args);
         expect(tmux("show-options", "-t", "=work:", "-v", "mouse")).toBe("on");
         expect(
           tmux("show-options", "-t", "=work:", "-v", "history-limit"),
         ).toBe("50000");
         expect(tmux("show-options", "-t", "=work2:", "mouse")).toBe("");
-        expect(tmux("show-options", "-g", "-v", "mouse")).toBe("off");
+        expect(tmux("show-options", "-g", "-v", "mouse")).toBe(globalMouse);
       } finally {
         try {
           tmux("kill-server");
@@ -283,4 +350,59 @@ describe("session options on a real tmux server", () => {
       }
     },
   );
+});
+
+describe("Windows quoting", () => {
+  it("refuses anything PowerShell could read as a quote, variable or escape", () => {
+    for (const arg of [
+      'x";Write-Output INJECTED;#',
+      "a$b",
+      "a`b",
+      "a\u201Cb",
+      "a\nb",
+    ]) {
+      expect(() => windowsQuote(arg), JSON.stringify(arg)).toThrow();
+    }
+    expect(windowsQuote("plain-name_1")).toBe("plain-name_1");
+    expect(() => windowsQuote("a %USERNAME% b")).toThrow();
+    expect(windowsQuote("%3")).toBe('"%3"');
+    expect(windowsQuote("two words")).toBe('"two words"');
+  });
+});
+
+describe("mouse and kept selection", () => {
+  const run = (mouse: boolean) => {
+    let command = "";
+    attachOrCreateTmuxSession(
+      { write: (v: string) => (command = v) } as unknown as ClientChannel,
+      "main",
+      undefined,
+      mouse,
+      "posix",
+    );
+    return command;
+  };
+
+  it("changes key bindings only when mouse support is on", () => {
+    expect(run(false)).not.toContain("bind-key");
+    expect(run(true)).toContain("copy-pipe-no-clear");
+  });
+
+  it("only marks-and-destroys helper sessions the plugin marked", () => {
+    const write = (name: string) => {
+      let command = "";
+      attachOrCreateTmuxSession(
+        { write: (v: string) => (command = v) } as unknown as ClientChannel,
+        name,
+        undefined,
+        false,
+        "posix",
+      );
+      return command;
+    };
+    expect(write("termix-view-abcd1234")).toContain("destroy-unattached");
+    expect(write("termix-view-abcd1234")).toContain("@termix_view");
+    expect(write("termix-view-work")).not.toContain("destroy-unattached");
+    expect(write("main")).not.toContain("destroy-unattached");
+  });
 });

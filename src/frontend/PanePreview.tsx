@@ -4,7 +4,7 @@
 // usable: typing, mouse scrolling and tmux copy-mode all behave exactly like
 // a normal terminal tab.
 
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import {
   Activity,
@@ -28,16 +28,26 @@ import type { SelectedPane } from "./types";
 interface PanePreviewProps {
   host: PluginHostRecord;
   pane: SelectedPane;
+  /** Header text when it should differ from the (view) session name. */
+  label?: string;
   metrics?: TmuxPaneMetrics;
   /** Imperative handle of the embedded terminal, used by the parent to nudge
    * a refit/redraw after layout-changing tmux actions. */
   terminalRef?: React.RefObject<TabHandle | null>;
   /** Split the window containing this pane ("h" = new pane to the right,
    * "v" = below, tmux -h/-v semantics). */
-  onSplit: (direction: "h" | "v") => void;
+  onSplit?: (direction: "h" | "v") => void;
   /** Ask for confirmation and kill this pane. */
-  onKillPane: () => void;
+  onKillPane?: () => void;
   onClose: () => void;
+  /** Called when the user reattaches. A parent that owns a temporary session
+   * recreates it here, since the old one may be gone. */
+  onReattach?: () => void;
+  /** A kept tmux selection can exist here. Right-clicking it must reach tmux
+   * (which clears it) instead of the terminal's right-click paste. */
+  keepsSelection?: boolean;
+  /** False while the monitor tab is hidden. */
+  isVisible?: boolean;
 }
 
 function newInstanceId(): string {
@@ -49,11 +59,15 @@ function newInstanceId(): string {
 export function PanePreview({
   host,
   pane,
+  label,
   metrics,
   terminalRef,
   onSplit,
   onKillPane,
   onClose,
+  onReattach,
+  keepsSelection = false,
+  isVisible = true,
 }: PanePreviewProps) {
   const { t } = useTranslation();
   // One PTY per mount; the parent remounts this component (via key) when the
@@ -65,6 +79,7 @@ export function PanePreview({
   const [attachNonce, setAttachNonce] = useState(0);
 
   function reattach() {
+    if (onReattach) return onReattach();
     instanceIdRef.current = newInstanceId();
     setAttachNonce((n) => n + 1);
   }
@@ -72,19 +87,47 @@ export function PanePreview({
   // The host's own authType travels in the spread, so a Tailscale host still
   // gets the Tailscale-aware PTY path. The SSH port may be non-standard.
   const resolvedPort = host.sshPort ?? host.port;
-  const terminalHostConfig = {
-    ...host,
-    port: resolvedPort,
-    sshPort: resolvedPort,
-    instanceId: instanceIdRef.current,
-  };
+  // Stable between renders so a poll re-render cannot make the embedded
+  // terminal think its connection settings changed.
+  const terminalHostConfig = useMemo(
+    () => ({
+      ...host,
+      port: resolvedPort,
+      sshPort: resolvedPort,
+      instanceId: instanceIdRef.current,
+    }),
+    // attachNonce changes together with instanceIdRef
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [host, resolvedPort, attachNonce],
+  );
+
+  const terminalWrapRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = terminalWrapRef.current;
+    if (!el || !keepsSelection) return;
+    // With tmux owning the mouse, xterm never has a selection, so the
+    // terminal's own right-click handler would always paste. Swallow the
+    // browser context menu here instead: tmux still gets the mouse event and
+    // clears its kept selection. Ctrl+right-click stays with the terminal.
+    const onContext = (e: MouseEvent) => {
+      if (e.ctrlKey) return;
+      e.preventDefault();
+      e.stopPropagation();
+    };
+    el.addEventListener("contextmenu", onContext, true);
+    return () => {
+      el.removeEventListener("contextmenu", onContext, true);
+    };
+  }, [keepsSelection]);
 
   return (
     <>
       <div className="flex items-center gap-3 border-b border-border px-3 py-1.5 text-xs text-muted-foreground">
         <span className="flex gap-2 font-medium text-foreground">
-          <span>{pane.sessionName}</span>
-          <span className="text-muted-foreground">{pane.paneId}</span>
+          <span>{label ?? pane.sessionName}</span>
+          {pane.paneId && (
+            <span className="text-muted-foreground">{pane.paneId}</span>
+          )}
         </span>
         {metrics && (
           <>
@@ -110,31 +153,39 @@ export function PanePreview({
           </>
         )}
         <div className="ml-auto flex items-center gap-2">
-          <button
-            className="text-muted-foreground hover:text-foreground"
-            title={t("tmuxMonitor.splitRight")}
-            aria-label={t("tmuxMonitor.splitRight")}
-            onClick={() => onSplit("h")}
-          >
-            <SquareSplitHorizontal className="size-3.5" />
-          </button>
-          <button
-            className="text-muted-foreground hover:text-foreground"
-            title={t("tmuxMonitor.splitDown")}
-            aria-label={t("tmuxMonitor.splitDown")}
-            onClick={() => onSplit("v")}
-          >
-            <SquareSplitVertical className="size-3.5" />
-          </button>
-          <button
-            className="text-muted-foreground hover:text-destructive"
-            title={t("tmuxMonitor.killPane")}
-            aria-label={t("tmuxMonitor.killPane")}
-            onClick={onKillPane}
-          >
-            <Trash2 className="size-3.5" />
-          </button>
-          <div className="h-3.5 border-l border-border" />
+          {onSplit && (
+            <>
+              <button
+                className="text-muted-foreground hover:text-foreground"
+                title={t("tmuxMonitor.splitRight")}
+                aria-label={t("tmuxMonitor.splitRight")}
+                onClick={() => onSplit("h")}
+              >
+                <SquareSplitHorizontal className="size-3.5" />
+              </button>
+              <button
+                className="text-muted-foreground hover:text-foreground"
+                title={t("tmuxMonitor.splitDown")}
+                aria-label={t("tmuxMonitor.splitDown")}
+                onClick={() => onSplit("v")}
+              >
+                <SquareSplitVertical className="size-3.5" />
+              </button>
+            </>
+          )}
+          {onKillPane && (
+            <button
+              className="text-muted-foreground hover:text-destructive"
+              title={t("tmuxMonitor.killPane")}
+              aria-label={t("tmuxMonitor.killPane")}
+              onClick={onKillPane}
+            >
+              <Trash2 className="size-3.5" />
+            </button>
+          )}
+          {(onSplit || onKillPane) && (
+            <div className="h-3.5 border-l border-border" />
+          )}
           <button
             className="text-muted-foreground hover:text-foreground"
             title={t("tmuxMonitor.reattach")}
@@ -153,13 +204,13 @@ export function PanePreview({
           </button>
         </div>
       </div>
-      <div className="min-h-0 flex-1 overflow-hidden">
+      <div ref={terminalWrapRef} className="min-h-0 flex-1 overflow-hidden">
         <PluginComponent
           id="terminal.view"
           key={attachNonce}
           handleRef={terminalRef}
           hostConfig={terminalHostConfig}
-          isVisible={true}
+          isVisible={isVisible}
           title={pane.sessionName}
           showTitle={false}
           splitScreen={false}

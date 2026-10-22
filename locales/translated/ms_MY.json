@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "Dayakan sokongan tetikus tmux",
-        "description": "Terapkan sokongan tetikus ke sesi tmux apabila menyambung atau mencipta sesi. Sesi lain dan tetapan tmux global tidak berubah."
+        "description": "Hidup (lalai): tmux mengendalikan tetikus (klik panel, mod salin tmux), pemilihan tetikus kekal diserlahkan dan disalin sehingga anda mengklik, dan pada hos Linux dan macOS, kekunci pemilihan diikat semula untuk keseluruhan pelayan tmux sehingga ia dimulakan semula. Mati: pilih dan salin teks secara biasa dan roda tetikus menggulung sejarah tmux. Berkuat kuasa apabila anda menyambung pada kali seterusnya."
+      },
+      "showPanel": {
+        "label": "Panel di sebelah terminal",
+        "description": "Menawarkan panel tmux di sebelah terminal SSH hos ini."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Buka panel tmux dengan terminal",
+        "description": "Paparkan panel tmux apabila terminal dibuka pada hos yang memilikinya."
+      },
+      "companionSide": {
+        "label": "Sisi panel tmux",
+        "description": "Di mana panel diletakkan di sebelah terminal.",
+        "right": "Kanan",
+        "left": "Kiri",
+        "bottom": "Bawah"
+      },
+      "companionSize": {
+        "label": "Saiz panel tmux",
+        "description": "Lebar, atau tinggi di bahagian bawah, dalam piksel."
+      },
+      "companionEdgeButton": {
+        "label": "Butang tepi panel tmux",
+        "description": "Paparkan butang kecil di tepi terminal untuk membuka panel."
       }
     }
   },
@@ -53,6 +78,12 @@
     "splitRight": "Bahagi ke kanan",
     "splitDown": "Bahagi ke bawah",
     "splitFailed": "Gagal membahagi panel",
+    "splitViewRight": "Buka dalam bahagi kanan",
+    "splitViewDown": "Buka dalam bahagi bawah",
+    "splitViewFull": "Paparan bahagi penuh (maksimum 4 terminal)",
+    "splitViewDuplicate": "Sesi tersebut sudah dibuka",
+    "splitViewFailed": "Tidak dapat membuka tetingkap tersebut",
+    "splitViewClose": "Tutup",
     "newWindow": "Tetingkap baharu",
     "windowCreateFailed": "Gagal mencipta tetingkap",
     "attachSessionTooltip": "Sambung ke {{session}}",
@@ -115,5 +146,11 @@
   "plugin": {
     "name": "Pemantau Tmux",
     "description": "Layari dan kawal sesi, tetingkap, dan panel tmux merentas hos anda."
+  },
+  "companion": {
+    "toggle": "Panel tmux",
+    "openTab": "Buka Pemantau Tmux",
+    "loading": "Memuatkan...",
+    "sessions_other": "{{count}} sesi"
   }
 }

@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "Povolit podporu myši pro tmux",
-        "description": "Použít podporu myši pro relaci tmux při připojení nebo vytvoření relace. Ostatní relace a globální nastavení tmux zůstanou nezměněna."
+        "description": "Zapnuto (výchozí): tmux zpracovává myš (klikání na panely, režim kopírování tmux), výběr myší zůstane zvýrazněn a zkopírován, dokud nekliknete jinde, a na hostitelích Linux a macOS jsou klávesy pro výběr přeřazeny pro celý server tmux do jeho restartu. Vypnuto: text vybírejte a kopírujte běžným způsobem a kolečko myši posouvá historii tmux. Nastavení se projeví při příštím připojení."
+      },
+      "showPanel": {
+        "label": "Panel vedle terminálu",
+        "description": "Nabídnout panel tmux vedle SSH terminálu tohoto hostitele."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otevřít panel tmux s terminálem",
+        "description": "Zobrazit panel tmux při otevření terminálu na hostiteli, který jej podporuje."
+      },
+      "companionSide": {
+        "label": "Umístění panelu tmux",
+        "description": "Kde se panel zobrazí vedle terminálu.",
+        "right": "Vpravo",
+        "left": "Vlevo",
+        "bottom": "Dole"
+      },
+      "companionSize": {
+        "label": "Velikost panelu tmux",
+        "description": "Šířka, nebo výška dole, v pixelech."
+      },
+      "companionEdgeButton": {
+        "label": "Tlačítko na okraji panelu tmux",
+        "description": "Zobrazit malé tlačítko na okraji terminálu pro otevření panelu."
       }
     }
   },
@@ -56,6 +81,12 @@
     "splitRight": "Rozdělit vpravo",
     "splitDown": "Rozdělit dolů",
     "splitFailed": "Nepodařilo se rozdělit panel",
+    "splitViewRight": "Otevřít v rozděleném zobrazení vpravo",
+    "splitViewDown": "Otevřít v rozděleném zobrazení dole",
+    "splitViewFull": "Rozdělené zobrazení je plné (max. 4 terminály)",
+    "splitViewDuplicate": "Tato relace je již otevřená",
+    "splitViewFailed": "Nelze otevřít toto okno",
+    "splitViewClose": "Zavřít",
     "newWindow": "Nové okno",
     "windowCreateFailed": "Nepodařilo se vytvořit okno",
     "attachSessionTooltip": "Připojit k {{session}}",
@@ -118,5 +149,14 @@
   "plugin": {
     "name": "Monitor tmux",
     "description": "Procházejte a ovládejte relace, okna a panely tmux napříč vašimi hostiteli."
+  },
+  "companion": {
+    "toggle": "Panel tmux",
+    "openTab": "Otevřít monitor tmux",
+    "loading": "Načítání...",
+    "sessions_one": "{{count}} relace",
+    "sessions_few": "{{count}} relace",
+    "sessions_many": "{{count}} relací",
+    "sessions_other": "{{count}} relace"
   }
 }

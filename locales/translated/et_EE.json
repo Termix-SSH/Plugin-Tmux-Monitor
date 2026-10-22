@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "Luba tmuxi hiire tugi",
-        "description": "Rakenda hiire tugi tmuxi sessioonile sellele ühendumisel või sessiooni loomisel. Teised sessioonid ja globaalsed tmuxi seaded jäävad muutumatuks."
+        "description": "Sees (vaikimisi): tmux haldab hiirt (paneelide klõpsamine, tmuxi kopeerimisrežiim), hiirega valitud tekst jääb esiletõstetuks ja kopeerituks, kuni klõpsate, ning Linuxi ja macOSi peremeessarvetel seotakse valiku klahvid ümber kogu tmuxi serveri jaoks, kuni see taaskäivitatakse. Väljas: valige ja kopeerige tekst tavapäraselt ning kerimisratas kerib tmuxi ajalugu. Kehtib järgmisel kinnitumisel."
+      },
+      "showPanel": {
+        "label": "Paneel terminali kõrval",
+        "description": "Paku tmuxi paneeli selle peremeasarve SSH-terminali kõrval."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Ava tmuxi paneel koos terminaliga",
+        "description": "Kuva tmuxi paneel, kui terminal avatakse peremeasarvel, millel see on olemas."
+      },
+      "companionSide": {
+        "label": "Tmuxi paneeli asukoht",
+        "description": "Kus paneel terminali kõrval asub.",
+        "right": "Parem",
+        "left": "Vasak",
+        "bottom": "Alumine"
+      },
+      "companionSize": {
+        "label": "Tmux-paneeli suurus",
+        "description": "Laius või alumine kõrgus pikslites."
+      },
+      "companionEdgeButton": {
+        "label": "Tmux-paneeli servanupp",
+        "description": "Kuva terminali serval väike nupp paneeli avamiseks."
       }
     }
   },
@@ -54,6 +79,12 @@
     "splitRight": "Jaga paremale",
     "splitDown": "Jaga alla",
     "splitFailed": "Paneeli jagamine ebaõnnestus",
+    "splitViewRight": "Ava jagatud vaates paremale",
+    "splitViewDown": "Ava jagatud vaates alla",
+    "splitViewFull": "Jagatud vaade on täis (maksimaalselt 4 terminali)",
+    "splitViewDuplicate": "See sessioon on juba avatud",
+    "splitViewFailed": "Akna avamine ei õnnestunud",
+    "splitViewClose": "Sulge",
     "newWindow": "Uus aken",
     "windowCreateFailed": "Akna loomine ebaõnnestus",
     "attachSessionTooltip": "Ühendu sessiooniga {{session}}",
@@ -116,5 +147,12 @@
   "plugin": {
     "name": "Tmux Monitor",
     "description": "Sirvi ja juhi tmux'i sessioone, aknaid ja paneleid oma hostide vahel."
+  },
+  "companion": {
+    "toggle": "Tmux-paneel",
+    "openTab": "Ava Tmuxi monitor",
+    "loading": "Laadimine...",
+    "sessions_one": "{{count}} sessioon",
+    "sessions_other": "{{count}} sessiooni"
   }
 }

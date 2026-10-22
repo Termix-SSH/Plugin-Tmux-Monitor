@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "Aktiver musstøtte for tmux",
-        "description": "Aktiver musstøtte i tmux-sesjonen når du kobler til eller oppretter en sesjon. Andre sesjoner og globale tmux-innstillinger er uendret."
+        "description": "På (standard): tmux håndterer musen (klikk på paneler, tmux-kopiemodus), et musutvalg forblir markert og kopiert til du klikker, og på Linux- og macOS-vertsmaskiner blir utvelgelse-tastene omdefinert for hele tmux-serveren til den starter på nytt. Av: velg og kopier tekst som vanlig, og rullehjulet ruller gjennom tmux-historikken. Trer i kraft neste gang du kobler til."
+      },
+      "showPanel": {
+        "label": "Panel ved siden av terminalen",
+        "description": "Vis et tmux-panel ved siden av SSH-terminalen for denne vertsmaskinen."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Åpne tmux-panelet med en terminal",
+        "description": "Vis tmux-panelet når en terminal åpnes på en vertsmaskin som har det."
+      },
+      "companionSide": {
+        "label": "Plassering av tmux-panelet",
+        "description": "Hvor panelet vises i forhold til terminalen.",
+        "right": "Høyre",
+        "left": "Venstre",
+        "bottom": "Bunn"
+      },
+      "companionSize": {
+        "label": "Størrelse på tmux-panelet",
+        "description": "Bredde, eller høyde nederst, i piksler."
+      },
+      "companionEdgeButton": {
+        "label": "Knapp på kanten av tmux-panelet",
+        "description": "Vis en liten knapp på terminalkanten for å åpne panelet."
       }
     }
   },
@@ -54,6 +79,12 @@
     "splitRight": "Del til høyre",
     "splitDown": "Del nedover",
     "splitFailed": "Kunne ikke dele panel",
+    "splitViewRight": "Åpne i delt visning til høyre",
+    "splitViewDown": "Åpne i delt visning nedover",
+    "splitViewFull": "Delt visning er full (maks 4 terminaler)",
+    "splitViewDuplicate": "Den økten er allerede åpen",
+    "splitViewFailed": "Kunne ikke åpne det vinduet",
+    "splitViewClose": "Lukk",
     "newWindow": "Nytt vindu",
     "windowCreateFailed": "Kunne ikke opprette vindu",
     "attachSessionTooltip": "Koble til {{session}}",
@@ -116,5 +147,12 @@
   "plugin": {
     "name": "Tmux Monitor",
     "description": "Bla gjennom og kontroller tmux-sesjoner, -vinduer og -paneler på tvers av vertene dine."
+  },
+  "companion": {
+    "toggle": "Tmux-panel",
+    "openTab": "Åpne Tmux-overvåking",
+    "loading": "Laster...",
+    "sessions_one": "{{count}} økt",
+    "sessions_other": "{{count}} økter"
   }
 }

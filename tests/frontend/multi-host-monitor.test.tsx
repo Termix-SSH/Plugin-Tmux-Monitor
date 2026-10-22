@@ -101,6 +101,13 @@ vi.mock("../../src/frontend/SessionTree", () => ({
         pane
       </button>
       <button onClick={() => props.onSelectSession?.("same")}>session</button>
+      <button
+        onClick={() =>
+          props.onSplitSession?.("same", "right", { windowIndex: 1 })
+        }
+      >
+        split window
+      </button>
       <button onClick={() => props.onNewWindow("same")}>new window</button>
       <button onClick={() => props.onKillSession("same")}>kill session</button>
       <button onClick={() => props.onToggleSession("same")}>
@@ -198,6 +205,28 @@ describe("multi-host tmux monitor", () => {
     fireEvent.click(host(1).getByText("new window"));
     await waitFor(() =>
       expect(api.createTmuxWindow).toHaveBeenCalledExactlyOnceWith(1, "same"),
+    );
+  });
+
+  it("opens a split request for a non-current window on that window's pane", async () => {
+    vi.mocked(api.getTmuxOverview).mockImplementation(async () => {
+      const o = overview();
+      const first = o.sessions[0]!.windows[0]!;
+      o.sessions[0]!.windows.push({
+        ...first,
+        index: 1,
+        active: false,
+        panes: [{ ...first.panes[0]!, id: "%9", active: true }],
+      });
+      return o;
+    });
+    render(<TmuxMonitor initialHostId={1} />);
+    await waitFor(() =>
+      expect(host(2).getByText("split window")).toBeInTheDocument(),
+    );
+    fireEvent.click(host(2).getByText("split window"));
+    await waitFor(() =>
+      expect(screen.getByTestId("preview")).toHaveTextContent("2:%9"),
     );
   });
 

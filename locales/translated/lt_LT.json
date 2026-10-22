@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "Įjungti tmux pelės palaikymą",
-        "description": "Pritaikyti pelės palaikymą tmux sesijai prisijungiant ar kuriant sesiją. Kitos sesijos ir globalūs tmux nustatymai lieka nepakitę."
+        "description": "Įjungta (numatyta): pelę tvarko tmux (skydelių spustelėjimai, tmux kopijavimo režimas), pažymėtas tekstas lieka paryškintas ir nukopijuotas, kol paspausite pelės mygtuką, o „Linux“ ir „macOS“ serveriuose pažymėjimo klavišai yra perpriskiriami visam tmux serveriui, kol jis nebus paleistas iš naujo. Išjungta: tekstą pažymėkite ir kopijuokite įprastai, o pelės ratukas slenkina tmux istoriją. Pakeitimai įsigalios kitą kartą prisijungus."
+      },
+      "showPanel": {
+        "label": "Terminale šalia esantis skydelis",
+        "description": "Rodyti tmux skydelį šalia šio serverio SSH terminalo."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Atidaryti tmux skydelį kartu su terminalu",
+        "description": "Rodyti tmux skydelį, kai atidaromas terminalas serveryje, kuriame jis yra įgalintas."
+      },
+      "companionSide": {
+        "label": "Tmux skydelio padėtis",
+        "description": "Kur skydelis bus rodomas šalia terminalo.",
+        "right": "Dešinėje",
+        "left": "Kairėje",
+        "bottom": "Apačioje"
+      },
+      "companionSize": {
+        "label": "tmux skydelio dydis",
+        "description": "Plotis arba apačioje – aukštis pikseliais."
+      },
+      "companionEdgeButton": {
+        "label": "tmux skydelio krašto mygtukas",
+        "description": "Rodyti mažą mygtuką terminalo krašte, skirtą skydeliui atidaryti."
       }
     }
   },
@@ -56,6 +81,12 @@
     "splitRight": "Padalinti į dešinę",
     "splitDown": "Padalinti žemyn",
     "splitFailed": "Nepavyko padalinti skylės",
+    "splitViewRight": "Atidaryti skaidriame vaizde dešinėje",
+    "splitViewDown": "Atidaryti skaidriame vaizde apačioje",
+    "splitViewFull": "Skaidrusis vaizdas pilnas (daugiausia 4 terminalai)",
+    "splitViewDuplicate": "Ši sesija jau atidaryta",
+    "splitViewFailed": "Nepavyko atidaryti to lango",
+    "splitViewClose": "Uždaryti",
     "newWindow": "Naujas langas",
     "windowCreateFailed": "Nepavyko sukurti lango",
     "attachSessionTooltip": "Prisijungti prie {{session}}",
@@ -118,5 +149,14 @@
   "plugin": {
     "name": "Tmux stebėtojas",
     "description": "Naršykite ir valdykite tmux sesijas, langus bei skyrius savo serveriuose."
+  },
+  "companion": {
+    "toggle": "tmux skydelis",
+    "openTab": "Atidaryti tmux stebėklį",
+    "loading": "Įkeliamas...",
+    "sessions_one": "{{count}} sesija",
+    "sessions_few": "{{count}} sesijos",
+    "sessions_many": "{{count}} sesijų",
+    "sessions_other": "{{count}} sesijų"
   }
 }

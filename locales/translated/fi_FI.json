@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "Ota tmuxin hiirituki käyttöön",
-        "description": "Käytä hiiritukea tmux-istunnossa liityttäessä tai luodessa istunto. Muut istunnot ja globaalit tmux-asetukset eivät muutu."
+        "description": "Päällä (oletus): tmux käsiteltää hiiren (paneelien klikkaus, tmuxin kopiointitila), hiirellä valittu teksti pysyy korostettuna ja kopioituna, kunnes klikkaat, ja Linux- ja macOS-isäntäkonissa valintanäppäimet sidotaan uudelleen koko tmux-palvelimelle, kunnes se käynnistetään uudelleen. Pois päältä: valitse ja kopioi teksti normaalisti, ja rullaustyönnin vierittää tmuxin historiaa. Muutos astuu voimaan seuraavan kerran, kun liityt istuntoon."
+      },
+      "showPanel": {
+        "label": "Paneeli terminaalin vieressä",
+        "description": "Tarjoa tmux-paneeli tämän isäntäkonan SSH-terminaalin vieressä."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Avaa tmux-paneeli terminaalin kanssa",
+        "description": "Näytä tmux-paneeli, kun terminaali avautuu isäntäkonassa, jossa se on käytössä."
+      },
+      "companionSide": {
+        "label": "Tmux-paneelin sijainti",
+        "description": "Missä paneeli sijaitsee terminaalin vieressä.",
+        "right": "Oikealla",
+        "left": "Vasemmalla",
+        "bottom": "Alareunassa"
+      },
+      "companionSize": {
+        "label": "Tmux-paneelin koko",
+        "description": "Leveys tai alareunan korkeus pikseleinä."
+      },
+      "companionEdgeButton": {
+        "label": "Tmux-paneelin reunapainike",
+        "description": "Näytä pieni painike terminaalin reunassa paneelin avaamiseen."
       }
     }
   },
@@ -54,6 +79,12 @@
     "splitRight": "Jaa oikealle",
     "splitDown": "Jaa alaspäin",
     "splitFailed": "Ikkunaruudun jako epäonnistui",
+    "splitViewRight": "Avaa jakoon oikealle",
+    "splitViewDown": "Avaa jakoon alaspäin",
+    "splitViewFull": "Jakonäkymä on täynnä (enintään 4 terminaalia)",
+    "splitViewDuplicate": "Tuo istunto on jo auki",
+    "splitViewFailed": "Ikkunan avaaminen epäonnistui",
+    "splitViewClose": "Sulje",
     "newWindow": "Uusi ikkuna",
     "windowCreateFailed": "Ikkunan luominen epäonnistui",
     "attachSessionTooltip": "Liity istuntoon {{session}}",
@@ -116,5 +147,12 @@
   "plugin": {
     "name": "Tmux-valvonta",
     "description": "Selaa ja hallitse tmux-istuntoja, -ikkunoita ja -ikkunaruutuja eri isäntien välillä."
+  },
+  "companion": {
+    "toggle": "Tmux-paneeli",
+    "openTab": "Avaa Tmux-valvonta",
+    "loading": "Ladataan...",
+    "sessions_one": "{{count}} istunto",
+    "sessions_other": "{{count}} istuntoa"
   }
 }

@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "tmux fare desteğini etkinleştir",
-        "description": "Bir oturuma bağlanırken veya yeni bir oturum oluştururken tmux oturumuna fare desteği uygulayın. Diğer oturumlar ve genel tmux ayarları değişmez."
+        "description": "Açık (varsayılan): tmux fareyi yönetir (pane tıklama, tmux kopyalama modu), fare ile seçilen metin tıklanana kadar vurgulu ve kopyalanmış olarak kalır ve Linux ile macOS sunucularında seçim kısayolları, tmux sunucusu yeniden başlatılana kadar tüm sunucu için yeniden atanır. Kapalı: metni normal şekilde seçin ve kopyalayın, tekerlek tmux geçmişini kaydırır. Bir sonraki bağlanmada uygulanır."
+      },
+      "showPanel": {
+        "label": "Terminalin yanındaki panel",
+        "description": "Bu sunucunun SSH terminalinin yanında bir tmux paneli sunun."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Terminal ile tmux panelini aç",
+        "description": "Buna sahip bir sunucuda terminal açıldığında tmux panelini göster."
+      },
+      "companionSide": {
+        "label": "Tmux paneli konumu",
+        "description": "Panelin terminalin yanında nerede duracağı.",
+        "right": "Sağ",
+        "left": "Sol",
+        "bottom": "Alt"
+      },
+      "companionSize": {
+        "label": "Tmux paneli boyutu",
+        "description": "Genişlik veya altta yükseklik, piksel cinsinden."
+      },
+      "companionEdgeButton": {
+        "label": "Tmux paneli kenar düğmesi",
+        "description": "Paneli açmak için terminal kenarında küçük bir düğme göster."
       }
     }
   },
@@ -54,6 +79,12 @@
     "splitRight": "Sağa böl",
     "splitDown": "Aşağıya böl",
     "splitFailed": "Bölüm bölünemedi",
+    "splitViewRight": "Sağa bölünmüş görünümde aç",
+    "splitViewDown": "Aşağıya bölünmüş görünümde aç",
+    "splitViewFull": "Bölünmüş görünüm dolu (maksimum 4 terminal)",
+    "splitViewDuplicate": "Bu oturum zaten açık",
+    "splitViewFailed": "Bu pencere açılamadı",
+    "splitViewClose": "Kapat",
     "newWindow": "Yeni pencere",
     "windowCreateFailed": "Pencere oluşturulamadı",
     "attachSessionTooltip": "{{session}} oturumuna bağlan",
@@ -116,5 +147,12 @@
   "plugin": {
     "name": "Tmux İzleyici",
     "description": "Sunucularınızdaki tmux oturumlarını, pencereleri ve bölümleri görüntüleyin ve kontrol edin."
+  },
+  "companion": {
+    "toggle": "Tmux paneli",
+    "openTab": "Tmux İzleyicisini Aç",
+    "loading": "Yükleniyor...",
+    "sessions_one": "{{count}} oturum",
+    "sessions_other": "{{count}} oturum"
   }
 }

@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "Bật hỗ trợ chuột cho tmux",
-        "description": "Áp dụng hỗ trợ chuột cho phiên tmux khi kết nối hoặc tạo phiên mới. Các phiên khác và cài đặt tmux toàn cục không thay đổi."
+        "description": "Bật (mặc định): tmux xử lý chuột (nhấp vào ngăn, chế độ sao chép của tmux), vùng chọn bằng chuột sẽ được làm nổi bật và sao chép cho đến khi bạn nhấp chuột, và trên các máy chủ Linux và macOS, các phím chọn sẽ được gán lại cho toàn bộ máy chủ tmux cho đến khi khởi động lại. Tắt: chọn và sao chép văn bản bình thường, và cuộn chuột cuộn lịch sử tmux. Áp dụng lần tiếp theo bạn kết nối."
+      },
+      "showPanel": {
+        "label": "Bảng bên cạnh terminal",
+        "description": "Hiển thị bảng tmux bên cạnh terminal SSH của máy chủ này."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Mở bảng tmux cùng với terminal",
+        "description": "Hiển thị bảng tmux khi terminal mở trên máy chủ có tính năng này."
+      },
+      "companionSide": {
+        "label": "Vị trí bảng tmux",
+        "description": "Vị trí của bảng bên cạnh terminal.",
+        "right": "Phải",
+        "left": "Trái",
+        "bottom": "Dưới"
+      },
+      "companionSize": {
+        "label": "Kích thước bảng tmux",
+        "description": "Chiều rộng, hoặc chiều cao nếu ở dưới, tính bằng pixel."
+      },
+      "companionEdgeButton": {
+        "label": "Nút cạnh bảng tmux",
+        "description": "Hiển thị một nút nhỏ trên cạnh terminal để mở bảng."
       }
     }
   },
@@ -53,6 +78,12 @@
     "splitRight": "Chia ngang sang phải",
     "splitDown": "Chia dọc xuống dưới",
     "splitFailed": "Không thể chia ngăn",
+    "splitViewRight": "Mở chia đôi bên phải",
+    "splitViewDown": "Mở chia đôi bên dưới",
+    "splitViewFull": "Chế độ xem chia đôi đã đầy (tối đa 4 terminal)",
+    "splitViewDuplicate": "Phiên đó đã được mở",
+    "splitViewFailed": "Không thể mở cửa sổ đó",
+    "splitViewClose": "Đóng",
     "newWindow": "Cửa sổ mới",
     "windowCreateFailed": "Không thể tạo cửa sổ",
     "attachSessionTooltip": "Kết nối vào {{session}}",
@@ -115,5 +146,11 @@
   "plugin": {
     "name": "Tmux Monitor",
     "description": "Duyệt và điều khiển các phiên, cửa sổ và ngăn tmux trên các host của bạn."
+  },
+  "companion": {
+    "toggle": "Bảng tmux",
+    "openTab": "Mở Trình theo dõi Tmux",
+    "loading": "Đang tải...",
+    "sessions_other": "{{count}} phiên"
   }
 }

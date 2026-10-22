@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "tmux のマウスサポートを有効にする",
-        "description": "セッションへの接続時またはセッション作成時に、tmux セッションにマウスサポートを適用します。他のセッションやグローバルな tmux 設定は変更されません。"
+        "description": "オン（デフォルト）: tmux がマウスを処理します（ペインのクリック、tmux コピーモード）。マウスで選択したテキストはクリックするまでハイライトされ、コピーされた状態が維持されます。Linux および macOS ホストでは、tmux サーバーが再起動されるまで選択キーが再バインドされます。オフ: テキストを通常通り選択・コピーし、ホイールで tmux の履歴をスクロールします。次回接続時に適用されます。"
+      },
+      "showPanel": {
+        "label": "ターミナル横のパネル",
+        "description": "このホストの SSH ターミナルの横に tmux パネルを表示します。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "ターミナルと共に tmux パネルを開く",
+        "description": "tmux パネルが利用可能なホストでターミナルを開いた際、tmux パネルを表示します。"
+      },
+      "companionSide": {
+        "label": "tmux パネルの位置",
+        "description": "ターミナルの横にパネルを表示する位置です。",
+        "right": "右",
+        "left": "左",
+        "bottom": "下"
+      },
+      "companionSize": {
+        "label": "Tmux パネルのサイズ",
+        "description": "幅、または下部の高さ（ピクセル単位）。"
+      },
+      "companionEdgeButton": {
+        "label": "Tmux パネルのエッジボタン",
+        "description": "パネルを開くための小さなボタンをターミナルのエッジに表示します。"
       }
     }
   },
@@ -53,6 +78,12 @@
     "splitRight": "右に分割",
     "splitDown": "下に分割",
     "splitFailed": "ペインの分割に失敗しました",
+    "splitViewRight": "右に分割して開く",
+    "splitViewDown": "下に分割して開く",
+    "splitViewFull": "分割ビューは最大数（4つのターミナル）に達しています",
+    "splitViewDuplicate": "そのセッションは既に開いています",
+    "splitViewFailed": "そのウィンドウを開くことができませんでした",
+    "splitViewClose": "閉じる",
     "newWindow": "新しいウィンドウ",
     "windowCreateFailed": "ウィンドウの作成に失敗しました",
     "attachSessionTooltip": "{{session}} に接続",
@@ -115,5 +146,11 @@
   "plugin": {
     "name": "Tmux Monitor",
     "description": "ホスト間で tmux セッション、ウィンドウ、ペインを閲覧し、制御します。"
+  },
+  "companion": {
+    "toggle": "Tmux パネル",
+    "openTab": "Tmux モニターを開く",
+    "loading": "読み込み中...",
+    "sessions_other": "{{count}} セッション"
   }
 }

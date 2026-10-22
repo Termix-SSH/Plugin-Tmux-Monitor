@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "tmux 마우스 지원 활성화",
-        "description": "세션 연결 또는 생성 시 tmux 세션에 마우스 지원을 적용합니다. 다른 세션 및 전역 tmux 설정은 변경되지 않습니다."
+        "description": "켜짐(기본값): tmux가 마우스를 처리합니다(패널 클릭, tmux 복사 모드). 마우스로 선택한 텍스트는 클릭할 때까지 하이라이트되고 복사된 상태로 유지되며, Linux 및 macOS 호스트에서는 tmux 서버가 재시작될 때까지 선택 키가 전체 tmux 서버에 대해 다시 바인딩됩니다. 꺼짐: 텍스트를 정상적으로 선택하고 복사하며, 휠로 tmux 기록을 스크롤합니다. 다음 연결 시 적용됩니다."
+      },
+      "showPanel": {
+        "label": "터미널 옆 패널",
+        "description": "이 호스트의 SSH 터미널 옆에 tmux 패널을 제공합니다."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "터미널과 함께 tmux 패널 열기",
+        "description": "tmux 패널이 있는 호스트에서 터미널이 열릴 때 tmux 패널을 표시합니다."
+      },
+      "companionSide": {
+        "label": "Tmux 패널 위치",
+        "description": "터미널 옆에 패널이 표시되는 위치입니다.",
+        "right": "오른쪽",
+        "left": "왼쪽",
+        "bottom": "아래쪽"
+      },
+      "companionSize": {
+        "label": "Tmux 패널 크기",
+        "description": "너비 또는 하단 높이 (픽셀 단위)."
+      },
+      "companionEdgeButton": {
+        "label": "Tmux 패널 가장자리 버튼",
+        "description": "패널을 열 수 있는 작은 버튼을 터미널 가장자리에 표시합니다."
       }
     }
   },
@@ -53,6 +78,12 @@
     "splitRight": "오른쪽으로 분할",
     "splitDown": "아래쪽으로 분할",
     "splitFailed": "패널 분할 실패",
+    "splitViewRight": "오른쪽 분할 뷰에서 열기",
+    "splitViewDown": "아래쪽 분할 뷰에서 열기",
+    "splitViewFull": "분할 뷰가 가득 찼습니다 (최대 4개 터미널)",
+    "splitViewDuplicate": "해당 세션이 이미 열려 있습니다",
+    "splitViewFailed": "해당 창을 열 수 없습니다",
+    "splitViewClose": "닫기",
     "newWindow": "새 창",
     "windowCreateFailed": "창 생성 실패",
     "attachSessionTooltip": "{{session}}(으)로 연결",
@@ -115,5 +146,11 @@
   "plugin": {
     "name": "Tmux 모니터",
     "description": "호스트 간 tmux 세션, 창 및 패널을 탐색하고 제어합니다."
+  },
+  "companion": {
+    "toggle": "Tmux 패널",
+    "openTab": "Tmux 모니터 열기",
+    "loading": "로딩 중...",
+    "sessions_other": "{{count}}개 세션"
   }
 }

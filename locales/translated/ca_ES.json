@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "Activa el suport del ratolí per a tmux",
-        "description": "Aplica el suport del ratolí a la sessió de tmux en adjuntar-se o crear-ne una de nova. Les altres sessions i la configuració global de tmux no es veuran afectades."
+        "description": "Activat (predeterminat): tmux gestiona el ratolí (fer clic a les panells, mode de còpia de tmux), una selecció amb el ratolí es manté ressaltada i copiada fins que feu clic, i als amfitrions Linux i macOS les tecles de selecció es reassignen per a tot el servidor tmux fins que es reinicia. Desactivat: seleccioneu i copieu text normalment i la roda del ratolí desplaça l'historial de tmux. S'aplica la propera vegada que us connecteu."
+      },
+      "showPanel": {
+        "label": "Panell al costat del terminal",
+        "description": "Mostra un panell de tmux al costat del terminal SSH d'aquest amfitrió."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Obre el panell de tmux amb un terminal",
+        "description": "Mostra el panell de tmux quan s'obre un terminal en un amfitrió que el tingui."
+      },
+      "companionSide": {
+        "label": "Posició del panell de tmux",
+        "description": "On es troba el panell al costat del terminal.",
+        "right": "Dreta",
+        "left": "Esquerra",
+        "bottom": "Inferior"
+      },
+      "companionSize": {
+        "label": "Mida del panell de tmux",
+        "description": "Amplada, o alçada a la part inferior, en píxels."
+      },
+      "companionEdgeButton": {
+        "label": "Botó del panell de tmux a la vora",
+        "description": "Mostra un botó petit a la vora del terminal per obrir el panell."
       }
     }
   },
@@ -55,6 +80,12 @@
     "splitRight": "Divideix a la dreta",
     "splitDown": "Divideix cap avall",
     "splitFailed": "No s'ha pogut dividir el panell",
+    "splitViewRight": "Obre a la vista dividida a la dreta",
+    "splitViewDown": "Obre a la vista dividida a la part inferior",
+    "splitViewFull": "La vista dividida està plena (màxim 4 terminals)",
+    "splitViewDuplicate": "Aquesta sessió ja està oberta",
+    "splitViewFailed": "No s'ha pogut obrir aquesta finestra",
+    "splitViewClose": "Tanca",
     "newWindow": "Nova finestra",
     "windowCreateFailed": "No s'ha pogut crear la finestra",
     "attachSessionTooltip": "Adjunta't a {{session}}",
@@ -117,5 +148,13 @@
   "plugin": {
     "name": "Monitor de Tmux",
     "description": "Navega i controla les sessions, finestres i panells de tmux als teus servidors."
+  },
+  "companion": {
+    "toggle": "Panell de tmux",
+    "openTab": "Obre el monitor de tmux",
+    "loading": "S'està carregant...",
+    "sessions_one": "{{count}} sessió",
+    "sessions_many": "{{count}} sessions",
+    "sessions_other": "{{count}} sessions"
   }
 }

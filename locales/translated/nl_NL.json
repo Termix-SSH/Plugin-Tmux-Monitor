@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "Muisondersteuning voor tmux inschakelen",
-        "description": "Pas muisondersteuning toe op de tmux-sessie bij het maken of verbinden met een sessie. Andere sessies en globale tmux-instellingen blijven ongewijzigd."
+        "description": "Aan (standaard): tmux behandelt de muis (paneelklikken, tmux-kopieermodus), een muiselectie blijft gemarkeerd en gekopieerd tot je klikt, en op Linux- en macOS-hosts worden de selectietoetsen voor de hele tmux-server opnieuw toegewezen tot deze opnieuw wordt opgestart. Uit: selecteer en kopieer tekst op de normale manier en het wiel bladert door de tmux-geschiedenis. Wordt toegepast de volgende keer dat je verbinding maakt."
+      },
+      "showPanel": {
+        "label": "Paneel naast de terminal",
+        "description": "Een tmux-paneel aanbieden naast de SSH-terminal van deze host."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Het tmux-paneel openen met een terminal",
+        "description": "Het tmux-paneel tonen wanneer een terminal opent op een host die dit ondersteunt."
+      },
+      "companionSide": {
+        "label": "Positie tmux-paneel",
+        "description": "Waar het paneel naast de terminal staat.",
+        "right": "Rechts",
+        "left": "Links",
+        "bottom": "Onder"
+      },
+      "companionSize": {
+        "label": "Grootte tmux-paneel",
+        "description": "Breedte, of hoogte onderaan, in pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Knop aan de rand van het tmux-paneel",
+        "description": "Toon een kleine knop aan de rand van het terminalvenster om het paneel te openen."
       }
     }
   },
@@ -54,6 +79,12 @@
     "splitRight": "Splitsen naar rechts",
     "splitDown": "Splitsen naar beneden",
     "splitFailed": "Kan venster niet splitsen",
+    "splitViewRight": "Open in splitsweergave rechts",
+    "splitViewDown": "Open in splitsweergave onder",
+    "splitViewFull": "Splitsweergave is vol (maximaal 4 terminals)",
+    "splitViewDuplicate": "Die sessie is al geopend",
+    "splitViewFailed": "Kan dat venster niet openen",
+    "splitViewClose": "Sluiten",
     "newWindow": "Nieuw venster",
     "windowCreateFailed": "Kan venster niet maken",
     "attachSessionTooltip": "Verbinden met {{session}}",
@@ -116,5 +147,12 @@
   "plugin": {
     "name": "Tmux Monitor",
     "description": "Blader door en beheer tmux-sessies, -vensters en -vensters op al je hosts."
+  },
+  "companion": {
+    "toggle": "Tmux-paneel",
+    "openTab": "Tmux-monitor openen",
+    "loading": "Laden...",
+    "sessions_one": "{{count}} sessie",
+    "sessions_other": "{{count}} sessies"
   }
 }

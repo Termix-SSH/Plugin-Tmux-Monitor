@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "Uključi podršku za miš u tmuxu",
-        "description": "Primijeni podršku za miš na tmux sesiju pri povezivanju ili stvaranju sesije. Ostale sesije i globalne tmux postavke ostaju nepromijenjene."
+        "description": "Uključeno (zadano): tmux upravlja mišem (klikanje na panele, tmux način kopiranja), odabrani tekst ostaje označen i kopiran dok ne kliknete, a na Linux i macOS hostovima tipke za odabir se ponovno dodjeljuju za cijeli tmux poslužitelj dok se ne ponovno pokrene. Isključeno: odaberite i kopirajte tekst na uobičajeni način, a kotačić miša skrola tmux povijest. Primjenjuje se sljedeći put kada se povežete."
+      },
+      "showPanel": {
+        "label": "Panel pored terminala",
+        "description": "Prikaži tmux panel pored SSH terminala za ovog hosta."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otvori tmux panel s terminalom",
+        "description": "Prikaži tmux panel kada se terminal otvori na hostu koji ga ima."
+      },
+      "companionSide": {
+        "label": "Strana tmux panela",
+        "description": "Gdje se panel nalazi pored terminala.",
+        "right": "Desno",
+        "left": "Lijevo",
+        "bottom": "Dolje"
+      },
+      "companionSize": {
+        "label": "Veličina tmux panela",
+        "description": "Širina, odnosno visina na dnu, u pikselima."
+      },
+      "companionEdgeButton": {
+        "label": "Gumb za rub tmux panela",
+        "description": "Prikaži mali gumb na rubu terminala za otvaranje panela."
       }
     }
   },
@@ -55,6 +80,12 @@
     "splitRight": "Podijeli desno",
     "splitDown": "Podijeli dolje",
     "splitFailed": "Neuspješno dijeljenje dijela",
+    "splitViewRight": "Otvori u dijeljenom prikazu desno",
+    "splitViewDown": "Otvori u dijeljenom prikazu dolje",
+    "splitViewFull": "Dijeljeni prikaz je popunjen (maks. 4 terminala)",
+    "splitViewDuplicate": "Ta sesija je već otvorena",
+    "splitViewFailed": "Nije moguće otvoriti taj prozor",
+    "splitViewClose": "Zatvori",
     "newWindow": "Novi prozor",
     "windowCreateFailed": "Neuspješno stvaranje prozora",
     "attachSessionTooltip": "Poveži se na {{session}}",
@@ -117,5 +148,13 @@
   "plugin": {
     "name": "Tmux nadzornik",
     "description": "Pregledajte i upravljajte tmux sesijama, prozorima i dijelovima na svojim poslužiteljima."
+  },
+  "companion": {
+    "toggle": "Tmux ploča",
+    "openTab": "Otvori Tmux nadzor",
+    "loading": "Učitavanje...",
+    "sessions_one": "{{count}} sesija",
+    "sessions_few": "{{count}} sesije",
+    "sessions_other": "{{count}} sesija"
   }
 }

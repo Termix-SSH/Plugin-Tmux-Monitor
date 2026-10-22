@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "Aktifkan dukungan mouse tmux",
-        "description": "Terapkan dukungan mouse ke sesi tmux saat menyambung atau membuat sesi. Sesi lain dan pengaturan global tmux tidak berubah."
+        "description": "Aktif (default): tmux menangani mouse (klik pane, mode salin tmux), seleksi mouse tetap disorot dan disalin hingga Anda mengklik, dan pada host Linux dan macOS, kunci seleksi diikat ulang untuk seluruh server tmux hingga diulang. Nonaktif: pilih dan salin teks secara normal, dan roda gulir menggulir riwayat tmux. Berlaku saat Anda terhubung berikutnya."
+      },
+      "showPanel": {
+        "label": "Panel di samping terminal",
+        "description": "Tampilkan panel tmux di sebelah terminal SSH host ini."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Buka panel tmux bersama terminal",
+        "description": "Tampilkan panel tmux saat terminal terbuka pada host yang mendukungnya."
+      },
+      "companionSide": {
+        "label": "Posisi panel tmux",
+        "description": "Di mana panel berada di samping terminal.",
+        "right": "Kanan",
+        "left": "Kiri",
+        "bottom": "Bawah"
+      },
+      "companionSize": {
+        "label": "Ukuran panel Tmux",
+        "description": "Lebar, atau tinggi di bagian bawah, dalam piksel."
+      },
+      "companionEdgeButton": {
+        "label": "Tombol tepi panel Tmux",
+        "description": "Tampilkan tombol kecil di tepi terminal untuk membuka panel."
       }
     }
   },
@@ -53,6 +78,12 @@
     "splitRight": "Bagi ke kanan",
     "splitDown": "Bagi ke bawah",
     "splitFailed": "Gagal membagi panel",
+    "splitViewRight": "Buka di split kanan",
+    "splitViewDown": "Buka di split bawah",
+    "splitViewFull": "Tampilan split penuh (maks. 4 terminal)",
+    "splitViewDuplicate": "Sesi tersebut sudah terbuka",
+    "splitViewFailed": "Tidak dapat membuka jendela tersebut",
+    "splitViewClose": "Tutup",
     "newWindow": "Jendela baru",
     "windowCreateFailed": "Gagal membuat jendela",
     "attachSessionTooltip": "Sambung ke {{session}}",
@@ -115,5 +146,11 @@
   "plugin": {
     "name": "Tmux Monitor",
     "description": "Jelajahi dan kendalikan sesi, jendela, dan panel tmux di seluruh host Anda."
+  },
+  "companion": {
+    "toggle": "Panel Tmux",
+    "openTab": "Buka Monitor Tmux",
+    "loading": "Memuat...",
+    "sessions_other": "{{count}} sesi"
   }
 }

@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "Ieslēgt tmux peles atbalstu",
-        "description": "Piemērot peles atbalstu tmux sesijai, pievienojoties tai vai izveidojot jaunu. Citiem sesijām un globālajiem tmux iestatījumiem tas neietekmē."
+        "description": "Ieslēgts (noklusējums): tmux apstrādā peli (panelu klikšķi, tmux kopēšanas režīmu), peles atlase paliek izcelta un nokopēta, līdz jūs noklikšķināt, un Linux un macOS hostos atlases taustiņi tiek pārsasaisti visam tmux serverim līdz tā restartēšanai. Izslēgts: atlasiet un kopējiet tekstu parasti, un ritināšanas riteņš ritina tmux vēsturi. Spēkā nākamajā reizi, kad pieslēdzaties."
+      },
+      "showPanel": {
+        "label": "Panelis blakus terminālim",
+        "description": "Piedāvā tmux paneli blakus šī hosta SSH terminālim."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Atvērt tmux paneli ar termināli",
+        "description": "Rādīt tmux paneli, kad terminālis atveras uz hosta, kuram tas ir."
+      },
+      "companionSide": {
+        "label": "Tmux panela puse",
+        "description": "Kur panelis atrodas blakus terminālim.",
+        "right": "Labajā pusē",
+        "left": "Kreisajā pusē",
+        "bottom": "Apakšā"
+      },
+      "companionSize": {
+        "label": "Tmux panela izmērs",
+        "description": "Platums vai augstums apakšā pikseļos."
+      },
+      "companionEdgeButton": {
+        "label": "Tmux panela malas poga",
+        "description": "Rādīt mazu pogu termināļa malā, lai atvērtu paneli."
       }
     }
   },
@@ -55,6 +80,12 @@
     "splitRight": "Sadalīt pa labi",
     "splitDown": "Sadalīt uz leju",
     "splitFailed": "Neizdevās sadalīt paneli",
+    "splitViewRight": "Atvērt labajā sadalījumā",
+    "splitViewDown": "Atvērt apakšējā sadalījumā",
+    "splitViewFull": "Sadalījuma skats ir pilns (maks. 4 termināļi)",
+    "splitViewDuplicate": "Šī sesija jau ir atvērta",
+    "splitViewFailed": "Neizdevās atvērt šo logu",
+    "splitViewClose": "Aizvērt",
     "newWindow": "Jauns logs",
     "windowCreateFailed": "Neizdevās izveidot logu",
     "attachSessionTooltip": "Pievienoties {{session}}",
@@ -117,5 +148,13 @@
   "plugin": {
     "name": "Tmux Monitor",
     "description": "Pārlūkojiet un pārvaldiet tmux sesijas, logus un paneļus visos jūsu hostos."
+  },
+  "companion": {
+    "toggle": "Tmux panelis",
+    "openTab": "Atvērt Tmux monitoru",
+    "loading": "Ielādē...",
+    "sessions_zero": "0 sesijas",
+    "sessions_one": "{{count}} sesija",
+    "sessions_other": "{{count}} sesijas"
   }
 }

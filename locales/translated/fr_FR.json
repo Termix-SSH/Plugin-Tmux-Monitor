@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "Activer la prise en charge de la souris pour tmux",
-        "description": "Appliquer la prise en charge de la souris à la session tmux lors de la connexion ou de la création d'une session. Les autres sessions et les paramètres globaux de tmux restent inchangés."
+        "description": "Activé (par défaut) : tmux gère la souris (clic sur les panneaux, mode copie de tmux), une sélection avec la souris reste surlignée et copiée jusqu'à ce que vous cliquiez, et sur les hôtes Linux et macOS, les touches de sélection sont réaffectées pour l'ensemble du serveur tmux jusqu'à son redémarrage. Désactivé : sélectionnez et copiez du texte normalement et la molette fait défiler l'historique de tmux. S'applique la prochaine fois que vous vous connectez."
+      },
+      "showPanel": {
+        "label": "Panneau à côté du terminal",
+        "description": "Afficher un panneau tmux à côté du terminal SSH de cet hôte."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Ouvrir le panneau tmux avec un terminal",
+        "description": "Afficher le panneau tmux lorsqu'un terminal s'ouvre sur un hôte qui en possède un."
+      },
+      "companionSide": {
+        "label": "Position du panneau tmux",
+        "description": "Emplacement du panneau par rapport au terminal.",
+        "right": "Droite",
+        "left": "Gauche",
+        "bottom": "Bas"
+      },
+      "companionSize": {
+        "label": "Taille du panneau tmux",
+        "description": "Largeur, ou hauteur en bas, en pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Bouton de bord du panneau tmux",
+        "description": "Afficher un petit bouton sur le bord du terminal pour ouvrir le panneau."
       }
     }
   },
@@ -55,6 +80,12 @@
     "splitRight": "Diviser à droite",
     "splitDown": "Diviser en bas",
     "splitFailed": "Échec de la division du panneau",
+    "splitViewRight": "Ouvrir en vue divisée à droite",
+    "splitViewDown": "Ouvrir en vue divisée en bas",
+    "splitViewFull": "La vue divisée est pleine (4 terminaux max)",
+    "splitViewDuplicate": "Cette session est déjà ouverte",
+    "splitViewFailed": "Impossible d'ouvrir cette fenêtre",
+    "splitViewClose": "Fermer",
     "newWindow": "Nouvelle fenêtre",
     "windowCreateFailed": "Échec de la création de la fenêtre",
     "attachSessionTooltip": "Se connecter à {{session}}",
@@ -117,5 +148,13 @@
   "plugin": {
     "name": "Moniteur Tmux",
     "description": "Parcourez et contrôlez les sessions, fenêtres et panneaux tmux sur vos hôtes."
+  },
+  "companion": {
+    "toggle": "Panneau Tmux",
+    "openTab": "Ouvrir le moniteur Tmux",
+    "loading": "Chargement...",
+    "sessions_one": "{{count}} session",
+    "sessions_many": "{{count}} sessions",
+    "sessions_other": "{{count}} sessions"
   }
 }

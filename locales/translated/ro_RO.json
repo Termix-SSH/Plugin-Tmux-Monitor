@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "Activează suportul mouse pentru tmux",
-        "description": "Aplică suportul mouse la sesiunea tmux la conectare sau creare. Alte sesiuni și setările globale tmux rămân neschimbate."
+        "description": "Activat (implicit): tmux gestionează mouse-ul (clic pe panouri, modul de copiere tmux), selecția cu mouse-ul rămâne evidențiată și copiată până faceți clic, iar pe gazdele Linux și macOS tastele de selecție sunt relegate pentru întregul server tmux până la restart. Dezactivat: selectați și copiați textul normal, iar rotița mouse-ului derulează istoricul tmux. Se aplică data viitoare când vă conectați."
+      },
+      "showPanel": {
+        "label": "Panou lângă terminal",
+        "description": "Afișează un panou tmux lângă terminalul SSH al acestei gazde."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Deschide panoul tmux cu un terminal",
+        "description": "Afișează panoul tmux când se deschide un terminal pe o gazdă care îl are."
+      },
+      "companionSide": {
+        "label": "Poziția panoului tmux",
+        "description": "Unde se află panoul lângă terminal.",
+        "right": "Dreapta",
+        "left": "Stânga",
+        "bottom": "Jos"
+      },
+      "companionSize": {
+        "label": "Dimensiunea panoului tmux",
+        "description": "Lățimea, sau înălțimea în partea de jos, în pixeli."
+      },
+      "companionEdgeButton": {
+        "label": "Butonul de margine al panoului tmux",
+        "description": "Afișează un buton mic pe marginea terminalului pentru a deschide panoul."
       }
     }
   },
@@ -55,6 +80,12 @@
     "splitRight": "Împarte la dreapta",
     "splitDown": "Împarte în jos",
     "splitFailed": "Nu s-a putut împărți panoul",
+    "splitViewRight": "Deschide în împărțire la dreapta",
+    "splitViewDown": "Deschide în împărțire în jos",
+    "splitViewFull": "Vizualizarea împărțită este plină (maxim 4 terminale)",
+    "splitViewDuplicate": "Această sesiune este deja deschisă",
+    "splitViewFailed": "Nu s-a putut deschide acea fereastră",
+    "splitViewClose": "Închide",
     "newWindow": "Fereastră nouă",
     "windowCreateFailed": "Nu s-a putut crea fereastra",
     "attachSessionTooltip": "Conectează-te la {{session}}",
@@ -117,5 +148,13 @@
   "plugin": {
     "name": "Monitor Tmux",
     "description": "Navigați și controlați sesiunile, ferestrele și panourile tmux pe toate host-urile dvs."
+  },
+  "companion": {
+    "toggle": "Panou tmux",
+    "openTab": "Deschide Monitorul Tmux",
+    "loading": "Se încarcă...",
+    "sessions_one": "{{count}} sesiune",
+    "sessions_few": "{{count}} sesiuni",
+    "sessions_other": "{{count}} sesiuni"
   }
 }

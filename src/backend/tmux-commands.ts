@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { StringDecoder } from "node:string_decoder";
 import type { Client, ClientChannel } from "ssh2";
 import { SEP, shellEscape } from "./monitor-helpers.js";
 
@@ -32,7 +33,16 @@ const PLAIN_ARG = /^[\w@+=:,./-]+$/;
 
 export function windowsQuote(arg: string): string {
   if (PLAIN_ARG.test(arg)) return arg;
-  return `"${arg.replace(/"/g, '\\"')}"`;
+  // PowerShell evaluates $(...) and backtick escapes inside double quotes and
+  // treats curly quotes as quotes; \" is no escape for it, so a quote would
+  // end the string. cmd.exe and PowerShell share no escaping, so refuse.
+  // A pair of % is cmd.exe variable expansion; a lone % is a pane id.
+  if (/["$`\u2018-\u201F\u0000-\u001F]|%[^%]*%/.test(arg)) {
+    throw new Error(
+      "Argument contains characters unsupported on Windows hosts",
+    );
+  }
+  return `"${arg}"`;
 }
 
 function posixQuote(arg: string): string {
@@ -65,16 +75,21 @@ export function execCommand(conn: Client, command: string): Promise<string> {
       }
       let stdout = "";
       let stderr = "";
+      // A multibyte character can be split across chunks.
+      const outDecoder = new StringDecoder("utf8");
+      const errDecoder = new StringDecoder("utf8");
       stream.on("data", (data: Buffer) => {
-        stdout += data.toString("utf-8");
+        stdout += outDecoder.write(data);
       });
       stream.stderr.on("data", (data: Buffer) => {
-        stderr += data.toString("utf-8");
+        stderr += errDecoder.write(data);
       });
       stream.on("error", (err: Error) => {
         reject(err);
       });
       stream.on("close", (code: number) => {
+        stdout += outDecoder.end();
+        stderr += errDecoder.end();
         if (code !== 0 && stdout === "") {
           reject(
             new Error(stderr.trim() || `Command exited with code ${code}`),
@@ -94,9 +109,12 @@ export async function detectTmuxShell(conn: Client): Promise<TmuxShell | null> {
   if (known) return known;
   for (const shell of ["posix", "windows"] as const) {
     try {
-      await execCommand(conn, buildTmuxCommand(shell, ["-V"]));
-      shells.set(conn, shell);
-      return shell;
+      const version = await execCommand(conn, buildTmuxCommand(shell, ["-V"]));
+      // Git for Windows can provide sh while tmux is native psmux. Its cmd
+      // launcher cannot preserve POSIX quoting in format strings.
+      const detected = /^psmux\s/im.test(version) ? "windows" : shell;
+      shells.set(conn, detected);
+      return detected;
     } catch {
       // try the next shell
     }
@@ -145,12 +163,14 @@ export async function detectTmux(conn: Client): Promise<TmuxDetectionResult> {
     const output = await execTmux(conn, [
       "list-sessions",
       "-F",
-      `#{session_name}${SEP}#{session_created}${SEP}#{session_activity}${SEP}#{session_windows}${SEP}#{session_attached}`,
+      `#{session_name}${SEP}#{session_created}${SEP}#{session_activity}${SEP}#{session_windows}${SEP}#{session_attached}${SEP}#{@termix_view}`,
     ]);
     if (output) {
       sessions = output
         .split("\n")
         .filter((line) => line.length > 0)
+        // Split-viewer helper sessions are internal; never offer them.
+        .filter((line) => !line.split(SEP)[5])
         .map((line) => {
           const [name, created, activity, windows, attached] = line.split(SEP);
           return {
@@ -232,15 +252,76 @@ export function attachOrCreateTmuxSession(
 ): void {
   const name =
     existingSessionName || newSessionName || `termix-${randomUUID()}`;
+  const target = `=${name}`;
   const commands = existingSessionName
     ? []
     : [["new-session", "-d", "-s", name]];
-  commands.push(...sessionOptionCommands(name, mouseEnabled), [
-    "attach-session",
-    "-t",
-    `=${name}`,
-  ]);
+  commands.push(...sessionOptionCommands(name, mouseEnabled));
+  // tmux's default mouse bindings clear the selection on release. Key
+  // bindings are server-wide, so this changes mouse selection for every tmux
+  // client of that server, and only when mouse support is on.
+  if (mouseEnabled && shell === "posix")
+    commands.push(...PERSISTENT_SELECTION_BINDINGS);
+  // Split-viewer sessions vanish with their viewer. Only ones this plugin
+  // marked: tmux checks the marker, so a user's own session that happens to
+  // share the name is never made disposable.
+  // Must stay chained before attach-session: destroy-unattached on an
+  // unattached session kills it immediately.
+  if (/^termix-view-[0-9a-f]{8}$/.test(name))
+    commands.push([
+      "if-shell",
+      "-F",
+      "-t",
+      `${target}:`,
+      "#{@termix_view}",
+      `set-option -q -t ${target}: destroy-unattached on`,
+    ]);
+  commands.push(["attach-session", "-t", target]);
   const command = buildTmuxCommand(shell, ...commands);
   // PowerShell 5 has no &&, so a Windows shell stays open after a detach.
   stream.write(shell === "windows" ? `${command}\r` : `${command} && exit\r`);
 }
+/**
+ * Same as tmux's defaults except copy-pipe-no-clear, so a drag or double /
+ * triple click stays highlighted and copied to the tmux buffer until the next
+ * click or q. Each binding is one string, so an old tmux without
+ * copy-pipe-no-clear fails only when used, never at attach.
+ */
+const COPY = "send-keys -X copy-pipe-no-clear";
+// A click on a kept selection clears it. Right click also stops tmux's
+// default pane menu (Horizontal Split, Kill...) from opening in copy mode.
+const CLEAR = 'if-shell -F "#{selection_present}" "send-keys -X cancel"';
+const ROOT_IF = '"#{||:#{pane_in_mode},#{mouse_any_flag}}" "send-keys -M"';
+export const PERSISTENT_SELECTION_BINDINGS: string[][] = [
+  ...["copy-mode", "copy-mode-vi"].flatMap((table) => [
+    ["bind-key", "-T", table, "MouseDragEnd1Pane", COPY],
+    ["bind-key", "-T", table, "MouseDown1Pane", `select-pane ; ${CLEAR}`],
+    ["bind-key", "-T", table, "MouseDown3Pane", `select-pane ; ${CLEAR}`],
+    [
+      "bind-key",
+      "-T",
+      table,
+      "DoubleClick1Pane",
+      `select-pane ; send-keys -X select-word ; ${COPY}`,
+    ],
+    [
+      "bind-key",
+      "-T",
+      table,
+      "TripleClick1Pane",
+      `select-pane ; send-keys -X select-line ; ${COPY}`,
+    ],
+  ]),
+  ...(
+    [
+      ["DoubleClick1Pane", "select-word"],
+      ["TripleClick1Pane", "select-line"],
+    ] as const
+  ).map(([key, select]) => [
+    "bind-key",
+    "-T",
+    "root",
+    key,
+    `select-pane -t = ; if-shell -F ${ROOT_IF} "copy-mode ; send-keys -X ${select} ; ${COPY}"`,
+  ]),
+];

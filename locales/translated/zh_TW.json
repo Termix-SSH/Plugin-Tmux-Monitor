@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "啟用 tmux 滑鼠支援",
-        "description": "在連線或建立工作階段時，為 tmux 工作階段套用滑鼠支援。其他工作階段與全域 tmux 設定將保持不變。"
+        "description": "開啟（預設）：tmux 會處理滑鼠操作（窗格點擊、tmux 複製模式），滑鼠選取的文字會保持高亮並複製，直到您再次點擊為止；在 Linux 和 macOS 主機上，選取快捷鍵會重新綁定至整個 tmux 伺服器，直到伺服器重新啟動。關閉：以一般方式選取和複製文字，滾輪則用於捲動 tmux 歷史記錄。設定將於下次連接時生效。"
+      },
+      "showPanel": {
+        "label": "終端機旁的面板",
+        "description": "在此主機的 SSH 終端機旁提供 tmux 面板。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "開啟終端機時同時開啟 tmux 面板",
+        "description": "當在支援的主機上開啟終端機時，顯示 tmux 面板。"
+      },
+      "companionSide": {
+        "label": "Tmux 面板位置",
+        "description": "面板相對於終端機的位置。",
+        "right": "右側",
+        "left": "左側",
+        "bottom": "底部"
+      },
+      "companionSize": {
+        "label": "Tmux 面板大小",
+        "description": "寬度，或位於底部時的高度，單位為像素。"
+      },
+      "companionEdgeButton": {
+        "label": "Tmux 面板邊緣按鈕",
+        "description": "在終端機邊緣顯示一個小按鈕，用於開啟面板。"
       }
     }
   },
@@ -53,6 +78,12 @@
     "splitRight": "向右分割",
     "splitDown": "向下分割",
     "splitFailed": "無法分割窗格",
+    "splitViewRight": "在右側分割視窗中開啟",
+    "splitViewDown": "在下方分割視窗中開啟",
+    "splitViewFull": "分割視窗已滿（最多 4 個終端機）",
+    "splitViewDuplicate": "該工作階段已開啟",
+    "splitViewFailed": "無法開啟該視窗",
+    "splitViewClose": "關閉",
     "newWindow": "新增視窗",
     "windowCreateFailed": "無法建立視窗",
     "attachSessionTooltip": "連線至 {{session}}",
@@ -115,5 +146,11 @@
   "plugin": {
     "name": "Tmux 監控",
     "description": "跨主機瀏覽和控制 tmux 工作階段、視窗與窗格。"
+  },
+  "companion": {
+    "toggle": "Tmux 面板",
+    "openTab": "開啟 Tmux 監控",
+    "loading": "載入中...",
+    "sessions_other": "{{count}} 個工作階段"
   }
 }

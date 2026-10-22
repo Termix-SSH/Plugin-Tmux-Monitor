@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "הפעל תמיכה בעכבר עבור tmux",
-        "description": "החל תמיכה בעכבר על סשן ה-tmux בעת הצטרפות או יצירת סשן. סשנים אחרים והגדרות ה-tmux הגלובליות לא משתנות."
+        "description": "דלוק (ברירת מחדל): tmux מטפל בעכבר (לחיצה על חלונות, מצב העתקה של tmux), בחירה בעכבר נשארת מסומנת ומועתקת עד שתלחץ, ובמארחי Linux ו-macOS מקשי הבחירה משויכים מחדש לכל שרת tmux עד להפעלה מחדש. כבוי: בחר והעתק טקסט כרגיל וגלגל העכבר מגלול את היסטוריית tmux. יחול בפעם הבאה שתתחבר."
+      },
+      "showPanel": {
+        "label": "פאנל ליד הטרמינל",
+        "description": "הצג פאנל tmux ליד הטרמינל של SSH של מארח זה."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "פתח את פאנל tmux עם טרמינל",
+        "description": "הצג את פאנל tmux כאשר טרמינל נפתח במארח שיש לו אותו."
+      },
+      "companionSide": {
+        "label": "צד פאנל tmux",
+        "description": "איפה הפאנל ממוקם ליד הטרמינל.",
+        "right": "ימין",
+        "left": "שמאל",
+        "bottom": "מטה"
+      },
+      "companionSize": {
+        "label": "גודל פאנל tmux",
+        "description": "רוחב, או גובה בתחתית, בפיקסלים."
+      },
+      "companionEdgeButton": {
+        "label": "כפתור שפת פאנל tmux",
+        "description": "הצג כפתור קטן בשפת המסוף לפתיחת הפאנל."
       }
     }
   },
@@ -55,6 +80,12 @@
     "splitRight": "חלק ימינה",
     "splitDown": "חלק למטה",
     "splitFailed": "חלוקת הפאנל נכשלה",
+    "splitViewRight": "פתח בחלוקה ימינה",
+    "splitViewDown": "פתח בחלוקה למטה",
+    "splitViewFull": "תצוגה מחולקת מלאה (מקסימום 4 מסופים)",
+    "splitViewDuplicate": "הסשן הזה כבר פתוח",
+    "splitViewFailed": "לא ניתן לפתוח את החלון הזה",
+    "splitViewClose": "סגור",
     "newWindow": "חלון חדש",
     "windowCreateFailed": "יצירת החלון נכשלה",
     "attachSessionTooltip": "הצטרף ל-{{session}}",
@@ -117,5 +148,13 @@
   "plugin": {
     "name": "Tmux Monitor",
     "description": "עיין ובצע שליטה בהפעלות, חלונות ותאים של tmux על פני המארחים שלך."
+  },
+  "companion": {
+    "toggle": "לוח tmux",
+    "openTab": "פתיחת מנהל tmux",
+    "loading": "טוען...",
+    "sessions_one": "{{count}} סשן",
+    "sessions_two": "{{count}} סשנים",
+    "sessions_other": "{{count}} סשנים"
   }
 }

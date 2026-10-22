@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "Povoliť podporu myši pre tmux",
-        "description": "Použiť podporu myši pre reláciu tmux pri pripájaní alebo vytváraní relácie. Ostatné relácie a globálne nastavenia tmux zostanú nezmenené."
+        "description": "Zapnuté (predvolené): tmux ovláda myš (klikanie na panely, režim kopírovania v tmux), výber myšou zostane zvýraznený a skopírovaný, kým nekliknete inde, a na hostiteľoch Linux a macOS sa klávesové skratky pre výber premapujú pre celý tmux server až do jeho reštartu. Vypnuté: text sa vyberá a kopíruje bežným spôsobom a koliesko myši posúva históriu tmux. Nastavenie sa prejaví pri ďalšom pripojení."
+      },
+      "showPanel": {
+        "label": "Panel vedľa terminálu",
+        "description": "Nabídnutie tmux panelu vedľa SSH terminálu tohto hostiteľa."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otvoriť tmux panel s terminálom",
+        "description": "Zobraziť tmux panel pri otvorení terminálu na hostiteľovi, ktorý ho má."
+      },
+      "companionSide": {
+        "label": "Poloha tmux panelu",
+        "description": "Kde sa panel zobrazí vedľa terminálu.",
+        "right": "Vpravo",
+        "left": "Vľavo",
+        "bottom": "Dole"
+      },
+      "companionSize": {
+        "label": "Veľkosť tmux panelu",
+        "description": "Šírka, alebo výška pri umiestnení dole, v pixeloch."
+      },
+      "companionEdgeButton": {
+        "label": "Tlačidlo na okraji tmux panelu",
+        "description": "Zobraziť malé tlačidlo na okraji terminálu na otvorenie panelu."
       }
     }
   },
@@ -56,6 +81,12 @@
     "splitRight": "Rozdeliť vpravo",
     "splitDown": "Rozdelť dole",
     "splitFailed": "Nepodarilo sa rozdeliť panel",
+    "splitViewRight": "Otvoriť v rozdelenom zobrazení vpravo",
+    "splitViewDown": "Otvoriť v rozdelenom zobrazení dole",
+    "splitViewFull": "Rozdelené zobrazenie je plné (max. 4 terminály)",
+    "splitViewDuplicate": "Táto relácia je už otvorená",
+    "splitViewFailed": "Nepodarilo sa otvoriť toto okno",
+    "splitViewClose": "Zavrieť",
     "newWindow": "Nové okno",
     "windowCreateFailed": "Nepodarilo sa vytvoriť okno",
     "attachSessionTooltip": "Pripojiť sa k {{session}}",
@@ -118,5 +149,14 @@
   "plugin": {
     "name": "Monitor tmux",
     "description": "Prezeranie a ovládanie relácií, okien a panelov tmux na vašich hostiteľoch."
+  },
+  "companion": {
+    "toggle": "Tmux panel",
+    "openTab": "Otvoriť Tmux Monitor",
+    "loading": "Načítava sa...",
+    "sessions_one": "{{count}} relácia",
+    "sessions_few": "{{count}} relácie",
+    "sessions_many": "{{count}} relácií",
+    "sessions_other": "{{count}} relácií"
   }
 }

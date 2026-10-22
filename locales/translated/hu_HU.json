@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "Tmux egér támogatás engedélyezése",
-        "description": "Egér támogatás alkalmazása a tmux munkamenetre csatlakozáskor vagy munkamenet létrehozásakor. A többi munkamenet és a globális tmux beállítások változatlanok maradnak."
+        "description": "Be (alapértelmezett): a tmux kezeli az egeret (panel-kattintás, tmux másolási mód), az egérrel kijelölt szöveg kiemelve marad és másolva, amíg nem kattint, és Linux és macOS hosztokon a kijelölés billentyűi újra vannak kötve a teljes tmux szerverre, amíg újraindul. Ki: a szöveget normálisan lehet kijelölni és másolni, a görgő pedig a tmux előzményeit görgeti. A következő csatlakozáskor lép életbe."
+      },
+      "showPanel": {
+        "label": "Panel a terminál mellett",
+        "description": "Egy tmux panel ajánlása a hoszt SSH terminálja mellett."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "A tmux panel megnyitása terminállal",
+        "description": "A tmux panel megjelenítése, amikor egy terminál megnyílik egy olyan hoszton, amelyik támogatja."
+      },
+      "companionSide": {
+        "label": "Tmux panel oldala",
+        "description": "Ahol a panel a terminál mellett helyezkedik el.",
+        "right": "Jobb",
+        "left": "Bal",
+        "bottom": "Alsó"
+      },
+      "companionSize": {
+        "label": "Tmux panel mérete",
+        "description": "Szélesség, vagy az alsó rész magassága pixelekben."
+      },
+      "companionEdgeButton": {
+        "label": "Tmux panel szél gombja",
+        "description": "Egy kis gomb megjelenítése a terminál szélén a panel megnyitásához."
       }
     }
   },
@@ -54,6 +79,12 @@
     "splitRight": "Felosztás jobbra",
     "splitDown": "Felosztás lefelé",
     "splitFailed": "A panel felosztása sikertelen",
+    "splitViewRight": "Megnyitás jobb oldali osztott nézetben",
+    "splitViewDown": "Megnyitás alsó oldali osztott nézetben",
+    "splitViewFull": "Az osztott nézet tele van (max. 4 terminál)",
+    "splitViewDuplicate": "Ez a munkamenet már nyitva van",
+    "splitViewFailed": "Nem sikerült megnyitni ezt az ablakot",
+    "splitViewClose": "Bezárás",
     "newWindow": "Új ablak",
     "windowCreateFailed": "Az ablak létrehozása sikertelen",
     "attachSessionTooltip": "Csatlakozás a(z) {{session}} munkamenethez",
@@ -116,5 +147,12 @@
   "plugin": {
     "name": "Tmux Monitor",
     "description": "Tmux munkamenetek, ablakok és panelek böngészése és kezelése a gazdagépeken."
+  },
+  "companion": {
+    "toggle": "Tmux panel",
+    "openTab": "Tmux monitor megnyitása",
+    "loading": "Betöltés...",
+    "sessions_one": "{{count}} munkamenet",
+    "sessions_other": "{{count}} munkamenet"
   }
 }

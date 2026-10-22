@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "تفعيل دعم الماوس في tmux",
-        "description": "تطبيق دعم الماوس على جلسة tmux عند الارتباط بها أو إنشاء جلسة جديدة. تبقى الجلسات الأخرى والإعدادات العامة لـ tmux دون تغيير."
+        "description": "مفعّل (الافتراضي): يتعامل tmux مع الماوس (نقر على الأقسام، وضع النسخ في tmux)، ويظل النص المحدد بالماوس مميزاً ومنسوخاً حتى تنقر، وعلى أجهزة Linux و macOS يتم إعادة ربط مفاتيح التحديد لخادم tmux بأكمله حتى يتم إعادة تشغيله. معطّل: حدد وانسخ النص بشكل طبيعي، وتدفع عجلة الماوس سجل tmux. يتم التطبيق في المرة التالية التي تتصل فيها."
+      },
+      "showPanel": {
+        "label": "لوحة بجانب الطرفية",
+        "description": "عرض لوحة tmux بجانب طرفية SSH الخاصة بهذا المضيف."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "فتح لوحة tmux مع الطرفية",
+        "description": "عرض لوحة tmux عند فتح طرفية على مضيف يدعمها."
+      },
+      "companionSide": {
+        "label": "موقع لوحة tmux",
+        "description": "المكان الذي تظهر فيه اللوحة بجانب الطرفية.",
+        "right": "يمين",
+        "left": "يسار",
+        "bottom": "أسفل"
+      },
+      "companionSize": {
+        "label": "حجم لوحة tmux",
+        "description": "العرض، أو الارتفاع في الأسفل، بالبكسل."
+      },
+      "companionEdgeButton": {
+        "label": "زر حافة لوحة tmux",
+        "description": "إظهار زر صغير على حافة المحطة لفتح اللوحة."
       }
     }
   },
@@ -58,6 +83,12 @@
     "splitRight": "تقسيم لليمين",
     "splitDown": "تقسيم للأسفل",
     "splitFailed": "فشل في تقسيم القسم",
+    "splitViewRight": "فتح في تقسيم يمين",
+    "splitViewDown": "فتح في تقسيم أسفل",
+    "splitViewFull": "عرض التقسيم ممتلئ (4 محطات كحد أقصى)",
+    "splitViewDuplicate": "هذه الجلسة مفتوحة بالفعل",
+    "splitViewFailed": "تعذر فتح هذه النافذة",
+    "splitViewClose": "إغلاق",
     "newWindow": "نافذة جديدة",
     "windowCreateFailed": "فشل في إنشاء النافذة",
     "attachSessionTooltip": "الربط بـ {{session}}",
@@ -120,5 +151,16 @@
   "plugin": {
     "name": "مراقب Tmux",
     "description": "تصفح جلسات tmux والنوافذ والأقسام عبر مضيفيك والتحكم فيها."
+  },
+  "companion": {
+    "toggle": "لوحة Tmux",
+    "openTab": "فتح مراقب Tmux",
+    "loading": "جارٍ التحميل...",
+    "sessions_zero": "لا توجد جلسات",
+    "sessions_one": "جلسة واحدة",
+    "sessions_two": "جلستان",
+    "sessions_few": "{{count}} جلسات",
+    "sessions_many": "{{count}} جلسة",
+    "sessions_other": "{{count}} جلسة"
   }
 }

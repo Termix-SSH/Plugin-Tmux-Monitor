@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "Ativar suporte a mouse do tmux",
-        "description": "Aplicar suporte a mouse à sessão do tmux ao conectar ou criar uma sessão. Outras sessões e configurações globais do tmux permanecem inalteradas."
+        "description": "Ativado (padrão): o tmux controla o mouse (clique em painéis, modo de cópia do tmux), uma seleção com o mouse permanece destacada e copiada até você clicar, e em hosts Linux e macOS as teclas de seleção são remapeadas para todo o servidor tmux até que ele seja reiniciado. Desativado: selecione e copie texto normalmente e a roda do mouse rola o histórico do tmux. Será aplicado na próxima vez que você se conectar."
+      },
+      "showPanel": {
+        "label": "Painel ao lado do terminal",
+        "description": "Exibir um painel do tmux ao lado do terminal SSH deste host."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Abrir o painel do tmux com um terminal",
+        "description": "Exibir o painel do tmux quando um terminal for aberto em um host que o possui."
+      },
+      "companionSide": {
+        "label": "Lado do painel do tmux",
+        "description": "Onde o painel fica ao lado do terminal.",
+        "right": "Direita",
+        "left": "Esquerda",
+        "bottom": "Inferior"
+      },
+      "companionSize": {
+        "label": "Tamanho do painel do tmux",
+        "description": "Largura, ou altura na parte inferior, em pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Botão na borda do painel do tmux",
+        "description": "Exibir um pequeno botão na borda do terminal para abrir o painel."
       }
     }
   },
@@ -55,6 +80,12 @@
     "splitRight": "Dividir à direita",
     "splitDown": "Dividir para baixo",
     "splitFailed": "Falha ao dividir painel",
+    "splitViewRight": "Abrir em divisão à direita",
+    "splitViewDown": "Abrir em divisão abaixo",
+    "splitViewFull": "A divisão está cheia (máximo de 4 terminais)",
+    "splitViewDuplicate": "Essa sessão já está aberta",
+    "splitViewFailed": "Não foi possível abrir essa janela",
+    "splitViewClose": "Fechar",
     "newWindow": "Nova janela",
     "windowCreateFailed": "Falha ao criar janela",
     "attachSessionTooltip": "Conectar a {{session}}",
@@ -117,5 +148,13 @@
   "plugin": {
     "name": "Monitor do Tmux",
     "description": "Navegue e controle sessões, janelas e painéis do tmux em seus hosts."
+  },
+  "companion": {
+    "toggle": "Painel do Tmux",
+    "openTab": "Abrir Monitor do Tmux",
+    "loading": "Carregando...",
+    "sessions_one": "{{count}} sessão",
+    "sessions_many": "{{count}} sessões",
+    "sessions_other": "{{count}} sessões"
   }
 }

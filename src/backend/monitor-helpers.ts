@@ -31,11 +31,14 @@ export interface TmuxSessionSummary {
   created: number;
   lastActivity: number;
   attachedClients: number;
+  /** Set only on helper sessions this plugin created for split viewers. */
+  isView?: true;
 }
 
 export interface RawPane extends TmuxPane {
   sessionName: string;
   windowIndex: number;
+  isView?: true;
 }
 
 export interface ProcessInfo {
@@ -63,12 +66,13 @@ export function parseSessions(output: string): TmuxSessionSummary[] {
     .split("\n")
     .filter(Boolean)
     .map((line) => {
-      const [name, created, activity, attached] = line.split(SEP);
+      const [name, created, activity, attached, view] = line.split(SEP);
       return {
         name,
         created: parseInt(created, 10) || 0,
         lastActivity: parseInt(activity, 10) || 0,
         attachedClients: parseInt(attached, 10) || 0,
+        ...(view === "1" ? { isView: true as const } : {}),
       };
     });
 }
@@ -105,6 +109,7 @@ export function parsePanes(output: string): RawPane[] {
         command,
         path,
         title,
+        view,
       ] = line.split(SEP);
       return {
         sessionName,
@@ -118,6 +123,7 @@ export function parsePanes(output: string): RawPane[] {
         command: command || "",
         path: path || "",
         title: title || "",
+        ...(view === "1" ? { isView: true as const } : {}),
       };
     });
 }

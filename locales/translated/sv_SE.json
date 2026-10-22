@@ -22,7 +22,32 @@
       },
       "mouseEnabled": {
         "label": "Aktivera musstöd för tmux",
-        "description": "Aktivera musstöd för tmux-sessionen vid anslutning eller skapande av session. Andra sessioner och globala tmux-inställningar påverkas inte."
+        "description": "På (standard): tmux hanterar musen (klick på paneler, tmux-kopieringsläge), en musmarkering förblir markerad och kopierad tills du klickar, och på Linux- och macOS-värdar ombinds markeringstangenterna för hela tmux-servern tills den startas om. Av: markera och kopiera text normalt och hjulet rullar genom tmux-historiken. Tillämpas nästa gång du ansluter."
+      },
+      "showPanel": {
+        "label": "Panel bredvid terminalen",
+        "description": "Erbjud en tmux-panel bredvid SSH-terminalen för denna värd."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Öppna tmux-panelen med en terminal",
+        "description": "Visa tmux-panelen när en terminal öppnas på en värd som har den."
+      },
+      "companionSide": {
+        "label": "Placering för tmux-panelen",
+        "description": "Var panelen placeras bredvid terminalen.",
+        "right": "Höger",
+        "left": "Vänster",
+        "bottom": "Botten"
+      },
+      "companionSize": {
+        "label": "Storlek på tmux-panelen",
+        "description": "Bredd, eller höjd vid botten, i pixlar."
+      },
+      "companionEdgeButton": {
+        "label": "Knapp på kanten för tmux-panelen",
+        "description": "Visa en liten knapp på terminalens kant för att öppna panelen."
       }
     }
   },
@@ -54,6 +79,12 @@
     "splitRight": "Dela åt höger",
     "splitDown": "Dela nedåt",
     "splitFailed": "Kunde inte dela panel",
+    "splitViewRight": "Öppna i delad vy till höger",
+    "splitViewDown": "Öppna i delad vy nedåt",
+    "splitViewFull": "Delad vy är full (max 4 terminaler)",
+    "splitViewDuplicate": "Den sessionen är redan öppen",
+    "splitViewFailed": "Kunde inte öppna det fönstret",
+    "splitViewClose": "Stäng",
     "newWindow": "Nytt fönster",
     "windowCreateFailed": "Kunde inte skapa fönster",
     "attachSessionTooltip": "Anslut till {{session}}",
@@ -116,5 +147,12 @@
   "plugin": {
     "name": "Tmux Monitor",
     "description": "Bläddra och kontrollera tmux-sessioner, fönster och paneler på dina värdar."
+  },
+  "companion": {
+    "toggle": "Tmux-panel",
+    "openTab": "Öppna Tmux Monitor",
+    "loading": "Laddar...",
+    "sessions_one": "{{count}} session",
+    "sessions_other": "{{count}} sessioner"
   }
 }
