@@ -23,6 +23,31 @@
       "mouseEnabled": {
         "label": "Enable tmux mouse support",
         "description": "On (default): tmux handles the mouse (pane clicking, tmux copy mode), a mouse selection stays highlighted and copied until you click, and on Linux and macOS hosts the selection keys are rebound for the whole tmux server until it restarts. Off: select and copy text normally and the wheel scrolls tmux history. Applies the next time you attach."
+      },
+      "showPanel": {
+        "label": "Panel beside the terminal",
+        "description": "Offer a tmux panel next to this host's SSH terminal."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Open the tmux panel with a terminal",
+        "description": "Show the tmux panel when a terminal opens on a host that has it."
+      },
+      "companionSide": {
+        "label": "Tmux panel side",
+        "description": "Where the panel sits next to the terminal.",
+        "right": "Right",
+        "left": "Left",
+        "bottom": "Bottom"
+      },
+      "companionSize": {
+        "label": "Tmux panel size",
+        "description": "Width, or height at the bottom, in pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Tmux panel edge button",
+        "description": "Show a small button on the terminal edge to open the panel."
       }
     }
   },
@@ -122,5 +147,12 @@
   "plugin": {
     "name": "Tmux Monitor",
     "description": "Browse and control tmux sessions, windows and panes across your hosts."
+  },
+  "companion": {
+    "toggle": "Tmux panel",
+    "openTab": "Open Tmux Monitor",
+    "loading": "Loading...",
+    "sessions_one": "{{count}} session",
+    "sessions_other": "{{count}} sessions"
   }
 }

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0
+
+### Added
+
+- Tmux panel beside an SSH terminal: see the host's sessions, attach or switch the terminal to one, jump to a window and start a new session
+
 ## 1.0.4
 
 ### Fixed
