@@ -154,5 +154,18 @@
     "loading": "Loading...",
     "sessions_one": "{{count}} session",
     "sessions_other": "{{count}} sessions"
+  },
+  "operations": {
+    "list": {
+      "title": "List tmux sessions"
+    },
+    "kill": {
+      "title": "End tmux session"
+    },
+    "sessions": {
+      "title": "tmux sessions",
+      "clients": "Clients",
+      "activity": "Last activity"
+    }
   }
 }

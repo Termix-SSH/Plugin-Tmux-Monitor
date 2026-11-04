@@ -1,7 +1,7 @@
 {
   "id": "tmux-monitor",
   "name": "Tmux Monitor",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Browse and control tmux sessions, windows and panes across your hosts.",
   "author": {
     "name": "Termix"
@@ -22,7 +22,7 @@
     "A tmux panel beside any SSH terminal to attach and switch sessions"
   ],
   "engine": {
-    "termix": ">=26.10.0",
+    "termix": ">=26.11.1-0",
     "api": "^1.2"
   },
   "capabilities": [
@@ -31,7 +31,8 @@
     "ssh:connect",
     "db:own",
     "network:serve",
-    "ui:surface"
+    "ui:surface",
+    "operations:provide"
   ],
   "provides": [
     {
@@ -132,7 +133,68 @@
       "labelKey": "hosts.tabTmuxMonitor",
       "editorTab": "tmux-monitor"
     },
-    "uses": ["terminal.view", "terminal.open"]
+    "uses": ["terminal.view", "terminal.open"],
+    "operations": {
+      "actions": [
+        {
+          "id": "tmux-monitor.list-sessions",
+          "titleKey": "operations.list.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableTmuxMonitor": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "tmux-monitor.kill-session",
+          "titleKey": "operations.kill.title",
+          "icon": "X",
+          "scope": "resource",
+          "resource": "tmux-monitor.session",
+          "risk": "destructive",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "when": {
+            "settings": {
+              "enableTmuxMonitor": true
+            }
+          }
+        }
+      ],
+      "resources": [
+        {
+          "id": "tmux-monitor.session",
+          "titleKey": "operations.sessions.title",
+          "icon": "SquareTerminal",
+          "list": "tmux-monitor.list-sessions",
+          "key": "name",
+          "name": "name",
+          "status": "state",
+          "tab": "tmux_monitor",
+          "columns": [
+            {
+              "key": "clients",
+              "titleKey": "operations.sessions.clients"
+            },
+            {
+              "key": "lastActivity",
+              "titleKey": "operations.sessions.activity",
+              "type": "time"
+            }
+          ]
+        }
+      ]
+    }
   },
   "locales": "locales",
   "platforms": ["linux", "win32", "darwin"]

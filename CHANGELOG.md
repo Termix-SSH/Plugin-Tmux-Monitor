@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.0
+
+### Added
+
+- tmux sessions across hosts in the All hosts table, and ending a session through Termix actions
+
+### Changed
+
+- Needs Termix 26.11.1 or newer
+
 ## 1.1.0
 
 ### Added
