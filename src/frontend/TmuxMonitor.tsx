@@ -29,6 +29,7 @@ import {
   FormFooter,
   Segmented,
   Select2,
+  EmptyState,
 } from "@termix-ssh/plugin-sdk/ui";
 import {
   ChevronDown,
@@ -40,7 +41,6 @@ import {
   MonitorPlay,
   Plus,
   RefreshCw,
-  Search,
   Server,
   SquareTerminal,
 } from "lucide-react";
@@ -1780,22 +1780,18 @@ export function TmuxMonitor({
               </div>
             ))
           ) : hostsLoaded && hosts.length === 0 ? (
-            <div className="flex flex-1 items-center justify-center">
-              <div className="max-w-sm text-center text-muted-foreground">
-                <Server className="mx-auto mb-2 size-8 opacity-50" />
-                <p className="text-sm">{t("tmuxMonitor.noHosts")}</p>
-                <p className="mt-1 text-xs text-muted-foreground/70">
-                  {t("tmuxMonitor.noHostsHint")}
-                </p>
-              </div>
-            </div>
+            <EmptyState
+              className="flex-1"
+              icon={Server}
+              title={t("tmuxMonitor.noHosts")}
+              hint={t("tmuxMonitor.noHostsHint")}
+            />
           ) : (
-            <div className="flex flex-1 items-center justify-center">
-              <div className="text-center text-muted-foreground">
-                <MonitorPlay className="mx-auto mb-2 size-8 opacity-50" />
-                <p className="text-sm">{t("tmuxMonitor.selectPaneHint")}</p>
-              </div>
-            </div>
+            <EmptyState
+              className="flex-1"
+              icon={MonitorPlay}
+              title={t("tmuxMonitor.selectPaneHint")}
+            />
           )}
         </div>
       </div>

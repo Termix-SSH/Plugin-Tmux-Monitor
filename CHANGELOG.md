@@ -9,6 +9,7 @@
 ### Changed
 
 - Needs Termix 26.11.1 or newer
+- Empty views use the same look as the rest of Termix
 
 ## 1.1.0
 
