@@ -10,6 +10,7 @@ import {
   tmuxAvailable,
   withHostConnection,
 } from "./routes.js";
+import type { SummaryCache } from "./summary.js";
 
 async function hostOf(ctx: PluginContext, context: PluginOperationContext) {
   if (context.hostId === undefined) throw new Error("This needs a host");
@@ -22,6 +23,7 @@ async function hostOf(ctx: PluginContext, context: PluginOperationContext) {
 export function registerOperations(
   ctx: PluginContext,
   forgetTags: (hostId: number, session: string) => Promise<unknown>,
+  summary: SummaryCache,
 ): void {
   if (typeof ctx.operations?.register !== "function") return;
 
@@ -42,6 +44,21 @@ export function registerOperations(
           lastActivity: new Date(session.lastActivity * 1000).toISOString(),
         }));
       return { summary: `${rows.length} sessions`, data: { rows } };
+    },
+  });
+
+  ctx.operations.register("tmux-monitor.session-count", {
+    run: async (_input, context) => {
+      if (context.hostId === undefined) throw new Error("This needs a host");
+      const result = await summary.check(context.hostId);
+      if (result.error) throw new Error(result.error);
+      return {
+        summary: `${result.sessions} sessions`,
+        data: {
+          value: result.sessions,
+          label: result.available ? `${result.attached} attached` : "No tmux",
+        },
+      };
     },
   });
 

@@ -8,6 +8,7 @@ import { setTmuxMonitorApi } from "./api";
 import { tmuxMonitorEnabled, tmuxPanelEnabled } from "./host-tmux-monitor";
 import { TmuxCompanion, useTmuxCompanionDefaults } from "./TmuxCompanion";
 import { HostTmuxMonitorSection } from "./HostTmuxMonitorSection";
+import { TmuxHostsCard } from "./TmuxHostsCard";
 import { TmuxMonitor } from "./TmuxMonitor";
 import TmuxMonitorApp from "./TmuxMonitorApp";
 
@@ -42,6 +43,15 @@ export function activate(app: TermixApp): void {
     persistent: true,
     activityTypes: ["tmux_monitor"],
     standalone: TmuxMonitorStandalone,
+  });
+
+  app.registerDashboardCard({
+    id: "tmux-hosts",
+    titleKey: "card.title",
+    defaultPanel: "side",
+    defaultHeight: 220,
+    frame: "framed",
+    component: TmuxHostsCard,
   });
 
   app.registerHostAction({

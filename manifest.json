@@ -155,6 +155,22 @@
           }
         },
         {
+          "id": "tmux-monitor.session-count",
+          "titleKey": "operations.count.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableTmuxMonitor": true
+            }
+          },
+          "surfaces": {
+            "palette": false
+          }
+        },
+        {
           "id": "tmux-monitor.kill-session",
           "titleKey": "operations.kill.title",
           "icon": "X",
@@ -193,8 +209,25 @@
             }
           ]
         }
+      ],
+      "signals": [
+        {
+          "id": "tmux-monitor.sessions",
+          "titleKey": "operations.sessions.title",
+          "read": "tmux-monitor.session-count",
+          "scope": "host",
+          "kind": "count",
+          "refreshSec": 120
+        }
       ]
-    }
+    },
+    "dashboardCards": [
+      {
+        "id": "tmux-hosts",
+        "titleKey": "card.title",
+        "icon": "Layers"
+      }
+    ]
   },
   "locales": "locales",
   "platforms": ["linux", "win32", "darwin"]

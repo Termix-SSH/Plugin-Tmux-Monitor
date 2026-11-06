@@ -106,3 +106,31 @@ describe("host editor section", () => {
     ).toEqual({ enableTmuxMonitor: true, mouseEnabled: false });
   });
 });
+
+describe("dashboard card", () => {
+  it("lists session counts per host", async () => {
+    rendered = await renderWithApp(plugin, {
+      manifest,
+      locales,
+      permissions: ["tmux-monitor.use"],
+      hosts: [{ id: "1", name: "web", ip: "10.0.0.1", port: 22 }],
+      api: {
+        get: vi.fn(async () => ({
+          data: [
+            {
+              hostId: 1,
+              checkedAt: "2026-11-05T00:00:00.000Z",
+              available: true,
+              sessions: 3,
+              attached: 1,
+            },
+          ],
+        })),
+      } as never,
+    });
+    expect(rendered.registered.dashboardCards()).toEqual(["tmux-hosts"]);
+    rendered.renderDashboardCard("tmux-hosts");
+    expect(await screen.findByText("web")).toBeTruthy();
+    expect(screen.getByText("3 sessions, 1 attached")).toBeTruthy();
+  });
+});
