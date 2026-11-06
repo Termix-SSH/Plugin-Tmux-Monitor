@@ -21,6 +21,7 @@ import {
   ListRow,
   ListRowAction,
   PanelList,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import {
   createTmuxSession,
@@ -168,9 +169,7 @@ export function TmuxCompanion({ host, getHandle, isVisible }: CompanionProps) {
       {failed ? (
         <p className="p-2 text-xs text-destructive">{failed}</p>
       ) : !overview ? (
-        <p className="p-2 text-xs text-muted-foreground">
-          {t("companion.loading")}
-        </p>
+        <LoadingState compact label={t("companion.loading")} />
       ) : !overview.available ? (
         <p className="p-2 text-xs text-muted-foreground">
           {t("tmuxMonitor.tmuxUnavailable")}

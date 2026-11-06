@@ -30,6 +30,7 @@ import {
   Segmented,
   Select2,
   EmptyState,
+  TOOLBAR_FIT,
 } from "@termix-ssh/plugin-sdk/ui";
 import {
   ChevronDown,
@@ -1386,14 +1387,16 @@ export function TmuxMonitor({
             </Button>
           </span>
         </div>
-        <div className="space-y-2 border-b border-border px-3 py-2">
+        <div
+          className={`space-y-2 border-b border-border px-3 py-2 ${TOOLBAR_FIT}`}
+        >
           <Segmented<"all" | "single">
             value={scope}
             onChange={(value) => {
               setScope(value);
               saveMonitorValue("scope", value);
             }}
-            className="w-full [&>button]:flex-1"
+
             options={[
               { value: "all", label: t("tmuxMonitor.allHosts") },
               { value: "single", label: t("tmuxMonitor.singleHost") },
