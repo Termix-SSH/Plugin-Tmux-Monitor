@@ -158,5 +158,36 @@
     "sessions_few": "{{count}} sesijos",
     "sessions_many": "{{count}} sesijų",
     "sessions_other": "{{count}} sesijų"
+  },
+  "operations": {
+    "list": {
+      "title": "Rodyti tmux sesijas"
+    },
+    "kill": {
+      "title": "Uždaryti tmux sesiją"
+    },
+    "sessions": {
+      "title": "tmux sesijos",
+      "clients": "Klientai",
+      "activity": "Paskutinė veikla"
+    },
+    "count": {
+      "title": "Suskaičiuoti tmux sesijas"
+    }
+  },
+  "card": {
+    "title": "tmux sesijos",
+    "loading": "Tikrinami serveriai...",
+    "refresh": "Patikrinti dar kartą",
+    "empty": "Įjunkite Tmux Monitor serveriui, kad jį matytumėte čia.",
+    "missing": "Nėra tmux",
+    "summary_one": "{{count}} sesija {{hosts}} serveriuose",
+    "summary_few": "{{count}} sesijos {{hosts}} serveriuose",
+    "summary_many": "{{count}} sesijų {{hosts}} serveriuose",
+    "summary_other": "{{count}} sesijų {{hosts}} serveriuose",
+    "sessions_one": "{{count}} sesija, {{attached}} prisijungusi",
+    "sessions_few": "{{count}} sesijos, {{attached}} prisijungusios",
+    "sessions_many": "{{count}} sesijų, {{attached}} prisijungusių",
+    "sessions_other": "{{count}} sesijų, {{attached}} prisijungusių"
   }
 }

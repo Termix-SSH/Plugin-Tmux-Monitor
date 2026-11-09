@@ -154,5 +154,32 @@
     "loading": "Laai tans...",
     "sessions_one": "{{count}} sessie",
     "sessions_other": "{{count}} sessies"
+  },
+  "operations": {
+    "list": {
+      "title": "Lys tmux-sessies"
+    },
+    "kill": {
+      "title": "Beëindig tmux-sessie"
+    },
+    "sessions": {
+      "title": "tmux-sessies",
+      "clients": "Kliënte",
+      "activity": "Laaste aktiwiteit"
+    },
+    "count": {
+      "title": "Tel tmux-sessies"
+    }
+  },
+  "card": {
+    "title": "tmux-sessies",
+    "loading": "Kontroleer gasheërs...",
+    "refresh": "Kontroleer weer",
+    "empty": "Skakel Tmux Monitor vir 'n gasheer aan om dit hier te sien.",
+    "missing": "Geen tmux nie",
+    "summary_one": "{{count}} sessie op {{hosts}} gasheërs",
+    "summary_other": "{{count}} sessies op {{hosts}} gasheërs",
+    "sessions_one": "{{count}} sessie, {{attached}} geheg",
+    "sessions_other": "{{count}} sessies, {{attached}} geheg"
   }
 }

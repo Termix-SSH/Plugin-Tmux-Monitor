@@ -43,7 +43,7 @@ export function SearchResults({
   const { t } = useTranslation();
 
   return (
-    <div className="max-h-56 overflow-y-auto border-b border-border bg-card">
+    <div className="max-h-56 overflow-y-auto border-b border-border bg-background">
       <div className="flex items-center justify-between gap-2 px-3 py-1.5">
         <span className="truncate text-xs text-muted-foreground">
           {searching

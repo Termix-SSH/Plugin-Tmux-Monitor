@@ -154,5 +154,32 @@
     "loading": "लोड हो रहा है...",
     "sessions_one": "{{count}} सेशन",
     "sessions_other": "{{count}} सेशन"
+  },
+  "operations": {
+    "list": {
+      "title": "tmux सत्रों की सूची"
+    },
+    "kill": {
+      "title": "tmux सत्र समाप्त करें"
+    },
+    "sessions": {
+      "title": "tmux सत्र",
+      "clients": "क्लाइंट",
+      "activity": "आखिरी गतिविधि"
+    },
+    "count": {
+      "title": "tmux सत्रों की गिनती"
+    }
+  },
+  "card": {
+    "title": "tmux सत्र",
+    "loading": "होस्ट जांच रहे हैं...",
+    "refresh": "फिर से जांचें",
+    "empty": "यहाँ देखने के लिए किसी होस्ट के लिए Tmux Monitor चालू करें।",
+    "missing": "कोई tmux नहीं",
+    "summary_one": "{{hosts}} होस्ट पर {{count}} सत्र",
+    "summary_other": "{{hosts}} होस्ट पर {{count}} सत्र",
+    "sessions_one": "{{count}} सत्र, {{attached}} संलग्न",
+    "sessions_other": "{{count}} सत्र, {{attached}} संलग्न"
   }
 }

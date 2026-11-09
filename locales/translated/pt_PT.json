@@ -156,5 +156,34 @@
     "sessions_one": "{{count}} sessão",
     "sessions_many": "{{count}} sessões",
     "sessions_other": "{{count}} sessões"
+  },
+  "operations": {
+    "list": {
+      "title": "Listar sessões tmux"
+    },
+    "kill": {
+      "title": "Terminar sessão tmux"
+    },
+    "sessions": {
+      "title": "Sessões tmux",
+      "clients": "Clientes",
+      "activity": "Última atividade"
+    },
+    "count": {
+      "title": "Contar sessões tmux"
+    }
+  },
+  "card": {
+    "title": "Sessões tmux",
+    "loading": "A verificar hosts...",
+    "refresh": "Verificar novamente",
+    "empty": "Ative o Monitor Tmux para um host para o ver aqui.",
+    "missing": "Sem tmux",
+    "summary_one": "{{count}} sessão em {{hosts}} hosts",
+    "summary_many": "{{count}} sessões em {{hosts}} hosts",
+    "summary_other": "{{count}} sessões em {{hosts}} hosts",
+    "sessions_one": "{{count}} sessão, {{attached}} ligada",
+    "sessions_many": "{{count}} sessões, {{attached}} ligadas",
+    "sessions_other": "{{count}} sessões, {{attached}} ligadas"
   }
 }

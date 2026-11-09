@@ -152,5 +152,30 @@
     "openTab": "Tmux 모니터 열기",
     "loading": "로딩 중...",
     "sessions_other": "{{count}}개 세션"
+  },
+  "operations": {
+    "list": {
+      "title": "tmux 세션 목록"
+    },
+    "kill": {
+      "title": "tmux 세션 종료"
+    },
+    "sessions": {
+      "title": "tmux 세션",
+      "clients": "클라이언트",
+      "activity": "마지막 활동"
+    },
+    "count": {
+      "title": "tmux 세션 수 세기"
+    }
+  },
+  "card": {
+    "title": "tmux 세션",
+    "loading": "호스트 확인 중...",
+    "refresh": "다시 확인",
+    "empty": "여기에 표시하려면 호스트에서 Tmux 모니터를 켜세요.",
+    "missing": "tmux 없음",
+    "summary_other": "{{hosts}}개 호스트에 {{count}}개 세션",
+    "sessions_other": "{{count}}개 세션, {{attached}}개 연결됨"
   }
 }

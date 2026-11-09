@@ -152,5 +152,30 @@
     "openTab": "Buka Monitor Tmux",
     "loading": "Memuat...",
     "sessions_other": "{{count}} sesi"
+  },
+  "operations": {
+    "list": {
+      "title": "Daftar sesi tmux"
+    },
+    "kill": {
+      "title": "Akhiri sesi tmux"
+    },
+    "sessions": {
+      "title": "Sesi tmux",
+      "clients": "Klien",
+      "activity": "Aktivitas terakhir"
+    },
+    "count": {
+      "title": "Hitung sesi tmux"
+    }
+  },
+  "card": {
+    "title": "Sesi tmux",
+    "loading": "Memeriksa host...",
+    "refresh": "Periksa lagi",
+    "empty": "Aktifkan Tmux Monitor untuk host agar muncul di sini.",
+    "missing": "Tidak ada tmux",
+    "summary_other": "{{count}} sesi di {{hosts}} host",
+    "sessions_other": "{{count}} sesi, {{attached}} terhubung"
   }
 }

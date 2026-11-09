@@ -152,5 +152,30 @@
     "openTab": "Tmux モニターを開く",
     "loading": "読み込み中...",
     "sessions_other": "{{count}} セッション"
+  },
+  "operations": {
+    "list": {
+      "title": "tmux セッションの一覧表示"
+    },
+    "kill": {
+      "title": "tmux セッションを終了"
+    },
+    "sessions": {
+      "title": "tmux セッション",
+      "clients": "クライアント",
+      "activity": "最終アクティビティ"
+    },
+    "count": {
+      "title": "tmux セッションの数をカウント"
+    }
+  },
+  "card": {
+    "title": "tmux セッション",
+    "loading": "ホストを確認しています...",
+    "refresh": "再確認",
+    "empty": "ここで表示するには、ホストの Tmux Monitor を有効にしてください。",
+    "missing": "tmux なし",
+    "summary_other": "{{hosts}} 台のホストで {{count}} セッション",
+    "sessions_other": "{{count}} セッション、{{attached}} 接続済み"
   }
 }

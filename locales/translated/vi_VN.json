@@ -152,5 +152,30 @@
     "openTab": "Mở Trình theo dõi Tmux",
     "loading": "Đang tải...",
     "sessions_other": "{{count}} phiên"
+  },
+  "operations": {
+    "list": {
+      "title": "Liệt kê các phiên tmux"
+    },
+    "kill": {
+      "title": "Kết thúc phiên tmux"
+    },
+    "sessions": {
+      "title": "Các phiên tmux",
+      "clients": "Khách hàng",
+      "activity": "Hoạt động gần nhất"
+    },
+    "count": {
+      "title": "Đếm số phiên tmux"
+    }
+  },
+  "card": {
+    "title": "Các phiên tmux",
+    "loading": "Đang kiểm tra các máy chủ...",
+    "refresh": "Kiểm tra lại",
+    "empty": "Bật Tmux Monitor cho một máy chủ để xem nó ở đây.",
+    "missing": "Không có tmux",
+    "summary_other": "{{count}} phiên trên {{hosts}} máy chủ",
+    "sessions_other": "{{count}} phiên, {{attached}} đang kết nối"
   }
 }

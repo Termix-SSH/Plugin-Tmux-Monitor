@@ -154,5 +154,32 @@
     "loading": "Ladataan...",
     "sessions_one": "{{count}} istunto",
     "sessions_other": "{{count}} istuntoa"
+  },
+  "operations": {
+    "list": {
+      "title": "Listaa tmux-istunnot"
+    },
+    "kill": {
+      "title": "Lopeta tmux-istunto"
+    },
+    "sessions": {
+      "title": "tmux-istunnot",
+      "clients": "Asiakkaat",
+      "activity": "Viimeisin toiminta"
+    },
+    "count": {
+      "title": "Laske tmux-istunnot"
+    }
+  },
+  "card": {
+    "title": "tmux-istunnot",
+    "loading": "Tarkistetaan isäntiä...",
+    "refresh": "Tarkista uudelleen",
+    "empty": "Ota Tmux Monitor käyttöön isännällä nähdäksesi sen täällä.",
+    "missing": "Ei tmuxia",
+    "summary_one": "{{count}} istunto {{hosts}} isännällä",
+    "summary_other": "{{count}} istuntoa {{hosts}} isännällä",
+    "sessions_one": "{{count}} istunto, {{attached}} liitetty",
+    "sessions_other": "{{count}} istuntoa, {{attached}} liitettyä"
   }
 }

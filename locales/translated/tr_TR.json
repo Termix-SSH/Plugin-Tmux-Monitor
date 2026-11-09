@@ -154,5 +154,32 @@
     "loading": "Yükleniyor...",
     "sessions_one": "{{count}} oturum",
     "sessions_other": "{{count}} oturum"
+  },
+  "operations": {
+    "list": {
+      "title": "tmux oturumlarını listele"
+    },
+    "kill": {
+      "title": "tmux oturumunu sonlandır"
+    },
+    "sessions": {
+      "title": "tmux oturumları",
+      "clients": "İstemciler",
+      "activity": "Son aktivite"
+    },
+    "count": {
+      "title": "tmux oturumlarını say"
+    }
+  },
+  "card": {
+    "title": "tmux oturumları",
+    "loading": "Ana bilgisayarlar kontrol ediliyor...",
+    "refresh": "Tekrar kontrol et",
+    "empty": "Burada görmek için bir ana bilgisayarda Tmux İzleyici'yi açın.",
+    "missing": "tmux yok",
+    "summary_one": "{{hosts}} ana bilgisayarda {{count}} oturum",
+    "summary_other": "{{hosts}} ana bilgisayarda {{count}} oturum",
+    "sessions_one": "{{count}} oturum, {{attached}} bağlı",
+    "sessions_other": "{{count}} oturum, {{attached}} bağlı"
   }
 }

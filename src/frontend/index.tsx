@@ -8,13 +8,17 @@ import { setTmuxMonitorApi } from "./api";
 import { tmuxMonitorEnabled, tmuxPanelEnabled } from "./host-tmux-monitor";
 import { TmuxCompanion, useTmuxCompanionDefaults } from "./TmuxCompanion";
 import { HostTmuxMonitorSection } from "./HostTmuxMonitorSection";
+import { TmuxHostsCard } from "./TmuxHostsCard";
 import { TmuxMonitor } from "./TmuxMonitor";
 import TmuxMonitorApp from "./TmuxMonitorApp";
 
 const VIEW_ID = "tmux_monitor";
 
 function TmuxMonitorTab({ tab, isVisible }: TabProps) {
-  const hostId = (tab.data?.hostId as number | undefined) ?? undefined;
+  // A host page embeds this tab with its host and no data.
+  const hostId =
+    (tab.data?.hostId as number | undefined) ??
+    (tab.host ? Number(tab.host.id) : undefined);
   return (
     <TmuxMonitor
       initialHostId={hostId}
@@ -44,11 +48,21 @@ export function activate(app: TermixApp): void {
     standalone: TmuxMonitorStandalone,
   });
 
+  app.registerDashboardCard({
+    id: "tmux-hosts",
+    titleKey: "card.title",
+    defaultPanel: "side",
+    defaultHeight: 220,
+    frame: "framed",
+    component: TmuxHostsCard,
+  });
+
   app.registerHostAction({
     id: "tmux_monitor",
     titleKey: "nav.tmuxMonitor",
     icon: Layers,
     kind: "open",
+    tabType: VIEW_ID,
     order: 70,
     copyUrlView: VIEW_ID,
     when: (host) => !!host.enableSsh && tmuxMonitorEnabled(host),

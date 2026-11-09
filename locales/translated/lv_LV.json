@@ -156,5 +156,34 @@
     "sessions_zero": "0 sesijas",
     "sessions_one": "{{count}} sesija",
     "sessions_other": "{{count}} sesijas"
+  },
+  "operations": {
+    "list": {
+      "title": "tmux sesiju saraksts"
+    },
+    "kill": {
+      "title": "Beigt tmux sesiju"
+    },
+    "sessions": {
+      "title": "tmux sesijas",
+      "clients": "Klienti",
+      "activity": "Pēdējā aktivitāte"
+    },
+    "count": {
+      "title": "Saskaitīt tmux sesijas"
+    }
+  },
+  "card": {
+    "title": "tmux sesijas",
+    "loading": "Pārbauda mezglus...",
+    "refresh": "Pārbaudīt vēlreiz",
+    "empty": "Ieslēdziet Tmux Monitor mezglam, lai to redzētu šeit.",
+    "missing": "Nav tmux",
+    "summary_zero": "0 sesijas {{hosts}} mezglos",
+    "summary_one": "{{count}} sesija {{hosts}} mezglos",
+    "summary_other": "{{count}} sesijas {{hosts}} mezglos",
+    "sessions_zero": "0 sesijas, {{attached}} pieslēgtas",
+    "sessions_one": "{{count}} sesija, {{attached}} pieslēgta",
+    "sessions_other": "{{count}} sesijas, {{attached}} pieslēgtas"
   }
 }

@@ -154,5 +154,32 @@
     "loading": "Laddar...",
     "sessions_one": "{{count}} session",
     "sessions_other": "{{count}} sessioner"
+  },
+  "operations": {
+    "list": {
+      "title": "Lista tmux-sessioner"
+    },
+    "kill": {
+      "title": "Avsluta tmux-session"
+    },
+    "sessions": {
+      "title": "tmux-sessioner",
+      "clients": "Klienter",
+      "activity": "Senaste aktivitet"
+    },
+    "count": {
+      "title": "Räkna tmux-sessioner"
+    }
+  },
+  "card": {
+    "title": "tmux-sessioner",
+    "loading": "Kontrollerar värdar...",
+    "refresh": "Kontrollera igen",
+    "empty": "Aktivera Tmux Monitor för en värd för att se den här.",
+    "missing": "Ingen tmux",
+    "summary_one": "{{count}} session på {{hosts}} värdar",
+    "summary_other": "{{count}} sessioner på {{hosts}} värdar",
+    "sessions_one": "{{count}} session, {{attached}} ansluten",
+    "sessions_other": "{{count}} sessioner, {{attached}} anslutna"
   }
 }

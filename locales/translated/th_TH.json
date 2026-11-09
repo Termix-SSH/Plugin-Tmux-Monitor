@@ -152,5 +152,30 @@
     "openTab": "เปิด Tmux Monitor",
     "loading": "กำลังโหลด...",
     "sessions_other": "{{count}} เซสชัน"
+  },
+  "operations": {
+    "list": {
+      "title": "แสดงรายการเซสชัน tmux"
+    },
+    "kill": {
+      "title": "ปิดเซสชัน tmux"
+    },
+    "sessions": {
+      "title": "เซสชัน tmux",
+      "clients": "ไคลเอนต์",
+      "activity": "กิจกรรมล่าสุด"
+    },
+    "count": {
+      "title": "นับจำนวนเซสชัน tmux"
+    }
+  },
+  "card": {
+    "title": "เซสชัน tmux",
+    "loading": "กำลังตรวจสอบโฮสต์...",
+    "refresh": "ตรวจสอบอีกครั้ง",
+    "empty": "เปิดใช้งาน Tmux Monitor สำหรับโฮสต์เพื่อแสดงที่นี่",
+    "missing": "ไม่มี tmux",
+    "summary_other": "เซสชัน {{count}} บนโฮสต์ {{hosts}}",
+    "sessions_other": "เซสชัน {{count}}, เชื่อมต่ออยู่ {{attached}}"
   }
 }

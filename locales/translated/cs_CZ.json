@@ -158,5 +158,36 @@
     "sessions_few": "{{count}} relace",
     "sessions_many": "{{count}} relací",
     "sessions_other": "{{count}} relace"
+  },
+  "operations": {
+    "list": {
+      "title": "Seznam tmux relací"
+    },
+    "kill": {
+      "title": "Ukončit tmux relaci"
+    },
+    "sessions": {
+      "title": "tmux relace",
+      "clients": "Klienti",
+      "activity": "Poslední aktivita"
+    },
+    "count": {
+      "title": "Počet tmux relací"
+    }
+  },
+  "card": {
+    "title": "tmux relace",
+    "loading": "Kontrola hostitelů...",
+    "refresh": "Zkontrolovat znovu",
+    "empty": "Pro zobrazení zde zapněte Monitor Tmux pro hostitele.",
+    "missing": "Žádný tmux",
+    "summary_one": "{{count}} relace na {{hosts}} hostitelích",
+    "summary_few": "{{count}} relace na {{hosts}} hostitelích",
+    "summary_many": "{{count}} relací na {{hosts}} hostitelích",
+    "summary_other": "{{count}} relací na {{hosts}} hostitelích",
+    "sessions_one": "{{count}} relace, {{attached}} připojená",
+    "sessions_few": "{{count}} relace, {{attached}} připojené",
+    "sessions_many": "{{count}} relací, {{attached}} připojených",
+    "sessions_other": "{{count}} relací, {{attached}} připojených"
   }
 }

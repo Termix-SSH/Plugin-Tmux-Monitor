@@ -162,5 +162,40 @@
     "sessions_few": "{{count}} جلسات",
     "sessions_many": "{{count}} جلسة",
     "sessions_other": "{{count}} جلسة"
+  },
+  "operations": {
+    "list": {
+      "title": "عرض جلسات tmux"
+    },
+    "kill": {
+      "title": "إنهاء جلسة tmux"
+    },
+    "sessions": {
+      "title": "جلسات tmux",
+      "clients": "العملاء",
+      "activity": "آخر نشاط"
+    },
+    "count": {
+      "title": "عد جلسات tmux"
+    }
+  },
+  "card": {
+    "title": "جلسات tmux",
+    "loading": "جارٍ فحص الأجهزة...",
+    "refresh": "فحص مرة أخرى",
+    "empty": "فعّل مراقب Tmux لجهاز ما لعرضه هنا.",
+    "missing": "لا يوجد tmux",
+    "summary_zero": "لا توجد جلسات على {{hosts}} أجهزة",
+    "summary_one": "جلسة واحدة على {{hosts}} أجهزة",
+    "summary_two": "جلستان على {{hosts}} أجهزة",
+    "summary_few": "{{count}} جلسات على {{hosts}} أجهزة",
+    "summary_many": "{{count}} جلسة على {{hosts}} أجهزة",
+    "summary_other": "{{count}} جلسة على {{hosts}} أجهزة",
+    "sessions_zero": "لا توجد جلسات، {{attached}} متصلة",
+    "sessions_one": "جلسة واحدة، {{attached}} متصلة",
+    "sessions_two": "جلستان، {{attached}} متصلة",
+    "sessions_few": "{{count}} جلسات، {{attached}} متصلة",
+    "sessions_many": "{{count}} جلسة، {{attached}} متصلة",
+    "sessions_other": "{{count}} جلسة، {{attached}} متصلة"
   }
 }

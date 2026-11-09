@@ -158,5 +158,36 @@
     "sessions_few": "{{count}} сесії",
     "sessions_many": "{{count}} сесій",
     "sessions_other": "{{count}} сесій"
+  },
+  "operations": {
+    "list": {
+      "title": "Список сесій tmux"
+    },
+    "kill": {
+      "title": "Завершити сесію tmux"
+    },
+    "sessions": {
+      "title": "Сесії tmux",
+      "clients": "Клієнти",
+      "activity": "Остання активність"
+    },
+    "count": {
+      "title": "Підрахувати сесії tmux"
+    }
+  },
+  "card": {
+    "title": "Сесії tmux",
+    "loading": "Перевірка хостів...",
+    "refresh": "Перевірити ще раз",
+    "empty": "Увімкніть монітор Tmux для хоста, щоб побачити його тут.",
+    "missing": "Немає tmux",
+    "summary_one": "{{count}} сесія на {{hosts}} хостах",
+    "summary_few": "{{count}} сесії на {{hosts}} хостах",
+    "summary_many": "{{count}} сесій на {{hosts}} хостах",
+    "summary_other": "{{count}} сесій на {{hosts}} хостах",
+    "sessions_one": "{{count}} сесія, {{attached}} підключено",
+    "sessions_few": "{{count}} сесії, {{attached}} підключено",
+    "sessions_many": "{{count}} сесій, {{attached}} підключено",
+    "sessions_other": "{{count}} сесій, {{attached}} підключено"
   }
 }

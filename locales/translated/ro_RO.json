@@ -156,5 +156,34 @@
     "sessions_one": "{{count}} sesiune",
     "sessions_few": "{{count}} sesiuni",
     "sessions_other": "{{count}} sesiuni"
+  },
+  "operations": {
+    "list": {
+      "title": "Listează sesiunile tmux"
+    },
+    "kill": {
+      "title": "Încheie sesiunea tmux"
+    },
+    "sessions": {
+      "title": "Sesiuni tmux",
+      "clients": "Clienți",
+      "activity": "Ultima activitate"
+    },
+    "count": {
+      "title": "Numără sesiunile tmux"
+    }
+  },
+  "card": {
+    "title": "Sesiuni tmux",
+    "loading": "Se verifică gazdele...",
+    "refresh": "Verifică din nou",
+    "empty": "Activează Monitorul Tmux pentru o gazdă pentru a o vedea aici.",
+    "missing": "Fără tmux",
+    "summary_one": "{{count}} sesiune pe {{hosts}} gazde",
+    "summary_few": "{{count}} sesiuni pe {{hosts}} gazde",
+    "summary_other": "{{count}} sesiuni pe {{hosts}} gazde",
+    "sessions_one": "{{count}} sesiune, {{attached}} atașată",
+    "sessions_few": "{{count}} sesiuni, {{attached}} atașate",
+    "sessions_other": "{{count}} sesiuni, {{attached}} atașate"
   }
 }

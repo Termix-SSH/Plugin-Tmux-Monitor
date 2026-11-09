@@ -29,6 +29,8 @@ import {
   FormFooter,
   Segmented,
   Select2,
+  EmptyState,
+  TOOLBAR_FIT,
 } from "@termix-ssh/plugin-sdk/ui";
 import {
   ChevronDown,
@@ -40,7 +42,6 @@ import {
   MonitorPlay,
   Plus,
   RefreshCw,
-  Search,
   Server,
   SquareTerminal,
 } from "lucide-react";
@@ -1321,10 +1322,7 @@ export function TmuxMonitor({
                   <Plus className="size-4" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent
-                className="w-64 rounded-none border-0 p-2 ring-1 ring-border"
-                align="start"
-              >
+              <PopoverContent className="w-64 rounded-none p-2" align="start">
                 <p className="mb-1 text-xs text-muted-foreground">
                   {t("tmuxMonitor.newSessionHint")}
                 </p>
@@ -1386,14 +1384,16 @@ export function TmuxMonitor({
             </Button>
           </span>
         </div>
-        <div className="space-y-2 border-b border-border px-3 py-2">
+        <div
+          className={`space-y-2 border-b border-border px-3 py-2 ${TOOLBAR_FIT}`}
+        >
           <Segmented<"all" | "single">
             value={scope}
             onChange={(value) => {
               setScope(value);
               saveMonitorValue("scope", value);
             }}
-            className="w-full [&>button]:flex-1"
+
             options={[
               { value: "all", label: t("tmuxMonitor.allHosts") },
               { value: "single", label: t("tmuxMonitor.singleHost") },
@@ -1780,22 +1780,18 @@ export function TmuxMonitor({
               </div>
             ))
           ) : hostsLoaded && hosts.length === 0 ? (
-            <div className="flex flex-1 items-center justify-center">
-              <div className="max-w-sm text-center text-muted-foreground">
-                <Server className="mx-auto mb-2 size-8 opacity-50" />
-                <p className="text-sm">{t("tmuxMonitor.noHosts")}</p>
-                <p className="mt-1 text-xs text-muted-foreground/70">
-                  {t("tmuxMonitor.noHostsHint")}
-                </p>
-              </div>
-            </div>
+            <EmptyState
+              className="flex-1"
+              icon={Server}
+              title={t("tmuxMonitor.noHosts")}
+              hint={t("tmuxMonitor.noHostsHint")}
+            />
           ) : (
-            <div className="flex flex-1 items-center justify-center">
-              <div className="text-center text-muted-foreground">
-                <MonitorPlay className="mx-auto mb-2 size-8 opacity-50" />
-                <p className="text-sm">{t("tmuxMonitor.selectPaneHint")}</p>
-              </div>
-            </div>
+            <EmptyState
+              className="flex-1"
+              icon={MonitorPlay}
+              title={t("tmuxMonitor.selectPaneHint")}
+            />
           )}
         </div>
       </div>

@@ -154,5 +154,32 @@
     "loading": "Laster...",
     "sessions_one": "{{count}} økt",
     "sessions_other": "{{count}} økter"
+  },
+  "operations": {
+    "list": {
+      "title": "List tmux-sesjoner"
+    },
+    "kill": {
+      "title": "Avslutt tmux-sesjon"
+    },
+    "sessions": {
+      "title": "tmux-sesjoner",
+      "clients": "Klienter",
+      "activity": "Siste aktivitet"
+    },
+    "count": {
+      "title": "Tell tmux-sesjoner"
+    }
+  },
+  "card": {
+    "title": "tmux-sesjoner",
+    "loading": "Sjekker vertene...",
+    "refresh": "Sjekk igjen",
+    "empty": "Aktiver Tmux Monitor for en vert for å se den her.",
+    "missing": "Ingen tmux",
+    "summary_one": "{{count}} sesjon på {{hosts}} verter",
+    "summary_other": "{{count}} sesjoner på {{hosts}} verter",
+    "sessions_one": "{{count}} sesjon, {{attached}} tilkoblet",
+    "sessions_other": "{{count}} sesjoner, {{attached}} tilkoblet"
   }
 }

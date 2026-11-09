@@ -156,5 +156,34 @@
     "sessions_one": "{{count}} סשן",
     "sessions_two": "{{count}} סשנים",
     "sessions_other": "{{count}} סשנים"
+  },
+  "operations": {
+    "list": {
+      "title": "רשימת סשנים של tmux"
+    },
+    "kill": {
+      "title": "סיום סשן של tmux"
+    },
+    "sessions": {
+      "title": "סשנים של tmux",
+      "clients": "לקוחות",
+      "activity": "פעילות אחרונה"
+    },
+    "count": {
+      "title": "ספירת סשנים של tmux"
+    }
+  },
+  "card": {
+    "title": "סשנים של tmux",
+    "loading": "בודק מארחים...",
+    "refresh": "בדיקה שוב",
+    "empty": "הפעל את מנטור Tmux עבור מארח כדי לראות אותו כאן.",
+    "missing": "אין tmux",
+    "summary_one": "{{count}} סשן ב-{{hosts}} מארחים",
+    "summary_two": "{{count}} סשנים ב-{{hosts}} מארחים",
+    "summary_other": "{{count}} סשנים ב-{{hosts}} מארחים",
+    "sessions_one": "{{count}} סשן, {{attached}} מחובר",
+    "sessions_two": "{{count}} סשנים, {{attached}} מחוברים",
+    "sessions_other": "{{count}} סשנים, {{attached}} מחוברים"
   }
 }

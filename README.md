@@ -32,6 +32,7 @@ Read the [docs](https://docs.termix.site/plugins/tmux-monitor) to set it up and 
 - Search across every pane
 - Create, rename, split and kill sessions, windows and panes
 - Attach a terminal in one click
+- tmux sessions across hosts in the All hosts table
 
 <br />
 

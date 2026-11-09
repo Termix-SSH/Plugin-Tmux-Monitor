@@ -152,5 +152,30 @@
     "openTab": "開啟 Tmux 監控",
     "loading": "載入中...",
     "sessions_other": "{{count}} 個工作階段"
+  },
+  "operations": {
+    "list": {
+      "title": "列出 tmux 工作階段"
+    },
+    "kill": {
+      "title": "結束 tmux 工作階段"
+    },
+    "sessions": {
+      "title": "tmux 工作階段",
+      "clients": "用戶端",
+      "activity": "上次活動"
+    },
+    "count": {
+      "title": "計算 tmux 工作階段數量"
+    }
+  },
+  "card": {
+    "title": "tmux 工作階段",
+    "loading": "正在檢查主機...",
+    "refresh": "再次檢查",
+    "empty": "為主機啟用 Tmux 監控，即可在此處查看。",
+    "missing": "未安裝 tmux",
+    "summary_other": "{{hosts}} 台主機上有 {{count}} 個工作階段",
+    "sessions_other": "{{count}} 個工作階段，{{attached}} 個已連線"
   }
 }

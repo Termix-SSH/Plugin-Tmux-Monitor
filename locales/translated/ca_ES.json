@@ -156,5 +156,34 @@
     "sessions_one": "{{count}} sessió",
     "sessions_many": "{{count}} sessions",
     "sessions_other": "{{count}} sessions"
+  },
+  "operations": {
+    "list": {
+      "title": "Llista les sessions de tmux"
+    },
+    "kill": {
+      "title": "Finalitza la sessió de tmux"
+    },
+    "sessions": {
+      "title": "Sessions de tmux",
+      "clients": "Clients",
+      "activity": "Última activitat"
+    },
+    "count": {
+      "title": "Compta les sessions de tmux"
+    }
+  },
+  "card": {
+    "title": "Sessions de tmux",
+    "loading": "Comprovant els amfitrions...",
+    "refresh": "Torna-ho a comprovar",
+    "empty": "Activa el monitor de Tmux per a un amfitrió per veure'l aquí.",
+    "missing": "Sense tmux",
+    "summary_one": "{{count}} sessió a {{hosts}} amfitrions",
+    "summary_many": "{{count}} sessions a {{hosts}} amfitrions",
+    "summary_other": "{{count}} sessions a {{hosts}} amfitrions",
+    "sessions_one": "{{count}} sessió, {{attached}} adjunta",
+    "sessions_many": "{{count}} sessions, {{attached}} adjuntes",
+    "sessions_other": "{{count}} sessions, {{attached}} adjuntes"
   }
 }

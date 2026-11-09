@@ -158,5 +158,36 @@
     "sessions_few": "{{count}} sesje",
     "sessions_many": "{{count}} sesji",
     "sessions_other": "{{count}} sesji"
+  },
+  "operations": {
+    "list": {
+      "title": "Lista sesji tmux"
+    },
+    "kill": {
+      "title": "Zakończ sesję tmux"
+    },
+    "sessions": {
+      "title": "Sesje tmux",
+      "clients": "Klienci",
+      "activity": "Ostatnia aktywność"
+    },
+    "count": {
+      "title": "Policz sesje tmux"
+    }
+  },
+  "card": {
+    "title": "Sesje tmux",
+    "loading": "Sprawdzanie hostów...",
+    "refresh": "Sprawdź ponownie",
+    "empty": "Włącz monitor tmux dla hosta, aby zobaczyć go tutaj.",
+    "missing": "Brak tmux",
+    "summary_one": "{{count}} sesja na {{hosts}} hostach",
+    "summary_few": "{{count}} sesje na {{hosts}} hostach",
+    "summary_many": "{{count}} sesji na {{hosts}} hostach",
+    "summary_other": "{{count}} sesji na {{hosts}} hostach",
+    "sessions_one": "{{count}} sesja, {{attached}} podłączona",
+    "sessions_few": "{{count}} sesje, {{attached}} podłączone",
+    "sessions_many": "{{count}} sesji, {{attached}} podłączonych",
+    "sessions_other": "{{count}} sesji, {{attached}} podłączonych"
   }
 }

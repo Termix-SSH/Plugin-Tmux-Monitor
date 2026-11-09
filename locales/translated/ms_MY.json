@@ -152,5 +152,30 @@
     "openTab": "Buka Pemantau Tmux",
     "loading": "Memuatkan...",
     "sessions_other": "{{count}} sesi"
+  },
+  "operations": {
+    "list": {
+      "title": "Senaraikan sesi tmux"
+    },
+    "kill": {
+      "title": "Tamatkan sesi tmux"
+    },
+    "sessions": {
+      "title": "sesi tmux",
+      "clients": "Pelanggan",
+      "activity": "Aktiviti terakhir"
+    },
+    "count": {
+      "title": "Kira sesi tmux"
+    }
+  },
+  "card": {
+    "title": "sesi tmux",
+    "loading": "Memeriksa hos...",
+    "refresh": "Semak semula",
+    "empty": "Hidupkan Pemantau Tmux untuk hos untuk melihatnya di sini.",
+    "missing": "Tiada tmux",
+    "summary_other": "{{count}} sesi pada {{hosts}} hos",
+    "sessions_other": "{{count}} sesi, {{attached}} disambungkan"
   }
 }

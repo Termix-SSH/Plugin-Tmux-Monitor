@@ -154,5 +154,32 @@
     "loading": "Φόρτωση...",
     "sessions_one": "{{count}} συνεδρία",
     "sessions_other": "{{count}} συνεδρίες"
+  },
+  "operations": {
+    "list": {
+      "title": "Αναφορά tmux συνεδριών"
+    },
+    "kill": {
+      "title": "Τερματισμός tmux συνεδρίας"
+    },
+    "sessions": {
+      "title": "tmux συνεδρίες",
+      "clients": "Πελάτες",
+      "activity": "Τελευταία δραστηριότητα"
+    },
+    "count": {
+      "title": "Μέτρηση tmux συνεδριών"
+    }
+  },
+  "card": {
+    "title": "tmux συνεδρίες",
+    "loading": "Έλεγχος hosts...",
+    "refresh": "Έλεγχος ξανά",
+    "empty": "Ενεργοποιήστε τον Tmux Monitor για έναν host για να τον δείτε εδώ.",
+    "missing": "Χωρίς tmux",
+    "summary_one": "{{count}} συνεδρία σε {{hosts}} hosts",
+    "summary_other": "{{count}} συνεδρίες σε {{hosts}} hosts",
+    "sessions_one": "{{count}} συνεδρία, {{attached}} συνδεδεμένη",
+    "sessions_other": "{{count}} συνεδρίες, {{attached}} συνδεδεμένες"
   }
 }

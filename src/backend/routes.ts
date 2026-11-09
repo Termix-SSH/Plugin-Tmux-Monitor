@@ -131,7 +131,7 @@ async function requireHost(
   return host;
 }
 
-async function withHostConnection<T>(
+export async function withHostConnection<T>(
   ctx: PluginContext,
   host: PluginHostSummary,
   fn: (client: Client) => Promise<T>,
@@ -143,11 +143,14 @@ async function withHostConnection<T>(
   );
 }
 
-async function tmuxAvailable(conn: Client): Promise<boolean> {
+export async function tmuxAvailable(conn: Client): Promise<boolean> {
   return (await detectTmuxShell(conn)) !== null;
 }
 
-async function runTmuxList(conn: Client, args: string[]): Promise<string> {
+export async function runTmuxList(
+  conn: Client,
+  args: string[],
+): Promise<string> {
   try {
     return await execTmux(conn, args);
   } catch (err) {
@@ -163,7 +166,7 @@ async function runTmuxList(conn: Client, args: string[]): Promise<string> {
   }
 }
 
-const LIST_SESSIONS = [
+export const LIST_SESSIONS = [
   "list-sessions",
   "-F",
   `#{session_name}${SEP}#{session_created}${SEP}#{session_activity}${SEP}#{session_attached}${SEP}#{${VIEW_MARK}}`,
@@ -206,7 +209,7 @@ async function listPanesRaw(conn: Client): Promise<RawPane[]> {
 // Killing a session leaves its split-view helpers (grouped sessions) holding
 // the windows alive, so kill the marked ones in the session's actual group
 // first (the group is not necessarily named after the session).
-async function killSessionAndViews(conn: Client, name: string) {
+export async function killSessionAndViews(conn: Client, name: string) {
   const out = await execTmux(conn, [
     "list-sessions",
     "-F",

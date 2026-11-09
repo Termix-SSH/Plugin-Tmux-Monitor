@@ -154,5 +154,32 @@
     "loading": "Laadimine...",
     "sessions_one": "{{count}} sessioon",
     "sessions_other": "{{count}} sessiooni"
+  },
+  "operations": {
+    "list": {
+      "title": "Loetle tmuxi sessioonid"
+    },
+    "kill": {
+      "title": "Lõpeta tmuxi sessioon"
+    },
+    "sessions": {
+      "title": "tmuxi sessioonid",
+      "clients": "Kliendid",
+      "activity": "Viimane tegevus"
+    },
+    "count": {
+      "title": "Loe tmuxi sessioone"
+    }
+  },
+  "card": {
+    "title": "tmuxi sessioonid",
+    "loading": "Hostide kontrollimine...",
+    "refresh": "Kontrolli uuesti",
+    "empty": "Lülita hosti jaoks sisse Tmux Monitor, et näha seda siin.",
+    "missing": "tmux puudub",
+    "summary_one": "{{count}} sessioon {{hosts}} hostil",
+    "summary_other": "{{count}} sessiooni {{hosts}} hostil",
+    "sessions_one": "{{count}} sessioon, {{attached}} ühendatud",
+    "sessions_other": "{{count}} sessiooni, {{attached}} ühendatud"
   }
 }

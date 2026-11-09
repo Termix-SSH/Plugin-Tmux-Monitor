@@ -156,5 +156,34 @@
     "sessions_one": "{{count}} sesija",
     "sessions_few": "{{count}} sesije",
     "sessions_other": "{{count}} sesija"
+  },
+  "operations": {
+    "list": {
+      "title": "Popis tmux sesija"
+    },
+    "kill": {
+      "title": "Zatvori tmux sesiju"
+    },
+    "sessions": {
+      "title": "tmux sesije",
+      "clients": "Klijenti",
+      "activity": "Zadnja aktivnost"
+    },
+    "count": {
+      "title": "Broj tmux sesija"
+    }
+  },
+  "card": {
+    "title": "tmux sesije",
+    "loading": "Provjera hostova...",
+    "refresh": "Provjeri ponovno",
+    "empty": "Uključite Tmux Monitor za host da biste ga vidjeli ovdje.",
+    "missing": "Nema tmuxa",
+    "summary_one": "{{count}} sesija na {{hosts}} hostu",
+    "summary_few": "{{count}} sesije na {{hosts}} hosta",
+    "summary_other": "{{count}} sesija na {{hosts}} hostova",
+    "sessions_one": "{{count}} sesija, {{attached}} povezana",
+    "sessions_few": "{{count}} sesije, {{attached}} povezane",
+    "sessions_other": "{{count}} sesija, {{attached}} povezanih"
   }
 }

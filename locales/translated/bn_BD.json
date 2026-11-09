@@ -154,5 +154,32 @@
     "loading": "লোড হচ্ছে...",
     "sessions_one": "{{count}} সেশন",
     "sessions_other": "{{count}} সেশন"
+  },
+  "operations": {
+    "list": {
+      "title": "tmux সেশন তালিকা"
+    },
+    "kill": {
+      "title": "tmux সেশন বন্ধ করুন"
+    },
+    "sessions": {
+      "title": "tmux সেশন",
+      "clients": "ক্লায়েন্ট",
+      "activity": "সর্বশেষ কার্যকলাপ"
+    },
+    "count": {
+      "title": "tmux সেশন গণনা করুন"
+    }
+  },
+  "card": {
+    "title": "tmux সেশন",
+    "loading": "হোস্ট যাচাই করা হচ্ছে...",
+    "refresh": "আবার যাচাই করুন",
+    "empty": "এখানে দেখতে হোস্টের জন্য Tmux Monitor চালু করুন।",
+    "missing": "tmux নেই",
+    "summary_one": "{{hosts}} হোস্টে {{count}} সেশন",
+    "summary_other": "{{hosts}} হোস্টে {{count}} সেশন",
+    "sessions_one": "{{count}} সেশন, {{attached}} সংযুক্ত",
+    "sessions_other": "{{count}} সেশন, {{attached}} সংযুক্ত"
   }
 }

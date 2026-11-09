@@ -152,5 +152,30 @@
     "openTab": "打开 Tmux 监控",
     "loading": "加载中...",
     "sessions_other": "{{count}} 个会话"
+  },
+  "operations": {
+    "list": {
+      "title": "列出 tmux 会话"
+    },
+    "kill": {
+      "title": "结束 tmux 会话"
+    },
+    "sessions": {
+      "title": "tmux 会话",
+      "clients": "客户端",
+      "activity": "最近活动"
+    },
+    "count": {
+      "title": "统计 tmux 会话"
+    }
+  },
+  "card": {
+    "title": "tmux 会话",
+    "loading": "正在检查主机...",
+    "refresh": "再次检查",
+    "empty": "为主机启用 Tmux 监控以在此处查看。",
+    "missing": "无 tmux",
+    "summary_other": "{{hosts}} 台主机上的 {{count}} 个会话",
+    "sessions_other": "{{count}} 个会话，{{attached}} 个已连接"
   }
 }

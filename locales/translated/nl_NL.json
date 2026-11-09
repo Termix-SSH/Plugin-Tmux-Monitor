@@ -154,5 +154,32 @@
     "loading": "Laden...",
     "sessions_one": "{{count}} sessie",
     "sessions_other": "{{count}} sessies"
+  },
+  "operations": {
+    "list": {
+      "title": "Lijst met tmux-sessies"
+    },
+    "kill": {
+      "title": "tmux-sessie beëindigen"
+    },
+    "sessions": {
+      "title": "tmux-sessies",
+      "clients": "Clients",
+      "activity": "Laatste activiteit"
+    },
+    "count": {
+      "title": "Aantal tmux-sessies tellen"
+    }
+  },
+  "card": {
+    "title": "tmux-sessies",
+    "loading": "Hosts controleren...",
+    "refresh": "Opnieuw controleren",
+    "empty": "Schakel Tmux Monitor in voor een host om deze hier te zien.",
+    "missing": "Geen tmux",
+    "summary_one": "{{count}} sessie op {{hosts}} hosts",
+    "summary_other": "{{count}} sessies op {{hosts}} hosts",
+    "sessions_one": "{{count}} sessie, {{attached}} verbonden",
+    "sessions_other": "{{count}} sessies, {{attached}} verbonden"
   }
 }

@@ -154,5 +154,32 @@
     "loading": "Зареждане...",
     "sessions_one": "{{count}} сесия",
     "sessions_other": "{{count}} сесии"
+  },
+  "operations": {
+    "list": {
+      "title": "Показване на tmux сесии"
+    },
+    "kill": {
+      "title": "Завършване на tmux сесия"
+    },
+    "sessions": {
+      "title": "tmux сесии",
+      "clients": "Клиенти",
+      "activity": "Последна активност"
+    },
+    "count": {
+      "title": "Преброяване на tmux сесии"
+    }
+  },
+  "card": {
+    "title": "tmux сесии",
+    "loading": "Проверка на хостовете...",
+    "refresh": "Провери отново",
+    "empty": "Включете Tmux Monitor за хост, за да го видите тук.",
+    "missing": "Няма tmux",
+    "summary_one": "{{count}} сесия на {{hosts}} хоста",
+    "summary_other": "{{count}} сесии на {{hosts}} хоста",
+    "sessions_one": "{{count}} сесия, {{attached}} свързана",
+    "sessions_other": "{{count}} сесии, {{attached}} свързани"
   }
 }

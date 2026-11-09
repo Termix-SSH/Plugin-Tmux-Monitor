@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.2.0
+
+### Added
+
+- tmux sessions across hosts in the All hosts table, and ending a session through Termix actions
+- Opens inside the host page, set to that host
+
+### Changed
+
+- Needs Termix 26.11.1 or newer
+- Empty views use the same look as the rest of Termix
+- Toolbars, loading screens, back buttons and Save bars match the rest of Termix
+
 ## 1.1.0
 
 ### Added

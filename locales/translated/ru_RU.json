@@ -158,5 +158,36 @@
     "sessions_few": "{{count}} сессии",
     "sessions_many": "{{count}} сессий",
     "sessions_other": "{{count}} сессий"
+  },
+  "operations": {
+    "list": {
+      "title": "Список сессий tmux"
+    },
+    "kill": {
+      "title": "Завершить сессию tmux"
+    },
+    "sessions": {
+      "title": "Сессии tmux",
+      "clients": "Клиенты",
+      "activity": "Последняя активность"
+    },
+    "count": {
+      "title": "Подсчитать сессии tmux"
+    }
+  },
+  "card": {
+    "title": "Сессии tmux",
+    "loading": "Проверка хостов...",
+    "refresh": "Проверить снова",
+    "empty": "Включите мониторинг Tmux для хоста, чтобы увидеть его здесь.",
+    "missing": "Нет tmux",
+    "summary_one": "{{count}} сессия на {{hosts}} хостах",
+    "summary_few": "{{count}} сессии на {{hosts}} хостах",
+    "summary_many": "{{count}} сессий на {{hosts}} хостах",
+    "summary_other": "{{count}} сессий на {{hosts}} хостах",
+    "sessions_one": "{{count}} сессия, {{attached}} подключено",
+    "sessions_few": "{{count}} сессии, {{attached}} подключено",
+    "sessions_many": "{{count}} сессий, {{attached}} подключено",
+    "sessions_other": "{{count}} сессий, {{attached}} подключено"
   }
 }

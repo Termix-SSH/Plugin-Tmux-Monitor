@@ -156,5 +156,34 @@
     "sessions_one": "{{count}} сесија",
     "sessions_few": "{{count}} сесије",
     "sessions_other": "{{count}} сесија"
+  },
+  "operations": {
+    "list": {
+      "title": "Листај tmux сесије"
+    },
+    "kill": {
+      "title": "Затвори tmux сесију"
+    },
+    "sessions": {
+      "title": "tmux сесије",
+      "clients": "Клијенти",
+      "activity": "Последња активност"
+    },
+    "count": {
+      "title": "Број tmux сесија"
+    }
+  },
+  "card": {
+    "title": "tmux сесије",
+    "loading": "Провера хостова...",
+    "refresh": "Провери поново",
+    "empty": "Укључите Tmux Monitor за хост да бисте га видели овде.",
+    "missing": "Нема tmux",
+    "summary_one": "{{count}} сесија на {{hosts}} хосту",
+    "summary_few": "{{count}} сесије на {{hosts}} хоста",
+    "summary_other": "{{count}} сесија на {{hosts}} хостова",
+    "sessions_one": "{{count}} сесија, {{attached}} повезана",
+    "sessions_few": "{{count}} сесије, {{attached}} повезане",
+    "sessions_other": "{{count}} сесија, {{attached}} повезаних"
   }
 }

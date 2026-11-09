@@ -154,5 +154,32 @@
     "loading": "Indlæser...",
     "sessions_one": "{{count}} session",
     "sessions_other": "{{count}} sessions"
+  },
+  "operations": {
+    "list": {
+      "title": "List tmux sessions"
+    },
+    "kill": {
+      "title": "End tmux session"
+    },
+    "sessions": {
+      "title": "tmux sessions",
+      "clients": "Clients",
+      "activity": "Last activity"
+    },
+    "count": {
+      "title": "Count tmux sessions"
+    }
+  },
+  "card": {
+    "title": "tmux sessions",
+    "loading": "Checking hosts...",
+    "refresh": "Check again",
+    "empty": "Turn on Tmux Monitor for a host to see it here.",
+    "missing": "No tmux",
+    "summary_one": "{{count}} session on {{hosts}} hosts",
+    "summary_other": "{{count}} sessions on {{hosts}} hosts",
+    "sessions_one": "{{count}} session, {{attached}} attached",
+    "sessions_other": "{{count}} sessions, {{attached}} attached"
   }
 }

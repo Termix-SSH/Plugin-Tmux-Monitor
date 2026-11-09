@@ -118,5 +118,18 @@
   "companion.toggle": "b217a331a7cc",
   "companion.openTab": "69b21bbb5fb2",
   "companion.loading": "b04ba49f8486",
-  "companion.sessions": "5397c925210c"
+  "companion.sessions": "5397c925210c",
+  "operations.list.title": "5c2ebe09dcfe",
+  "operations.kill.title": "06a0469739c9",
+  "operations.sessions.title": "376eba03a77f",
+  "operations.sessions.clients": "28e22fe3dde5",
+  "operations.sessions.activity": "1c73b806203d",
+  "operations.count.title": "bea1276880b7",
+  "card.title": "376eba03a77f",
+  "card.loading": "e8ee29185c23",
+  "card.refresh": "e185048ce3c0",
+  "card.empty": "aa0aefccd408",
+  "card.missing": "1c7067bec50d",
+  "card.summary": "46813d5da38a",
+  "card.sessions": "eadcdf46ed79"
 }

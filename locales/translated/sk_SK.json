@@ -158,5 +158,36 @@
     "sessions_few": "{{count}} relácie",
     "sessions_many": "{{count}} relácií",
     "sessions_other": "{{count}} relácií"
+  },
+  "operations": {
+    "list": {
+      "title": "Zoznam tmux relácií"
+    },
+    "kill": {
+      "title": "Ukončiť tmux reláciu"
+    },
+    "sessions": {
+      "title": "tmux relácie",
+      "clients": "Klienti",
+      "activity": "Posledná aktivita"
+    },
+    "count": {
+      "title": "Počítať tmux relácie"
+    }
+  },
+  "card": {
+    "title": "tmux relácie",
+    "loading": "Kontrola hostiteľov...",
+    "refresh": "Skontrolovať znova",
+    "empty": "Pre hostiteľa zapnite Tmux Monitor, aby sa zobrazil tu.",
+    "missing": "Žiadny tmux",
+    "summary_one": "{{count}} relácia na {{hosts}} hostiteľoch",
+    "summary_few": "{{count}} relácie na {{hosts}} hostiteľoch",
+    "summary_many": "{{count}} relácií na {{hosts}} hostiteľoch",
+    "summary_other": "{{count}} relácií na {{hosts}} hostiteľoch",
+    "sessions_one": "{{count}} relácia, {{attached}} pripojená",
+    "sessions_few": "{{count}} relácie, {{attached}} pripojené",
+    "sessions_many": "{{count}} relácií, {{attached}} pripojených",
+    "sessions_other": "{{count}} relácií, {{attached}} pripojených"
   }
 }

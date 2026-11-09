@@ -154,5 +154,32 @@
     "loading": "Betöltés...",
     "sessions_one": "{{count}} munkamenet",
     "sessions_other": "{{count}} munkamenet"
+  },
+  "operations": {
+    "list": {
+      "title": "tmux munkamenetek listázása"
+    },
+    "kill": {
+      "title": "tmux munkamenet befejezése"
+    },
+    "sessions": {
+      "title": "tmux munkamenetek",
+      "clients": "Kliensek",
+      "activity": "Utolsó tevékenység"
+    },
+    "count": {
+      "title": "tmux munkamenetek számlálása"
+    }
+  },
+  "card": {
+    "title": "tmux munkamenetek",
+    "loading": "Szerverek ellenőrzése...",
+    "refresh": "Újraellenőrzés",
+    "empty": "Kapcsold be a Tmux Monitor funkciót egy szerveren, hogy itt megjelenjen.",
+    "missing": "Nincs tmux",
+    "summary_one": "{{count}} munkamenet {{hosts}} szerveren",
+    "summary_other": "{{count}} munkamenet {{hosts}} szerveren",
+    "sessions_one": "{{count}} munkamenet, {{attached}} csatlakoztatva",
+    "sessions_other": "{{count}} munkamenet, {{attached}} csatlakoztatva"
   }
 }
