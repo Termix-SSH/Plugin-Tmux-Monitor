@@ -1433,8 +1433,10 @@ export function TmuxMonitor({
         {/* Radix wraps the viewport content in a display:table div sized to
             the widest row, so one long pane path would stretch every row and
             clip the right-aligned actions; force block so rows shrink and
-            truncate instead. */}
-        <ScrollArea className="flex-1 [&_[data-slot=scroll-area-viewport]>div]:!block">
+            truncate instead. min-h-0 lets this flex item be shorter than its
+            content; without it the area grows to the full list height and
+            never scrolls. */}
+        <ScrollArea className="min-h-0 flex-1 [&_[data-slot=scroll-area-viewport]>div]:!block">
           <div className="p-2">
             {hostsLoaded && hosts.length === 0 && (
               <div className="px-2 py-4">
