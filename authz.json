@@ -1,0 +1,125 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Termix-SSH/Termix/main/scripts/authz/authz.schema.json",
+  "seed": [],
+  "routes": {
+    "POST /plugin-api/tmux-monitor/:hostId/focus": {
+      "access": "user",
+      "permission": "tmux-monitor.use",
+      "resource": {
+        "kind": "host",
+        "min": "connect"
+      }
+    },
+    "POST /plugin-api/tmux-monitor/:hostId/kill": {
+      "access": "user",
+      "permission": "tmux-monitor.use",
+      "resource": {
+        "kind": "host",
+        "min": "connect"
+      },
+      "destructive": true
+    },
+    "POST /plugin-api/tmux-monitor/:hostId/kill-pane": {
+      "access": "user",
+      "permission": "tmux-monitor.use",
+      "resource": {
+        "kind": "host",
+        "min": "connect"
+      },
+      "destructive": true
+    },
+    "POST /plugin-api/tmux-monitor/:hostId/kill-window": {
+      "access": "user",
+      "permission": "tmux-monitor.use",
+      "resource": {
+        "kind": "host",
+        "min": "connect"
+      },
+      "destructive": true
+    },
+    "GET /plugin-api/tmux-monitor/:hostId/metrics": {
+      "access": "user",
+      "permission": "tmux-monitor.use",
+      "resource": {
+        "kind": "host",
+        "min": "connect"
+      }
+    },
+    "GET /plugin-api/tmux-monitor/:hostId/overview": {
+      "access": "user",
+      "permission": "tmux-monitor.use",
+      "resource": {
+        "kind": "host",
+        "min": "connect"
+      }
+    },
+    "POST /plugin-api/tmux-monitor/:hostId/rename": {
+      "access": "user",
+      "permission": "tmux-monitor.use",
+      "resource": {
+        "kind": "host",
+        "min": "connect"
+      }
+    },
+    "GET /plugin-api/tmux-monitor/:hostId/search": {
+      "access": "user",
+      "permission": "tmux-monitor.use",
+      "resource": {
+        "kind": "host",
+        "min": "connect"
+      }
+    },
+    "POST /plugin-api/tmux-monitor/:hostId/sessions": {
+      "access": "user",
+      "permission": "tmux-monitor.use",
+      "resource": {
+        "kind": "host",
+        "min": "connect"
+      }
+    },
+    "POST /plugin-api/tmux-monitor/:hostId/split": {
+      "access": "user",
+      "permission": "tmux-monitor.use",
+      "resource": {
+        "kind": "host",
+        "min": "connect"
+      }
+    },
+    "PUT /plugin-api/tmux-monitor/:hostId/tags": {
+      "access": "user",
+      "permission": "tmux-monitor.use",
+      "resource": {
+        "kind": "host",
+        "min": "connect"
+      }
+    },
+    "POST /plugin-api/tmux-monitor/:hostId/view-session": {
+      "access": "user",
+      "permission": "tmux-monitor.use",
+      "resource": {
+        "kind": "host",
+        "min": "connect"
+      }
+    },
+    "POST /plugin-api/tmux-monitor/:hostId/view-session/release": {
+      "access": "user",
+      "permission": "tmux-monitor.use",
+      "resource": {
+        "kind": "host",
+        "min": "connect"
+      }
+    },
+    "POST /plugin-api/tmux-monitor/:hostId/windows": {
+      "access": "user",
+      "permission": "tmux-monitor.use",
+      "resource": {
+        "kind": "host",
+        "min": "connect"
+      }
+    },
+    "GET /plugin-api/tmux-monitor/summary": {
+      "access": "user",
+      "permission": "tmux-monitor.use"
+    }
+  }
+}
