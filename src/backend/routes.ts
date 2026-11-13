@@ -291,8 +291,8 @@ async function searchPane(
 export function createTmuxMonitorRoutes(
   ctx: PluginContext,
   tags: SessionTagRepository,
+  router: Router = express.Router(),
 ): Router {
-  const router = express.Router();
   router.use(ctx.rbac.require("use") as never);
 
   /**

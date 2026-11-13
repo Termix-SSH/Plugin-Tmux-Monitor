@@ -16,7 +16,8 @@ export async function activate(ctx: PluginContext) {
   const summary = createSummaryCache(ctx);
   const router = ctx.http.router<Router>();
   registerSummary(router, ctx, summary);
-  router.use(createTmuxMonitorRoutes(ctx, tags));
+  // Routes go straight on ctx's router: a plugin process serves no sub-routers.
+  createTmuxMonitorRoutes(ctx, tags, router);
 
   ctx.services.provide("tmux.sessions", createTmuxSessionsService(ctx));
   registerOperations(

@@ -1,7 +1,7 @@
 {
   "id": "tmux-monitor",
   "name": "Tmux Monitor",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Browse and control tmux sessions, windows and panes across your hosts.",
   "author": {
     "name": "Termix"
@@ -22,8 +22,8 @@
     "A tmux panel beside any SSH terminal to attach and switch sessions"
   ],
   "engine": {
-    "termix": ">=26.11.1-0",
-    "api": "^1.15"
+    "termix": ">=26.11.2-0",
+    "api": "^2.0.0"
   },
   "capabilities": [
     "hosts:read",
