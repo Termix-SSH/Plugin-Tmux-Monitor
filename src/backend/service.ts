@@ -3,7 +3,9 @@ import type { Client, ClientChannel } from "ssh2";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import {
   attachOrCreateTmuxSession,
+  bindPersistentSelection,
   detectTmux,
+  tmuxShellForStream,
   waitForTmuxSession,
   type TmuxDetectionResult,
 } from "./tmux-commands.js";
@@ -115,12 +117,21 @@ export function createTmuxSessionsService(ctx: PluginContext): TmuxSessionsV1 {
       const mouseEnabled =
         hostId === undefined ||
         (await ctx.settings.getHost<boolean>(hostId, "mouseEnabled")) !== false;
-      attachOrCreateTmuxSession(
-        channelFor(stream),
+      const channel = channelFor(stream);
+      const session = attachOrCreateTmuxSession(
+        channel,
         name,
         newName,
         mouseEnabled,
       );
+      const client = (channel as unknown as { _client?: Client })._client;
+      if (mouseEnabled && client && tmuxShellForStream(channel) === "posix") {
+        void bindPersistentSelection(client, session).catch((error) =>
+          ctx.log.warn(
+            `Could not keep tmux mouse selections: ${error instanceof Error ? error.message : String(error)}`,
+          ),
+        );
+      }
     },
 
     async waitForSession(client, name) {
