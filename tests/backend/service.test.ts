@@ -138,3 +138,53 @@ describe("createTmuxSessionsService", () => {
     }
   });
 });
+
+describe("a shell handle from another plugin process", () => {
+  function handle(outputs: Record<string, string>) {
+    const written: string[] = [];
+    const commands: string[] = [];
+    return {
+      written,
+      commands,
+      value: () => ({
+        termixShellKey: "conn-1",
+        exec: async (command: string) => {
+          commands.push(command);
+          const key = Object.keys(outputs).find((k) => command.includes(k));
+          return key
+            ? { stdout: outputs[key], stderr: "", code: 0 }
+            : { stdout: "", stderr: "no", code: 1 };
+        },
+        write: (data: string) => {
+          written.push(data);
+        },
+      }),
+    };
+  }
+
+  it("detects tmux and its sessions through the handle", async () => {
+    const { ctx } = createFakeContext({ pluginId: "tmux-monitor" });
+    const service = createTmuxSessionsService(ctx);
+    const h = handle({
+      "-V": "tmux 3.4",
+      "list-sessions": "main<<TMX>>1<<TMX>>2<<TMX>>1<<TMX>>0\n",
+    });
+    const result = await service.detect(h.value());
+    expect(result.available).toBe(true);
+    expect(result.sessions.map((x) => x.name)).toEqual(["main"]);
+    // The shell found once is kept for the same key.
+    const before = h.commands.filter((c) => c.includes("-V")).length;
+    await service.detect(h.value());
+    expect(h.commands.filter((c) => c.includes("-V")).length).toBe(before);
+  });
+
+  it("writes the attach line through the handle", async () => {
+    const { ctx } = createFakeContext({ pluginId: "tmux-monitor" });
+    const service = createTmuxSessionsService(ctx);
+    const h = handle({});
+    await service.attachOrCreate(h.value(), "main");
+    expect(h.written).toHaveLength(1);
+    expect(h.written[0]).toContain("attach-session");
+    expect(h.written[0]).toContain("=main");
+  });
+});
