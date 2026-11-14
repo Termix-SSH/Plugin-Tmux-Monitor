@@ -102,6 +102,32 @@ describe("createTmuxSessionsService", () => {
     expect(writes[1]).toContain("mouse on");
   });
 
+  it("keeps mouse selections by binding keys over exec, only with mouse on", async () => {
+    const { ctx } = createFakeContext({ pluginId: "tmux-monitor" });
+    await ctx.settings.setHost(7, "mouseEnabled", false);
+    const service = createTmuxSessionsService(ctx);
+    const attach = async (hostId: number) => {
+      const client = fakeSshClient({});
+      const exec = client.exec;
+      const commands: string[] = [];
+      client.exec = (command, cb) => {
+        commands.push(command);
+        exec(command, cb);
+      };
+      await service.attachOrCreate(
+        { write: () => {}, _client: client },
+        "main",
+        undefined,
+        hostId,
+      );
+      // The bindings go out after the session check, off the attach path.
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      return commands.join("\n");
+    };
+    expect(await attach(8)).toContain("copy-pipe-no-clear");
+    expect(await attach(7)).not.toContain("bind-key");
+  });
+
   it("waitForSession() checks for the exact session name", async () => {
     const { ctx } = createFakeContext({ pluginId: "tmux-monitor" });
     const service = createTmuxSessionsService(ctx);
