@@ -23,6 +23,7 @@ async function createRepository() {
   db.sqlite.exec("INSERT INTO ssh_data (id) VALUES (1), (2)");
 
   const mock = createMockCtx({
+    sandbox: true,
     pluginId: manifest.id,
     manifest,
     capabilities: manifest.capabilities,
