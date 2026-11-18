@@ -236,12 +236,17 @@ export function sessionOptionCommands(
 }
 
 /**
- * Write tmux attach or new-session command to the interactive shell stream.
- * Uses && exit so the shell only closes if tmux started successfully.
+ * Write tmux attach or new-session command to the interactive shell stream,
+ * and return the session's name. Uses && exit so the shell only closes if
+ * tmux started successfully.
  *
  * Options are set on this session only so the user's own tmux config stays
  * untouched. -q keeps an older tmux that lacks an option from aborting the
  * attach.
+ *
+ * The line is typed before the shell's line editor starts, so it must fit
+ * the tty's canonical buffer: 1024 bytes on macOS. Key bindings would make it
+ * about 1.8 KB, so they are applied over exec instead (bindPersistentSelection).
  */
 export function attachOrCreateTmuxSession(
   stream: ClientChannel,
@@ -249,7 +254,7 @@ export function attachOrCreateTmuxSession(
   newSessionName?: string,
   mouseEnabled = true,
   shell: TmuxShell = tmuxShellForStream(stream),
-): void {
+): string {
   const name =
     existingSessionName || newSessionName || `termix-${randomUUID()}`;
   const target = `=${name}`;
@@ -257,11 +262,6 @@ export function attachOrCreateTmuxSession(
     ? []
     : [["new-session", "-d", "-s", name]];
   commands.push(...sessionOptionCommands(name, mouseEnabled));
-  // tmux's default mouse bindings clear the selection on release. Key
-  // bindings are server-wide, so this changes mouse selection for every tmux
-  // client of that server, and only when mouse support is on.
-  if (mouseEnabled && shell === "posix")
-    commands.push(...PERSISTENT_SELECTION_BINDINGS);
   // Split-viewer sessions vanish with their viewer. Only ones this plugin
   // marked: tmux checks the marker, so a user's own session that happens to
   // share the name is never made disposable.
@@ -280,6 +280,21 @@ export function attachOrCreateTmuxSession(
   const command = buildTmuxCommand(shell, ...commands);
   // PowerShell 5 has no &&, so a Windows shell stays open after a detach.
   stream.write(shell === "windows" ? `${command}\r` : `${command} && exit\r`);
+  return name;
+}
+
+/**
+ * tmux's default mouse bindings clear the selection on release. Key bindings
+ * are server-wide, so this changes mouse selection for every tmux client of
+ * that server; it is only applied when mouse support is on. Runs over exec
+ * once the session, and so the server, exists.
+ */
+export async function bindPersistentSelection(
+  conn: Client,
+  sessionName: string,
+): Promise<void> {
+  if (!(await waitForTmuxSession(conn, sessionName))) return;
+  await execTmux(conn, ...PERSISTENT_SELECTION_BINDINGS);
 }
 /**
  * Same as tmux's defaults except copy-pipe-no-clear, so a drag or double /

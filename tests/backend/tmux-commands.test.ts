@@ -383,9 +383,19 @@ describe("mouse and kept selection", () => {
     return command;
   };
 
-  it("changes key bindings only when mouse support is on", () => {
-    expect(run(false)).not.toContain("bind-key");
-    expect(run(true)).toContain("copy-pipe-no-clear");
+  it("types a line that fits macOS's 1024-byte tty line, bindings left out", () => {
+    for (const mouse of [true, false]) {
+      let command = "";
+      attachOrCreateTmuxSession(
+        { write: (v: string) => (command = v) } as unknown as ClientChannel,
+        undefined,
+        "termix-0123456789abcdef0123456789abcdef",
+        mouse,
+        "posix",
+      );
+      expect(command).not.toContain("bind-key");
+      expect(Buffer.byteLength(command)).toBeLessThan(1024);
+    }
   });
 
   it("only marks-and-destroys helper sessions the plugin marked", () => {
